@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+	<typeAlias type="com.pj.journal.model.board.BoardVo" alias="boardBean" />
+	</typeAliases>
+	<mappers>
+		<mapper resource="mappers/board-mapper.xml" />
+	</mappers>
+</configuration>
