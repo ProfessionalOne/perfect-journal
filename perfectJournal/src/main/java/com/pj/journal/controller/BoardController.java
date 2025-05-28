@@ -15,11 +15,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.pj.journal.model.board.BoardDao;
 import com.pj.journal.model.board.BoardVo;
 import com.pj.journal.service.BoardService;
 
 @Controller
 public class BoardController {
+	@Autowired
+    private BoardDao boardDao;
+	
 	@Autowired
 	BoardService boardService;
 
@@ -29,8 +33,13 @@ public class BoardController {
 	}
 
 	@GetMapping("/posts")
-	public String boardList(@RequestParam(defaultValue = "1") int page, Model model) {
-		boardService.getBoardList(model, page);
+	public String boardList(@RequestParam(defaultValue = "1") int page
+			, @RequestParam(defaultValue = "latest") String sort
+			, @RequestParam(required = false) String searchField
+			, @RequestParam(required = false) String keyword
+			, Model model) {
+		
+		boardService.getBoardList(model, page, sort, searchField, keyword);
 		return "board/home";
 	}
 
@@ -69,6 +78,7 @@ public class BoardController {
 		boardService.addBoardList(bean);
 		return "redirect:/posts";
 	}
+
 	
 	@GetMapping("/posts/{postId}/edit")
 	public String editPost(@PathVariable int postId, Model model) {
@@ -103,6 +113,12 @@ public class BoardController {
 		bean.setPostId(postId);
 		boardService.updateBoardList(bean);
 		return "redirect:/posts/"+postId;
+
+	@PostMapping("/posts/delete")
+	public String deletePost(@RequestParam("postId") int postId) {
+	    boardDao.deleteOneBoard(postId);
+	    return "redirect:/posts";
+
 	}
 
 }
