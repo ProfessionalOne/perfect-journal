@@ -43,10 +43,17 @@ public class BoardService {
             model.addAttribute("totalPages", totalPages);
         }
     }
+	public BoardVo getBoardList(int postId) {
+		 try (SqlSession session = sqlSessionFactory.openSession()) {
+	            return session.getMapper(BoardDao.class).selectOneBoard(postId);
+		 }
+	}
 	
 	public void addBoardList(BoardVo bean) {
 		try (SqlSession session = sqlSessionFactory.openSession();) {
 			session.getMapper(BoardDao.class).insertOneBoard(bean);
 		}
 	}
+	
+
 }

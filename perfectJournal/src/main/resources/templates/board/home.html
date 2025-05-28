@@ -19,15 +19,7 @@
     />
   </head>
   <body>
-    <!-- 네비게이션 바 -->
-    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
-      <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center" href="#">
-          감사일기
-        </a>
-        <button class="btn btn-login ms-auto">로그인</button>
-      </div>
-    </nav>
+    <nav th:replace="~{layout/header :: headerFrag}">네비게이션</nav>
 
     <div class="container">
       <div class="board-header">
@@ -80,7 +72,7 @@
             <li class="page-item" th:hidden="${beginPage == 1}">
               <a
                 class="page-link bi bi-chevron-double-left"
-                th:href="@{/board?page=} + ${beginPage - 1}"
+                th:href="@{/posts?page=} + ${beginPage - 1}"
               ></a>
             </li>
             <li
@@ -90,7 +82,7 @@
             >
               <a
                 class="page-link"
-                th:href="@{/board?page=} + ${i}"
+                th:href="@{/posts?page=} + ${i}"
                 th:text="${i}"
                 >1</a
               >
@@ -98,26 +90,28 @@
             <li class="page-item" th:hidden="${endPage == totalPages}">
               <a
                 class="page-link bi bi-chevron-double-right"
-                th:href="@{/board?page=} + ${endPage + 1}"
+                th:href="@{/posts?page=} + ${endPage + 1}"
               ></a>
             </li>
           </ul>
         </nav>
 
-        <div
+        <a
           class="page-arrow prev"
           id="prevPage"
           th:hidden="${currentPage == 1}"
+          th:href="@{/posts?page=} + ${currentPage - 1}"
         >
-          <a
-            class="bi bi-chevron-left"
-            th:href="@{/board?page=} + ${currentPage - 1}"
-          ></a>
-        </div>
+          <span class="bi bi-chevron-left"></span>
+        </a>
 
         <div class="row row-cols-lg-5 g-4">
           <div class="col" th:each="bean : ${boardList}">
-            <div class="card h-100">
+            <div
+              role="button"
+              class="card h-100"
+              th:onclick="'location.href=\'/posts/'+${bean.postId}+'\''"
+            >
               <img
                 th:src="@{${bean.image}}"
                 class="card-img-top"
@@ -138,16 +132,14 @@
           </div>
         </div>
 
-        <div
+        <a
           class="page-arrow next"
           id="nextPage"
           th:hidden="${currentPage == totalPages}"
+          th:href="@{/posts?page=} + ${currentPage + 1}"
         >
-          <a
-            class="bi bi-chevron-right"
-            th:href="@{/board?page=} + ${currentPage + 1}"
-          ></a>
-        </div>
+          <span class="bi bi-chevron-right"></span>
+        </a>
       </div>
     </div>
   </body>
