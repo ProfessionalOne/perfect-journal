@@ -15,10 +15,10 @@
   </select>
 
   <!-- 게시글 등록 -->
-  <update id="insertOneBoard" parameterType="boardBean">
+  <insert id="insertOneBoard" parameterType="boardBean">
     INSERT INTO posts (user_id, title, image, content)
     VALUES (#{userId}, #{title}, #{image}, #{content})
-  </update>
+  </insert>
 
   <!-- 게시글 상세 조회 -->
   <select id="selectOneBoard" parameterType="int" resultType="boardBean">
@@ -34,7 +34,7 @@
   <update id="updatetOneBoard" parameterType="boardBean">
     UPDATE posts
     SET title = #{title}, image = #{image}, content = #{content}, updated_at = NOW()
-    WHERE post_id = #{val}
+    WHERE post_id = #{postId}
   </update>
 
   <!-- 게시글 삭제 -->

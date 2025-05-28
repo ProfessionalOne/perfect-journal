@@ -55,7 +55,7 @@ public class BoardService {
 		}
 	}
 
-	public void setBoardList(BoardVo bean) {
+	public void updateBoardList(BoardVo bean) {
 		try(
 				SqlSession session=sqlSessionFactory.openSession();
 				){

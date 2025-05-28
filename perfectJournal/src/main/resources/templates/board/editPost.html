@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>감사일기 - 게시글 작성</title>
+    <title>감사일기 - 게시글 수정</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -237,14 +237,15 @@
       </a>
 
       <div class="post-form-container">
-        <h1 class="form-title">새 감사일기 작성</h1>
+        <h1 class="form-title">감사일기 수정</h1>
 
         <form
           id="postForm"
           method="post"
-          th:action="@{/posts/create}"
+          th:action="@{'/posts/' + ${bean.postId}+'/edit'}"
           enctype="multipart/form-data"
         >
+          <input type="hidden" name="_method" value="put" />
           <div class="mb-4">
             <label for="postTitle" class="form-label">제목</label>
             <input
@@ -252,7 +253,7 @@
               type="text"
               class="form-control"
               id="postTitle"
-              placeholder="제목을 입력해주세요"
+              th:value="${bean.title}"
               required
             />
           </div>
@@ -264,12 +265,14 @@
                 <i class="bi bi-image"></i>
                 <span>이미지를 업로드해주세요</span>
               </div>
+
               <img
-                src=""
+                th:src="${bean.image}"
                 alt="썸네일 미리보기"
                 class="thumbnail-preview"
                 id="thumbnailPreview"
               />
+
               <input
                 name="file"
                 type="file"
@@ -287,7 +290,7 @@
               class="form-control content-editor"
               id="postContent"
               rows="10"
-              placeholder="오늘 감사했던 일을 작성해주세요..."
+              th:text="${bean.content}"
               required
             ></textarea>
           </div>
@@ -296,7 +299,7 @@
             <button type="button" class="btn btn-cancel" id="cancelButton">
               취소하기
             </button>
-            <button type="submit" class="btn btn-submit">등록하기</button>
+            <button type="submit" class="btn btn-submit">수정하기</button>
           </div>
         </form>
       </div>
@@ -305,28 +308,51 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       // 썸네일 이미지 미리보기
-      document
-        .getElementById("thumbnailInput")
-        .addEventListener("change", function (e) {
-          const file = e.target.files[0];
+      const thumbnailImage = document.getElementById("thumbnailPreview");
+      const preview = document.getElementById("thumbnailPreview");
+      const placeholder = document.getElementById("thumbnailPlaceholder");
 
-          if (file) {
-            const reader = new FileReader();
+      if (thumbnailImage.getAttribute("src") == "") {
+        preview.style.display = "none";
+        placeholder.style.display = "block";
 
-            reader.onload = function (e) {
-              const preview = document.getElementById("thumbnailPreview");
-              const placeholder = document.getElementById(
-                "thumbnailPlaceholder"
-              );
+        document
+          .getElementById("thumbnailInput")
+          .addEventListener("change", function (e) {
+            const file = e.target.files[0];
 
-              preview.src = e.target.result;
-              preview.style.display = "block";
-              placeholder.style.display = "none";
-            };
+            if (file) {
+              const reader = new FileReader();
 
-            reader.readAsDataURL(file);
-          }
-        });
+              reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = "block";
+                placeholder.style.display = "none";
+              };
+
+              reader.readAsDataURL(file);
+            }
+          });
+      } else {
+        preview.style.display = "block";
+        placeholder.style.display = "none";
+
+        document
+          .getElementById("thumbnailInput")
+          .addEventListener("change", function (e) {
+            const file = e.target.files[0];
+
+            if (file) {
+              const reader = new FileReader();
+
+              reader.onload = function (e) {
+                preview.src = e.target.result;
+              };
+
+              reader.readAsDataURL(file);
+            }
+          });
+      }
 
       // 썸네일 컨테이너 클릭 시 파일 선택 다이얼로그 열기
       document
@@ -414,41 +440,6 @@
         .addEventListener("click", function () {
           alert("로그인 페이지로 이동합니다.");
         });
-    </script>
-    <script>
-      (function () {
-        function c() {
-          var b = a.contentDocument || a.contentWindow.document;
-          if (b) {
-            var d = b.createElement("script");
-            d.innerHTML =
-              "window.__CF$cv$params={r:'9461cc9307a63296',t:'MTc0ODMwOTk3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
-            b.getElementsByTagName("head")[0].appendChild(d);
-          }
-        }
-        if (document.body) {
-          var a = document.createElement("iframe");
-          a.height = 1;
-          a.width = 1;
-          a.style.position = "absolute";
-          a.style.top = 0;
-          a.style.left = 0;
-          a.style.border = "none";
-          a.style.visibility = "hidden";
-          document.body.appendChild(a);
-          if ("loading" !== document.readyState) c();
-          else if (window.addEventListener)
-            document.addEventListener("DOMContentLoaded", c);
-          else {
-            var e = document.onreadystatechange || function () {};
-            document.onreadystatechange = function (b) {
-              e(b);
-              "loading" !== document.readyState &&
-                ((document.onreadystatechange = e), c());
-            };
-          }
-        }
-      })();
     </script>
   </body>
 </html>

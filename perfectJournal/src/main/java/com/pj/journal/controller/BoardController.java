@@ -35,16 +35,16 @@ public class BoardController {
 	}
 
 	@GetMapping("/posts/{postId}")
-	public String detaill(@PathVariable int postId, Model model) {
+	public String detail(@PathVariable int postId, Model model) {
 		model.addAttribute("bean", boardService.getBoardList(postId));
 		return "board/detail";
 	}
-	
+
 	@GetMapping("/posts/create")
-	public String addBoardList(){
+	public String addBoardList() {
 		return "board/createPost";
 	}
-	
+
 	@PostMapping("/posts/create")
 	public String addBoardList(@RequestParam("file") MultipartFile file, @ModelAttribute BoardVo bean) {
 
@@ -63,17 +63,46 @@ public class BoardController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 		}
 		bean.setUserId(2);
 		boardService.addBoardList(bean);
 		return "redirect:/posts";
 	}
 	
-	@PutMapping("/posts/{postId}")
-	public String edit(@PathVariable int postId, @ModelAttribute BoardVo bean) {
-		boardService.setBoardList(bean);
-		return "redirect:/posts/{postId}";
+	@GetMapping("/posts/{postId}/edit")
+	public String editPost(@PathVariable int postId, Model model) {
+		BoardVo post = boardService.getBoardList(postId);
+	    model.addAttribute("bean", post);
+		return "board/editPost";
 	}
-	
+
+	@PutMapping("/posts/{postId}/edit")
+	public String editPost(@PathVariable int postId, @RequestParam("file") MultipartFile file,
+			@ModelAttribute BoardVo bean) {
+		if (!file.isEmpty()) {
+			try {
+				String originalFilename = file.getOriginalFilename();
+				String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+				String uuidFileName = UUID.randomUUID().toString() + ext;
+
+				String uploadPath = new File("src/main/resources/static/images").getAbsolutePath();
+				File saveFile = new File(uploadPath, uuidFileName);
+				file.transferTo(saveFile);
+
+				bean.setImage("/images/" + uuidFileName);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else {
+		        String existingImage = boardService.getBoardList(postId).getImage();
+		        bean.setImage(existingImage);
+		    }
+		
+		bean.setPostId(postId);
+		boardService.updateBoardList(bean);
+		return "redirect:/posts/"+postId;
+	}
+
 }
