@@ -16,13 +16,18 @@
 
   <!-- 게시글 등록 -->
   <update id="insertOneBoard" parameterType="boardBean">
-    INSERT INTO posts (title, image, content)
-    VALUES (#{title}, #{image}, #{content})
+    INSERT INTO posts (user_id, title, image, content)
+    VALUES (#{userId}, #{title}, #{image}, #{content})
   </update>
 
   <!-- 게시글 상세 조회 -->
   <select id="selectOneBoard" parameterType="int" resultType="boardBean">
-    SELECT * FROM posts WHERE post_id = #{val}
+   SELECT p.post_id AS postId, u.user_id AS userId, p.views, p.title, p.content, 
+           p.image, p.created_at AS createdAt, p.updated_at AS updatedAt, 
+           p.is_locked AS isLocked, u.nickname
+    FROM posts p
+    JOIN users u ON p.user_id = u.user_id
+    WHERE p.post_id = #{val}
   </select>
 
   <!-- 게시글 수정 -->
