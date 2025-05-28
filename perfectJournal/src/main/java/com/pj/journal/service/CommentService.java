@@ -1,18 +1,20 @@
 package com.pj.journal.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 
+import com.pj.journal.model.board.BoardDao;
 import com.pj.journal.model.comment.CommentDao;
 import com.pj.journal.model.comment.CommentVo;
 
 @Service
+@Transactional
 public class CommentService {
 
     @Autowired
@@ -20,29 +22,36 @@ public class CommentService {
 
     private CommentDao commentDao;
 
-    public void getCommentList(int postId, Model model) {
+    public List<CommentVo> getCommentList(int postId) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            List<CommentVo> commentList = session.getMapper(CommentDao.class).selectAllCommentnReply(postId);
-            model.addAttribute("commentNReplyList", commentList);
+			return session.getMapper(CommentDao.class).selectAllCommentnReply(postId);
+		}
         }
-    }
 
-    @Transactional
+
     public void addComment(CommentVo bean) {
         commentDao.insertOneComment(bean);
     }
 
-    @Transactional
+
     public void addReply(CommentVo bean) {
         commentDao.insertOneReply(bean);
     }
 
-    public void editCommentnReply(CommentVo bean) {
-        commentDao.updateOneCommentnReply(bean);
+    public int editCommentnReply(CommentVo bean) {
+        int count = commentDao.updateOneCommentnReply(bean);
+        if (count == 0) {
+            throw new NoSuchElementException("해당 댓글이 없거나 수정 권한이 없습니다.");
+        }
+        return count;
     }
 
-    public void deleteCommentnReply(CommentVo bean) {
-        commentDao.deleteOneCommentnReply(bean);
+    public int deleteCommentnReply(CommentVo bean) {
+        int count = commentDao.deleteOneCommentnReply(bean);
+        if (count == 0) {
+            throw new NoSuchElementException("해당 댓글이 없거나 삭제 권한이 없습니다.");
+        }
+        return count;
     }
 }
 
