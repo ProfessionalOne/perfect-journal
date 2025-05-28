@@ -14,6 +14,11 @@
     />
     <link
       rel="stylesheet"
+      th:href="@{/css/common.css}"
+      href="../static/css/common.css"
+    />
+    <link
+      rel="stylesheet"
       th:href="@{/css/home.css}"
       href="../static/css/home.css"
     />
@@ -68,7 +73,10 @@
         </div>
 
         <div class="board-controls-right">
-          <button class="btn btn-new-post">
+          <button
+            class="btn btn-new-post"
+            th:onclick="'location.href=\'/posts/create\''"
+          >
             <i class="bi bi-pencil-fill me-1"></i> 새 글 작성
           </button>
         </div>

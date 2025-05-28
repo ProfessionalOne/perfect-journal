@@ -17,6 +17,7 @@ public class CommentService {
 
     @Autowired
     SqlSessionFactory sqlSessionFactory;
+
     private CommentDao commentDao;
 
     public void getCommentList(int postId, Model model) {

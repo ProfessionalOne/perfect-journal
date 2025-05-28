@@ -56,8 +56,8 @@ public class BoardController {
 
 	@PostMapping("/posts/create")
 	public String addBoardList(@RequestParam("file") MultipartFile file, @ModelAttribute BoardVo bean) {
-
-		if (!file.isEmpty()) {
+		
+		if (!file.isEmpty() && file.getSize() <= 5242880) {
 			try {
 				String originalFilename = file.getOriginalFilename();
 				String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
