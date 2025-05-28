@@ -11,8 +11,6 @@ import com.pj.journal.model.member.*;
 @Service
 public class MemberService {
 
-	@Autowired
-	SqlSessionFactory sqlSessionFactory;
-	
+
 }
 

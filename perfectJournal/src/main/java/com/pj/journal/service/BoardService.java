@@ -58,6 +58,14 @@ public class BoardService {
 			session.getMapper(BoardDao.class).insertOneBoard(bean);
 		}
 	}
+
+	public void updateBoardList(BoardVo bean) {
+		try(
+				SqlSession session=sqlSessionFactory.openSession();
+				){
+			session.getMapper(BoardDao.class).updatetOneBoard(bean);
+		}
+	}
 	
 
 }

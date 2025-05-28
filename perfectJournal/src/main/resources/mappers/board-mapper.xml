@@ -14,11 +14,11 @@
 		ORDER BY p.created_at DESC
 	</select>
 
-	<!-- 게시글 등록 -->
-	<update id="insertOneBoard" parameterType="boardBean">
-		INSERT INTO posts (user_id, title, image, content)
-		VALUES (#{userId}, #{title}, #{image}, #{content})
-	</update>
+	  <!-- 게시글 등록 -->
+  <insert id="insertOneBoard" parameterType="boardBean">
+    INSERT INTO posts (user_id, title, image, content)
+    VALUES (#{userId}, #{title}, #{image}, #{content})
+  </insert>
 
 	<!-- 게시글 상세 조회 -->
 	<select id="selectOneBoard" parameterType="int" resultType="boardBean">
@@ -32,12 +32,11 @@
 	</select>
 
 	<!-- 게시글 수정 -->
-	<update id="updatetOneBoard" parameterType="boardBean">
-		UPDATE posts
-		SET title = #{title}, image = #{image}, content = #{content}, updated_at
-		= NOW()
-		WHERE post_id = #{val}
-	</update>
+  <update id="updatetOneBoard" parameterType="boardBean">
+    UPDATE posts
+    SET title = #{title}, image = #{image}, content = #{content}, updated_at = NOW()
+    WHERE post_id = #{postId}
+  </update>
 
 	<!-- 게시글 삭제 -->
 	<delete id="deleteOneBoard" parameterType="Integer">
@@ -82,6 +81,6 @@
 				u.nickname LIKE CONCAT('%', #{keyword}, '%')
 			</if>
 		</where>
-	</select>
+  </select>
 
 </mapper>
