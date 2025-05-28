@@ -14,11 +14,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.pj.journal.model.board.BoardDao;
 import com.pj.journal.model.board.BoardVo;
 import com.pj.journal.service.BoardService;
 
 @Controller
 public class BoardController {
+	@Autowired
+    private BoardDao boardDao;
+	
 	@Autowired
 	BoardService boardService;
 
@@ -68,4 +72,10 @@ public class BoardController {
 		boardService.addBoardList(bean);
 		return "redirect:/posts";
 	}
+	@PostMapping("/posts/delete")
+	public String deletePost(@RequestParam("postId") int postId) {
+	    boardDao.deleteOneBoard(postId);
+	    return "redirect:/posts";
+	}
+
 }
