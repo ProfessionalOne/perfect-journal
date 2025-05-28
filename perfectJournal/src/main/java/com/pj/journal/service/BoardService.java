@@ -20,15 +20,16 @@ public class BoardService {
 		this.sqlSessionFactory = sqlSessionFactory;
 	}
 
-	public void getBoardList(Model model, int page) {
+	public void getBoardList(Model model, int page, String sort, String field, String keyword) {
         int pageSize = 10;
         int offset = (page - 1) * pageSize;
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
             BoardDao boardDao = session.getMapper(BoardDao.class);
 
-            List<BoardVo> boardList = boardDao.selectByPage(offset, pageSize);
-            int totalCount = boardDao.getTotalCount();
+            List<BoardVo> boardList=boardList=boardDao.selectBySearch(offset, pageSize, sort, field, keyword);
+            	
+            int totalCount = boardDao.getTotalCount(field, keyword);
             int totalPages = (int) Math.ceil((double) totalCount / pageSize);
             int beginPage = pageSize * ((page - 1) / pageSize) + 1;
             int endPage = beginPage + (pageSize - 1);
@@ -41,6 +42,9 @@ public class BoardService {
             model.addAttribute("beginPage", beginPage);
             model.addAttribute("endPage", endPage);
             model.addAttribute("totalPages", totalPages);
+            model.addAttribute("currentSort", sort);
+            model.addAttribute("searchField", field);
+            model.addAttribute("keyword", keyword);
         }
     }
 	public BoardVo getBoardList(int postId) {

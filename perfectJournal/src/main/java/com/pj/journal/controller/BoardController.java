@@ -28,8 +28,13 @@ public class BoardController {
 	}
 
 	@GetMapping("/posts")
-	public String boardList(@RequestParam(defaultValue = "1") int page, Model model) {
-		boardService.getBoardList(model, page);
+	public String boardList(@RequestParam(defaultValue = "1") int page
+			, @RequestParam(defaultValue = "latest") String sort
+			, @RequestParam(required = false) String searchField
+			, @RequestParam(required = false) String keyword
+			, Model model) {
+		
+		boardService.getBoardList(model, page, sort, searchField, keyword);
 		return "board/home";
 	}
 
