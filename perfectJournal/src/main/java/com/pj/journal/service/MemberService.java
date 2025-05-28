@@ -14,13 +14,5 @@ public class MemberService {
 	@Autowired
 	SqlSessionFactory sqlSessionFactory;
 	
-	//로그인 기능으로 만들려고 햇는데 생각해보니 int 어떻게 할지 모르겠어서 일단 0으로 해두고 남길게요
-	public void getMember(Model model) {
-		try(
-				SqlSession session=sqlSessionFactory.openSession();
-				){
-			model.addAttribute("user", session.getMapper(LoginDao.class).selectOneMember(0));
-		}
-	}
 }
 

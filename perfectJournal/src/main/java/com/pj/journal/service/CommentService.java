@@ -1,5 +1,7 @@
 package com.pj.journal.service;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,46 +15,34 @@ import com.pj.journal.model.comment.CommentVo;
 @Service
 public class CommentService {
 
-	@Autowired
-	SqlSessionFactory sqlSessionFactory;
-	
-	public void getCommentList(Model model) {
-		try(
-				SqlSession session=sqlSessionFactory.openSession();
-				){
-			model.addAttribute("commentNReplyList", session.getMapper(CommentDao.class).selectAllCommentnReply());
-		}
-	}
-	@Transactional
-	public void addComment(CommentVo bean) {
-		try(
-				SqlSession session=sqlSessionFactory.openSession();
-				){
-			session.getMapper(CommentDao.class).insertOneComment(bean);
-		}
-	}
-	@Transactional
-	public void addReply(CommentVo bean) {
-		try(
-				SqlSession session=sqlSessionFactory.openSession();
-				){
-			session.getMapper(CommentDao.class).insertOneReply(bean);
-		}
-	}
-	public void editCommentnReply(CommentVo bean) {
-		try(
-				SqlSession session=sqlSessionFactory.openSession();
-				){
-			session.getMapper(CommentDao.class).updateOneCommentnReply(bean);
-		}
-	}
-	public void deleteCommentnReply(int CommentId) {
-		try(
-				SqlSession session=sqlSessionFactory.openSession();
-				){
-			session.getMapper(CommentDao.class).deleteOneCommentnReply(CommentId);
-		}
-	}
+    @Autowired
+    SqlSessionFactory sqlSessionFactory;
+    private CommentDao commentDao;
+
+    public void getCommentList(int postId, Model model) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            List<CommentVo> commentList = session.getMapper(CommentDao.class).selectAllCommentnReply(postId);
+            model.addAttribute("commentNReplyList", commentList);
+        }
+    }
+
+    @Transactional
+    public void addComment(CommentVo bean) {
+        commentDao.insertOneComment(bean);
+    }
+
+    @Transactional
+    public void addReply(CommentVo bean) {
+        commentDao.insertOneReply(bean);
+    }
+
+    public void editCommentnReply(CommentVo bean) {
+        commentDao.updateOneCommentnReply(bean);
+    }
+
+    public void deleteCommentnReply(CommentVo bean) {
+        commentDao.deleteOneCommentnReply(bean);
+    }
 }
 
 

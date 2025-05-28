@@ -5,8 +5,10 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="com.pj.journal.model.comment.CommentVo" alias="CommentBean" />
+		<typeAlias type="com.pj.journal.model.member.MemberVo" alias="MemberBean" />
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/Comment-mapper.xml" />
+		<mapper resource="mappers/Member-mapper.xml" />
 	</mappers>
 </configuration>

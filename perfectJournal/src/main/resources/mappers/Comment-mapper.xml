@@ -1,24 +1,52 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pj.journal.model.comment.CommentDao">
-	<select id="selectAllCommentnReply" resultType="CommentBean">
-		select * from Comments order by #{ord} asc, #{level} desc
+	<select id="selectAllCommentnReply" parameterType="int"
+		resultType="CommentBean">
+		SELECT *
+		FROM Comments
+		WHERE post_id = #{postId}
+		ORDER BY comment_id ASC, ord ASC, level ASC
 	</select>
 	<insert id="insertOneComment" parameterType="commentBean">
-    INSERT INTO Comments (comment_id, user_id, content, created_at, updated_at, nickname, ord)
-    VALUES (#{commentId}, #{userId}, #{content}, #{createdAt}, #{updatedAt}, #{nickname}, MAX(ord)+1) where post_id=#{post_id}
-</insert>
+		INSERT INTO Comments (user_id, content, created_at,
+		updated_at, nickname)
+		VALUES (#{userId}, #{content}, now(), now(), #{nickname})
+		where post_id=#{post_id}
+	</insert>
 	<insert id="insertOneReply" parameterType="commentBean">
-    INSERT INTO Comments (comment_id, user_id, content, created_at, updated_at, nickname, ord, level)
-    VALUES (#{commentId}, #{userId}, #{content}, #{createdAt}, #{updatedAt}, #{nickname}, #{ord}, 1) where (post_id=#{post_id}, comment_id=#{comment_id})
-</insert>
+		INSERT INTO Comments (
+		post_id,
+		user_id,
+		content,
+		created_at,
+		updated_at,
+		nickname,
+		ord,
+		level
+		)
+		SELECT
+		#{postId},
+		#{userId},
+		#{content},
+		NOW(),
+		NOW(),
+		#{nickname},
+		IFNULL(MAX(ord), 0) + 1,
+		1
+		FROM Comments
+		WHERE post_id = #{postId}
+		FOR UPDATE
+	</insert>
 	<update id="updateOneCommentnReply" parameterType="commentBean">
-	UPDATE Comments set (content=#{content}, updatedAt=now()) where (post_id=#{post_id}, comment_id=#{comment_id}, ord=#{ord}, level=#{level})
+		UPDATE Comments SET (content=#{content}, updatedAt=now()) WHERE
+		post_id=#{post_id} AND comment_id=#{comment_id} AND ord=#{ord} AND
+		level=#{level} AND user_id=#{userId})
 	</update>
 	<update id="deleteOneCommentnReply" parameterType="commentBean">
-	update Comments set is_deleted='true' where (post_id=#{post_id}, comment_id=#{comment_id}, ord=#{ord}, level=#{level})
+		UPDATE Comments SET is_deleted='true' WHERE post_id=#{post_id} AND
+		comment_id=#{comment_id} AND ord=#{ord} AND level=#{level} AND
+		user_id=#{userId})
 	</update>
-	
+
 </mapper>
