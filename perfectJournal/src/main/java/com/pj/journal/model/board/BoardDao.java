@@ -2,8 +2,10 @@ package com.pj.journal.model.board;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface BoardDao {
 	public List<BoardVo> selectAllBoard();
 
@@ -15,7 +17,14 @@ public interface BoardDao {
 
 	int deleteOneBoard(int pk);
 
-	List<BoardVo> selectByPage(@Param("offset") int offset, @Param("pageSize") int pageSize);
+	List<BoardVo> selectBySearch(@Param("offset") int offset
+			, @Param("pageSize") int pageSize
+			, @Param("sort") String sort
+			, @Param("searchField") String field
+			, @Param("keyword") String keyword);
 
-	int getTotalCount();
+	int getTotalCount(
+			@Param("searchField") String searchField
+			, @Param("keyword") String keyword
+			);
 }
