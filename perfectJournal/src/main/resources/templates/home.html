@@ -12,297 +12,17 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
     />
-    <style>
-      :root {
-        --apple-gray: #f5f5f7;
-        --apple-dark: #1d1d1f;
-        --apple-blue: #0071e3;
-      }
-
-      body {
-        font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont,
-          "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
-        background-color: var(--apple-gray);
-        color: var(--apple-dark);
-      }
-
-      .navbar {
-        background-color: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-        padding: 0.8rem 1rem;
-      }
-
-      .navbar-brand {
-        font-weight: 600;
-        font-size: 1.4rem;
-      }
-
-      .logo {
-        width: 30px;
-        height: 30px;
-        margin-right: 8px;
-      }
-
-      .btn-login {
-        background-color: var(--apple-blue);
-        color: white;
-        border-radius: 980px;
-        padding: 0.375rem 1.25rem;
-        font-size: 0.9rem;
-        font-weight: 500;
-        border: none;
-        transition: all 0.2s ease;
-      }
-
-      .btn-login:hover {
-        background-color: #0077ed;
-        transform: scale(1.02);
-      }
-
-      .container {
-        max-width: 1200px;
-        padding: 2rem 1rem;
-      }
-
-      .board-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
-      }
-
-      .board-controls-left {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-      }
-
-      .board-controls-right {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-      }
-
-      .btn-new-post {
-        background-color: var(--apple-blue);
-        color: white;
-        border-radius: 980px;
-        padding: 0.5rem 1.5rem;
-        font-weight: 500;
-        border: none;
-        transition: all 0.2s ease;
-      }
-
-      .btn-new-post:hover {
-        background-color: #0077ed;
-        transform: scale(1.02);
-      }
-
-      .card {
-        border-radius: 18px;
-        border: none;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s ease;
-        overflow: hidden;
-        height: 100%;
-      }
-
-      .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-      }
-
-      .card-img-top {
-        height: 180px;
-        object-fit: cover;
-      }
-
-      .card-body {
-        padding: 1.5rem;
-      }
-
-      .card-title {
-        font-weight: 600;
-        font-size: 1.2rem;
-        margin-bottom: 0.5rem;
-      }
-
-      .card-text {
-        color: #555;
-        font-size: 0.95rem;
-        margin-bottom: 1rem;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      .card-footer {
-        background-color: white;
-        border-top: 1px solid rgba(0, 0, 0, 0.05);
-        padding: 1rem 1.5rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .card-author {
-        font-weight: 500;
-        font-size: 0.9rem;
-      }
-
-      .card-date {
-        color: #777;
-        font-size: 0.85rem;
-      }
-
-      .pagination {
-        margin-bottom: 1.5rem;
-        justify-content: center;
-      }
-
-      .page-item .page-link {
-        border: none;
-        color: var(--apple-dark);
-        margin: 0 5px;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 500;
-      }
-
-      .page-item.active .page-link {
-        background-color: var(--apple-blue);
-        color: white;
-      }
-
-      .page-arrow {
-        background: white;
-        border: none;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 10;
-        cursor: pointer;
-        transition: all 0.2s ease;
-      }
-
-      .page-arrow:hover {
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-        transform: translateY(-50%) scale(1.05);
-      }
-
-      .page-arrow.prev {
-        left: -25px;
-      }
-
-      .page-arrow.next {
-        right: -25px;
-      }
-
-      .page-arrow i {
-        font-size: 1.5rem;
-        color: var(--apple-dark);
-      }
-
-      .dropdown-sort .dropdown-menu {
-        border-radius: 15px;
-        border: none;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        padding: 0.5rem;
-      }
-
-      .dropdown-sort .dropdown-item {
-        border-radius: 10px;
-        padding: 0.5rem 1rem;
-      }
-
-      .search-form {
-        position: relative;
-      }
-
-      .search-input {
-        border-radius: 980px;
-        padding-left: 2.5rem;
-        border: none;
-        background-color: rgba(0, 0, 0, 0.05);
-        transition: all 0.2s ease;
-      }
-
-      .search-input:focus {
-        background-color: white;
-        box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.2);
-      }
-
-      .search-icon {
-        position: absolute;
-        left: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #777;
-      }
-
-      .board-container {
-        position: relative;
-        padding: 0 30px;
-      }
-
-      @media (max-width: 768px) {
-        .board-header {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .board-controls-left,
-        .board-controls-right {
-          margin-top: 1rem;
-          width: 100%;
-        }
-
-        .page-arrow {
-          width: 40px;
-          height: 40px;
-        }
-
-        .page-arrow.prev {
-          left: -10px;
-        }
-
-        .page-arrow.next {
-          right: -10px;
-        }
-      }
-    </style>
+    <link
+      rel="stylesheet"
+      th:href="@{/css/home.css}"
+      href="../static/css/home.css"
+    />
   </head>
   <body>
     <!-- 네비게이션 바 -->
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
       <div class="container-fluid">
         <a class="navbar-brand d-flex align-items-center" href="#">
-          <svg
-            class="logo"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M18.7101 19.5C17.8801 20.74 17.0001 21.95 15.6601 21.97C14.3201 22 13.8901 21.18 12.3701 21.18C10.8501 21.18 10.3701 21.95 9.10005 22C7.79005 22.05 6.80005 20.68 5.96005 19.47C4.25005 17 2.94005 12.45 4.70005 9.39C5.57005 7.87 7.13005 6.91 8.82005 6.88C10.1001 6.86 11.3201 7.75 12.1101 7.75C12.8901 7.75 14.3701 6.68 15.9201 6.84C16.5701 6.87 18.3901 7.1 19.5601 8.82C19.4701 8.88 17.3901 10.1 17.4101 12.63C17.4401 15.65 20.0601 16.66 20.0901 16.67C20.0601 16.74 19.6701 18.11 18.7101 19.5ZM13.0001 3.5C13.7301 2.67 14.9401 2.04 15.9401 2C16.0701 3.17 15.6001 4.35 14.9001 5.19C14.2101 6.04 13.0701 6.7 11.9501 6.61C11.8001 5.46 12.2701 4.35 13.0001 3.5Z"
-              fill="black"
-            />
-          </svg>
           감사일기
         </a>
         <button class="btn btn-login ms-auto">로그인</button>
@@ -331,9 +51,6 @@
                   >오래된순</a
                 >
               </li>
-              <li>
-                <a class="dropdown-item" href="#" data-sort="popular">인기순</a>
-              </li>
             </ul>
           </div>
 
@@ -355,49 +72,50 @@
         </div>
       </div>
 
+      <!-- 게시판  -->
       <div class="board-container">
-        <!-- 페이지네이션을 카드 뭉치 위로 이동 -->
+        <!-- 페이지네이션 -->
         <nav aria-label="Page navigation" class="mt-4">
           <ul class="pagination justify-content-center">
-            <li
-              class="page-item"
-              th:classappend="${currentPage == 1} ? 'disabled'"
-            >
+            <li class="page-item" th:hidden="${beginPage == 1}">
               <a
-                class="page-link"
-                th:href="@{'/board?page=' + (${currentPage} - 1)}"
-                >Previous</a
-              >
+                class="page-link bi bi-chevron-double-left"
+                th:href="@{/board?page=} + ${beginPage - 1}"
+              ></a>
             </li>
             <li
               class="page-item"
-              th:each="i : ${#numbers.sequence(1, totalPages)}"
+              th:each="i : ${#numbers.sequence(beginPage, endPage)}"
               th:classappend="${i == currentPage} ? 'active'"
             >
               <a
                 class="page-link"
-                th:href="@{'/board?page=' + ${i}}"
+                th:href="@{/board?page=} + ${i}"
                 th:text="${i}"
                 >1</a
               >
             </li>
-            <li
-              class="page-item"
-              th:classappend="${currentPage == totalPages} ? 'disabled'"
-            >
+            <li class="page-item" th:hidden="${endPage == totalPages}">
               <a
-                class="page-link"
-                th:href="@{'/board?page=' + (${currentPage} + 1)}"
-                >Next</a
-              >
+                class="page-link bi bi-chevron-double-right"
+                th:href="@{/board?page=} + ${endPage + 1}"
+              ></a>
             </li>
           </ul>
         </nav>
-        <button class="page-arrow prev" id="prevPage">
-          <i class="bi bi-chevron-left"></i>
-        </button>
 
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div
+          class="page-arrow prev"
+          id="prevPage"
+          th:hidden="${currentPage == 1}"
+        >
+          <a
+            class="bi bi-chevron-left"
+            th:href="@{/board?page=} + ${currentPage - 1}"
+          ></a>
+        </div>
+
+        <div class="row row-cols-lg-5 g-4">
           <div class="col" th:each="bean : ${boardList}">
             <div class="card h-100">
               <img
@@ -411,197 +129,26 @@
               </div>
               <div class="card-footer">
                 <span class="card-author" th:text="${bean.nickname}"></span>
-                <span class="card-date" th:text="${bean.createdAt}"></span>
+                <span
+                  class="card-date"
+                  th:text="${#dates.format(bean.createdAt, 'yyyy/MM/dd')}"
+                ></span>
               </div>
             </div>
           </div>
         </div>
 
-        <button class="page-arrow next" id="nextPage">
-          <i class="bi bi-chevron-right"></i>
-        </button>
+        <div
+          class="page-arrow next"
+          id="nextPage"
+          th:hidden="${currentPage == totalPages}"
+        >
+          <a
+            class="bi bi-chevron-right"
+            th:href="@{/board?page=} + ${currentPage + 1}"
+          ></a>
+        </div>
       </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      // 샘플 데이터
-      const posts = [
-        {
-          id: 1,
-          title: "오늘의 감사한 순간",
-          content:
-            "오늘 아침에 일어나서 창문을 열었더니 맑은 하늘이 보였습니다. 그 순간 감사함을 느꼈고, 하루를 긍정적으로 시작할 수 있었습니다. 작은 것에 감사하는 마음을 가지니 하루가 더 풍요로워지는 것 같습니다.",
-          author: "김감사",
-          date: "2023-11-01",
-          thumbnail: "https://source.unsplash.com/random/300x200?sky,1",
-        },
-      ];
-
-      // 페이지네이션 변수
-      let currentPage = 1;
-      const postsPerPage = 9;
-      const totalPages = Math.ceil(posts.length / postsPerPage);
-
-      // 게시글 렌더링 함수
-      function renderPosts(page) {
-        const postContainer = document.getElementById("postContainer");
-        postContainer.innerHTML = "";
-
-        const startIndex = (page - 1) * postsPerPage;
-        const endIndex = Math.min(startIndex + postsPerPage, posts.length);
-
-        for (let i = startIndex; i < endIndex; i++) {
-          const post = posts[i];
-          const postCard = document.createElement("div");
-          postCard.className = "col";
-          postCard.innerHTML = `
-
-                `;
-          postContainer.appendChild(postCard);
-        }
-      }
-
-      // 페이지네이션 렌더링 함수
-      function renderPagination() {
-        const pagination = document.getElementById("pagination");
-        pagination.innerHTML = "";
-
-        for (let i = 1; i <= totalPages; i++) {
-          const pageItem = document.createElement("li");
-          pageItem.className = `page-item ${i === currentPage ? "active" : ""}`;
-          pageItem.innerHTML = `
-                    <button class="page-link" data-page="${i}">${i}</button>
-                `;
-          pagination.appendChild(pageItem);
-        }
-
-        // 페이지 버튼 이벤트 리스너
-        const pageLinks = document.querySelectorAll(".page-link");
-        pageLinks.forEach((link) => {
-          link.addEventListener("click", function () {
-            currentPage = parseInt(this.dataset.page);
-            renderPosts(currentPage);
-            renderPagination();
-          });
-        });
-      }
-
-      // 이전/다음 페이지 버튼 이벤트
-      document
-        .getElementById("prevPage")
-        .addEventListener("click", function () {
-          if (currentPage > 1) {
-            currentPage--;
-            renderPosts(currentPage);
-            renderPagination();
-          }
-        });
-
-      document
-        .getElementById("nextPage")
-        .addEventListener("click", function () {
-          if (currentPage < totalPages) {
-            currentPage++;
-            renderPosts(currentPage);
-            renderPagination();
-          }
-        });
-
-      // 정렬 기능
-      document.querySelectorAll(".dropdown-item").forEach((item) => {
-        item.addEventListener("click", function (e) {
-          e.preventDefault();
-          const sortType = this.dataset.sort;
-
-          if (sortType === "latest") {
-            posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-          } else if (sortType === "oldest") {
-            posts.sort((a, b) => new Date(a.date) - new Date(b.date));
-          }
-
-          currentPage = 1;
-          renderPosts(currentPage);
-          renderPagination();
-
-          document.getElementById("sortDropdown").textContent =
-            this.textContent;
-        });
-      });
-
-      // 검색 기능
-      document
-        .querySelector(".search-form")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-          const searchTerm = this.querySelector("input").value.toLowerCase();
-
-          const filteredPosts = posts.filter(
-            (post) =>
-              post.title.toLowerCase().includes(searchTerm) ||
-              post.content.toLowerCase().includes(searchTerm) ||
-              post.author.toLowerCase().includes(searchTerm)
-          );
-
-          // 여기서는 간단히 콘솔에 출력만 합니다
-          console.log("검색 결과:", filteredPosts);
-          alert(
-            `"${searchTerm}" 검색 결과: ${filteredPosts.length}개의 게시글을 찾았습니다.`
-          );
-        });
-
-      // 새 글 작성 버튼
-      document
-        .querySelector(".btn-new-post")
-        .addEventListener("click", function () {
-          alert("새 글 작성 페이지로 이동합니다.");
-        });
-
-      // 로그인 버튼
-      document
-        .querySelector(".btn-login")
-        .addEventListener("click", function () {
-          alert("로그인 페이지로 이동합니다.");
-        });
-
-      // 초기 렌더링
-      renderPosts(currentPage);
-      renderPagination();
-    </script>
-    <script>
-      (function () {
-        function c() {
-          var b = a.contentDocument || a.contentWindow.document;
-          if (b) {
-            var d = b.createElement("script");
-            d.innerHTML =
-              "window.__CF$cv$params={r:'9461be5ba7b430aa',t:'MTc0ODMwOTM5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
-            b.getElementsByTagName("head")[0].appendChild(d);
-          }
-        }
-        if (document.body) {
-          var a = document.createElement("iframe");
-          a.height = 1;
-          a.width = 1;
-          a.style.position = "absolute";
-          a.style.top = 0;
-          a.style.left = 0;
-          a.style.border = "none";
-          a.style.visibility = "hidden";
-          document.body.appendChild(a);
-          if ("loading" !== document.readyState) c();
-          else if (window.addEventListener)
-            document.addEventListener("DOMContentLoaded", c);
-          else {
-            var e = document.onreadystatechange || function () {};
-            document.onreadystatechange = function (b) {
-              e(b);
-              "loading" !== document.readyState &&
-                ((document.onreadystatechange = e), c());
-            };
-          }
-        }
-      })();
-    </script>
   </body>
 </html>

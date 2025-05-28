@@ -30,9 +30,16 @@ public class BoardService {
             List<BoardVo> boardList = boardDao.selectByPage(offset, pageSize);
             int totalCount = boardDao.getTotalCount();
             int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+            int beginPage = pageSize * ((page - 1) / pageSize) + 1;
+            int endPage = beginPage + (pageSize - 1);
+            if (endPage > totalPages) {
+            	endPage = totalPages;
+            }
 
             model.addAttribute("boardList", boardList);
             model.addAttribute("currentPage", page);
+            model.addAttribute("beginPage", beginPage);
+            model.addAttribute("endPage", endPage);
             model.addAttribute("totalPages", totalPages);
         }
     }
