@@ -2,6 +2,8 @@ package com.pj.journal.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.Principal;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.pj.journal.model.board.BoardDao;
 import com.pj.journal.model.board.BoardVo;
+import com.pj.journal.model.comment.CommentVo;
 import com.pj.journal.service.BoardService;
+import com.pj.journal.service.CommentService;
+
+import jakarta.servlet.http.HttpSession;
+
 
 @Controller
 public class BoardController {
@@ -25,6 +32,7 @@ public class BoardController {
 	
 	@Autowired
 	BoardService boardService;
+	private CommentService commentService;
 
 	@GetMapping("/")
 	public String redirectToBoard() {
@@ -38,9 +46,39 @@ public class BoardController {
 	}
 
 	@GetMapping("/posts/{postId}")
-	public String detaill(@PathVariable int postId, Model model) {
-		model.addAttribute("bean", boardService.getBoardList(postId));
-		return "board/detail";
+	public String detail(@PathVariable int postId, Model model) {
+		 BoardVo post = boardService.getBoardList(postId);
+	        model.addAttribute("post", post);
+	        
+	        List<CommentVo> comments = commentService.getCommentList(postId);
+	        model.addAttribute("commentNReplyList", comments);
+
+	        return "board/detail";
+	    }
+	@PostMapping("/posts/{postId}/comment")
+	public String postComment(
+	        @PathVariable int postId,
+	        @RequestParam(defaultValue = "0") int level,
+	        @RequestParam String content
+	        //,HttpSession session  // 로그인할때 spring security 사용하시나요? 
+	) {
+		
+	    CommentVo vo = new CommentVo();
+	    vo.setPostId(postId);
+	    //Integer userId = (Integer)session.getAttribute("userId");
+	    //vo.setUserId(userId);
+	    vo.setContent(content);
+
+	    if (level == 0) {
+	        // 새 댓글
+	        commentService.addComment(vo);
+	    } else {
+	        // 대댓글(이대로 하면 아마 오류생길거예요 내일 와서 수정할게요)
+	        commentService.addReply(vo);
+	        vo.setLevel(level);
+	    }
+
+	    return "redirect:/board/detail/" + postId;
 	}
 	
 	@GetMapping("/posts/create")
