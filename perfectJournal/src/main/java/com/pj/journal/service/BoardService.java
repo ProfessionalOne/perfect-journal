@@ -1,5 +1,7 @@
 package com.pj.journal.service;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Service;
@@ -18,14 +20,30 @@ public class BoardService {
 		this.sqlSessionFactory = sqlSessionFactory;
 	}
 
-	public void getBoardList(Model model) {
-		try (SqlSession session = sqlSessionFactory.openSession();) {
-			System.out.println(session.getMapper(BoardDao.class).selectAllBoard());
-			model.addAttribute("boardList", session.getMapper(BoardDao.class).selectAllBoard());
-//			model.addAttribute("userList",session.getMapper(null));
-		}
-	}
+	public void getBoardList(Model model, int page) {
+        int pageSize = 10;
+        int offset = (page - 1) * pageSize;
 
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            BoardDao boardDao = session.getMapper(BoardDao.class);
+
+            List<BoardVo> boardList = boardDao.selectByPage(offset, pageSize);
+            int totalCount = boardDao.getTotalCount();
+            int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+            int beginPage = pageSize * ((page - 1) / pageSize) + 1;
+            int endPage = beginPage + (pageSize - 1);
+            if (endPage > totalPages) {
+            	endPage = totalPages;
+            }
+
+            model.addAttribute("boardList", boardList);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("beginPage", beginPage);
+            model.addAttribute("endPage", endPage);
+            model.addAttribute("totalPages", totalPages);
+        }
+    }
+	
 	public void addBoardList(BoardVo bean) {
 		try (SqlSession session = sqlSessionFactory.openSession();) {
 			session.getMapper(BoardDao.class).insertOneBoard(bean);

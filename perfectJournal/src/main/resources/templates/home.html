@@ -1,11 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head>
-<body>
-    <h1>Hello Home</h1>
-</body>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>감사일기 게시판</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <link
+      rel="stylesheet"
+      th:href="@{/css/home.css}"
+      href="../static/css/home.css"
+    />
+  </head>
+  <body>
+    <!-- 네비게이션 바 -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+          감사일기
+        </a>
+        <button class="btn btn-login ms-auto">로그인</button>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="board-header">
+        <div class="board-controls-left">
+          <div class="dropdown dropdown-sort">
+            <button
+              class="btn btn-light dropdown-toggle"
+              type="button"
+              id="sortDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="bi bi-sort-down me-1"></i> 정렬
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+              <li>
+                <a class="dropdown-item" href="#" data-sort="latest">최신순</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" data-sort="oldest"
+                  >오래된순</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <form class="search-form d-flex ms-2">
+            <i class="bi bi-search search-icon"></i>
+            <input
+              class="form-control search-input"
+              type="search"
+              placeholder="검색"
+              aria-label="Search"
+            />
+          </form>
+        </div>
+
+        <div class="board-controls-right">
+          <button class="btn btn-new-post">
+            <i class="bi bi-pencil-fill me-1"></i> 새 글 작성
+          </button>
+        </div>
+      </div>
+
+      <!-- 게시판  -->
+      <div class="board-container">
+        <!-- 페이지네이션 -->
+        <nav aria-label="Page navigation" class="mt-4">
+          <ul class="pagination justify-content-center">
+            <li class="page-item" th:hidden="${beginPage == 1}">
+              <a
+                class="page-link bi bi-chevron-double-left"
+                th:href="@{/board?page=} + ${beginPage - 1}"
+              ></a>
+            </li>
+            <li
+              class="page-item"
+              th:each="i : ${#numbers.sequence(beginPage, endPage)}"
+              th:classappend="${i == currentPage} ? 'active'"
+            >
+              <a
+                class="page-link"
+                th:href="@{/board?page=} + ${i}"
+                th:text="${i}"
+                >1</a
+              >
+            </li>
+            <li class="page-item" th:hidden="${endPage == totalPages}">
+              <a
+                class="page-link bi bi-chevron-double-right"
+                th:href="@{/board?page=} + ${endPage + 1}"
+              ></a>
+            </li>
+          </ul>
+        </nav>
+
+        <div
+          class="page-arrow prev"
+          id="prevPage"
+          th:hidden="${currentPage == 1}"
+        >
+          <a
+            class="bi bi-chevron-left"
+            th:href="@{/board?page=} + ${currentPage - 1}"
+          ></a>
+        </div>
+
+        <div class="row row-cols-lg-5 g-4">
+          <div class="col" th:each="bean : ${boardList}">
+            <div class="card h-100">
+              <img
+                th:src="@{${bean.image}}"
+                class="card-img-top"
+                th:alt="${bean.title}"
+              />
+              <div class="card-body">
+                <h5 class="card-title" th:text="${bean.title}"></h5>
+                <p class="card-text" th:text="${bean.content}"></p>
+              </div>
+              <div class="card-footer">
+                <span class="card-author" th:text="${bean.nickname}"></span>
+                <span
+                  class="card-date"
+                  th:text="${#dates.format(bean.createdAt, 'yyyy/MM/dd')}"
+                ></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="page-arrow next"
+          id="nextPage"
+          th:hidden="${currentPage == totalPages}"
+        >
+          <a
+            class="bi bi-chevron-right"
+            th:href="@{/board?page=} + ${currentPage + 1}"
+          ></a>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
