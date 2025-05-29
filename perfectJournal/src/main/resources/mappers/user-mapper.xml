@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.pj.journal.model.member.MemberDao">
+<mapper namespace="com.pj.journal.model.user.UserDao">
 
-	<select id="loginOneMember" parameterType="map" resultType="MemberBean">
+
+	<select id="selectByUser" resultType="userBean">
 		SELECT * FROM users
 		WHERE user = #{user} AND password = #{password}
 	</select>
 
-	<select id="findMemberId" parameterType="map" resultType="String">
+
+	<select id="findUserId" parameterType="map" resultType="String">
 		SELECT user FROM users
 		WHERE email = #{email} AND answer = #{answer} AND question = #{question}
 	</select>
 
-	<select id="findMemberPw" parameterType="map" resultType="MemberBean">
+
+	<select id="findUserPw" parameterType="map" resultType="userBean">
 		SELECT user FROM users
 		WHERE email = #{email}
 		AND answer = #{answer}
@@ -20,16 +23,19 @@
 		AND question = #{question}
 	</select>
 
-	<update id="changeMemberPw" parameterType="map">
+
+	<update id="changeUserPw" parameterType="map">
 		UPDATE users SET password = #{password}
 		WHERE user = #{user}
 	</update>
 
-	<insert id="insertOneMember" parameterType="MemberBean">
+
+	<insert id="insertOneUser" parameterType="userBean">
 		INSERT INTO users (email, user, password, nickname, created_at,
 		question, answer)
 		VALUES (#{email}, #{user}, #{password}, #{nickname}, now(), #{question},
 		#{answer})
 	</insert>
+
 
 </mapper>
