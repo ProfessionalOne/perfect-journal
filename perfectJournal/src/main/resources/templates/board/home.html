@@ -124,8 +124,12 @@
                 th:href="@{/posts(page=${beginPage - 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
               ></a>
             </li>
+            <li th:if="${totalPages == 0}">
+              <p>데이터 없음</p>
+            </li>
             <li
               class="page-item"
+              th:if="${totalPages != 0}"
               th:each="i : ${#numbers.sequence(beginPage, endPage)}"
               th:classappend="${i == currentPage} ? 'active'"
             >

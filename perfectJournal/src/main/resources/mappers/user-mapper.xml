@@ -6,30 +6,21 @@
 		SELECT * FROM users
 		WHERE user = #{user} AND password = #{password}
 	</select>
-
-	<select id="findMemberId" parameterType="map" resultType="String">
+    
+    	<select id="findUserId" parameterType="userBean"
+		resultType="String">
 		SELECT user FROM users
-		WHERE email = #{email} AND answer = #{a nswer} AND question = #{question}
+		WHERE email = #{email} AND answer =
+		#{answer} AND question = #{question}
 	</select>
 
-	<select id="findMemberPw" parameterType="map" resultType="userBean">
-		SELECT user FROM users
+	<select id="findUserPw" parameterType="userBean"
+		resultType="String">
+		SELECT user_id FROM users
 		WHERE email = #{email}
-		AND answer = #{answer}
+		AND answer =
+		#{answer}
 		AND user = #{user}
 		AND question = #{question}
 	</select>
-
-	<update id="changeMemberPw" parameterType="map">
-		UPDATE users SET password = #{password}
-		WHERE user = #{user}
-	</update>
-
-	<insert id="insertOneMember" parameterType="userBean">
-		INSERT INTO users (email, user, password, nickname, created_at,
-		question, answer)
-		VALUES (#{email}, #{user}, #{password}, #{nickname}, now(), #{question},
-		#{answer})
-	</insert>
-
 </mapper>
