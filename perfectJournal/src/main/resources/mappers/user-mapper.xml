@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pj.journal.model.user.UserDao">
+
+	<select id="findUserId" parameterType="userBean"
+		resultType="String">
+		SELECT user FROM users
+		WHERE email = #{email} AND answer =
+		#{answer} AND question = #{question}
+	</select>
+
+	<select id="findUserPw" parameterType="userBean"
+		resultType="String">
+		SELECT user_id FROM users
+		WHERE email = #{email}
+		AND answer =
+		#{answer}
+		AND user = #{user}
+		AND question = #{question}
+	</select>
+
+</mapper>
