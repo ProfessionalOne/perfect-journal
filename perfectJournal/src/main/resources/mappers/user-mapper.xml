@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.pj.journal.model.member.MemberDao">
+<mapper namespace="com.pj.journal.model.user.UserDao">
 
-	<select id="loginOneMember" parameterType="map" resultType="MemberBean">
+	<select id="selectByUser" resultType="userBean">
 		SELECT * FROM users
 		WHERE user = #{user} AND password = #{password}
 	</select>
 
 	<select id="findMemberId" parameterType="map" resultType="String">
 		SELECT user FROM users
-		WHERE email = #{email} AND answer = #{answer} AND question = #{question}
+		WHERE email = #{email} AND answer = #{a nswer} AND question = #{question}
 	</select>
 
-	<select id="findMemberPw" parameterType="map" resultType="MemberBean">
+	<select id="findMemberPw" parameterType="map" resultType="userBean">
 		SELECT user FROM users
 		WHERE email = #{email}
 		AND answer = #{answer}
@@ -25,7 +25,7 @@
 		WHERE user = #{user}
 	</update>
 
-	<insert id="insertOneMember" parameterType="MemberBean">
+	<insert id="insertOneMember" parameterType="userBean">
 		INSERT INTO users (email, user, password, nickname, created_at,
 		question, answer)
 		VALUES (#{email}, #{user}, #{password}, #{nickname}, now(), #{question},
