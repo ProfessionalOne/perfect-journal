@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface BoardDao {
+
 	public List<BoardVo> selectAllBoard();
 
 	BoardVo selectOneBoard(int pk);
@@ -17,14 +18,8 @@ public interface BoardDao {
 
 	int deleteOneBoard(int pk);
 
-	List<BoardVo> selectBySearch(@Param("offset") int offset
-			, @Param("pageSize") int pageSize
-			, @Param("sort") String sort
-			, @Param("searchField") String field
-			, @Param("keyword") String keyword);
+	List<BoardVo> selectBySearch(@Param("offset") int offset, @Param("pageSize") int pageSize,
+			@Param("sort") String sort, @Param("searchField") String field, @Param("keyword") String keyword);
 
-	int getTotalCount(
-			@Param("searchField") String searchField
-			, @Param("keyword") String keyword
-			);
+	int getTotalCount(@Param("searchField") String searchField, @Param("keyword") String keyword);
 }

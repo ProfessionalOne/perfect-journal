@@ -1,5 +1,6 @@
 package com.pj.journal.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -7,7 +8,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 
 import com.pj.journal.model.comment.CommentDao;
 import com.pj.journal.model.comment.CommentVo;
@@ -15,35 +15,44 @@ import com.pj.journal.model.comment.CommentVo;
 @Service
 public class CommentService {
 
-    @Autowired
-    SqlSessionFactory sqlSessionFactory;
+	@Autowired
+	SqlSessionFactory sqlSessionFactory;
 
-    private CommentDao commentDao;
+	public List<CommentVo> getCommentList(int postId) {
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			return session.getMapper(CommentDao.class).selectAllComments(postId);
+		}
+	}
 
-    public void getCommentList(int postId, Model model) {
-        try (SqlSession session = sqlSessionFactory.openSession()) {
-            List<CommentVo> commentList = session.getMapper(CommentDao.class).selectAllCommentnReply(postId);
-            model.addAttribute("commentNReplyList", commentList);
-        }
-    }
+	@Transactional
+	public void addComment(CommentVo comment, int targetGroupId) {
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			if (comment.getLevel() == 0) {
+				comment.setUserId(2);
+				comment.setGroupId(0);
+				session.getMapper(CommentDao.class).insertComment(comment);
+				comment.setGroupId(comment.getCommentId()); // 생성된 commentId를 groupId로 설정
+				session.getMapper(CommentDao.class).updateGroupId(comment.getCommentId(), comment.getGroupId());
+			} else {
+				comment.setUserId(2);
+				comment.setGroupId(targetGroupId);
+				session.getMapper(CommentDao.class).insertComment(comment);
+			}
 
-    @Transactional
-    public void addComment(CommentVo bean) {
-        commentDao.insertOneComment(bean);
-    }
+		}
 
-    @Transactional
-    public void addReply(CommentVo bean) {
-        commentDao.insertOneReply(bean);
-    }
+	}
 
-    public void editCommentnReply(CommentVo bean) {
-        commentDao.updateOneCommentnReply(bean);
-    }
+	public void updateComment(CommentVo bean) {
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			session.getMapper(CommentDao.class).updateComment(bean);
+		}
+	}
 
-    public void deleteCommentnReply(CommentVo bean) {
-        commentDao.deleteOneCommentnReply(bean);
-    }
+	public void updateCommentIsDeleted(int commentId) {
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			session.getMapper(CommentDao.class).updateCommentIsDeleted(commentId);
+		}
+	}
+
 }
-
-

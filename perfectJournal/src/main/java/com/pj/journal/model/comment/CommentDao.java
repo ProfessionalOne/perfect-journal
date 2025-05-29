@@ -8,17 +8,24 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface CommentDao {
 
-	// 그냥 댓글을 Comment, 대댓글은 Reply라고 할게요
-	List<CommentVo> selectAllCommentnReply(@Param("postId") int postId);
+	List<CommentVo> selectAllComments(int postId);
+	
+    void insertComment(CommentVo comment);
 
-	CommentVo selectOne(int pk);
-	//사용 안할거 같아서 구현은 안했지만 일단 몰라서 써놓기는 했어요
-	void insertOneComment(CommentVo bean);
+    void updateGroupId(@Param("commentId") int commentId, @Param("groupId") int groupId);
 
-	void insertOneReply(CommentVo bean);
+	void updateComment(CommentVo bean);
 
-	int updateOneCommentnReply(CommentVo bean);
+	void updateCommentIsDeleted(int commentId);
 
-	int deleteOneCommentnReply(CommentVo bean);
+//	CommentVo selectOne(int pk);
+//	//사용 안할거 같아서 구현은 안했지만 일단 몰라서 써놓기는 했어요
+//	void insertOneComment(CommentVo bean);
+//
+//	void insertOneReply(CommentVo bean);
+//
+//	int updateOneCommentnReply(CommentVo bean);
+//
+//	int deleteOneCommentnReply(CommentVo bean);
 	// delete도 사실상 update의 기능을 수행
 }
