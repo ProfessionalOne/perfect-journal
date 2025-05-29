@@ -3,19 +3,47 @@ package com.pj.journal.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.pj.journal.model.user.UserVo;
 import com.pj.journal.service.UserService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UserController {
 	@Autowired
 	UserService userService;
 
-	@GetMapping("/users/find")
+	@GetMapping("/users/login")
+	public String login() {
+		return "user/login";
+	}
+	
+	@PostMapping("/users/login")
+	public String login(@RequestParam("user") String user,
+			@RequestParam("password") String password,
+			HttpSession session, Model model) {
+		UserVo userVo=userService.selectByUser(user, password);
+		
+		if(userVo == null || !password.equals(userVo.getPassword())) {
+//			 model.addAttribute("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
+			return "user/login";
+		}
+		session.setAttribute("loginUser", userVo);
+		return "redirect:/posts";
+	}
+	
+	@GetMapping("/users/logout")
+	public String logout(HttpSession session) {
+	    session.invalidate(); 
+	    return "redirect:/posts";
+	}
+  @GetMapping("/users/find")
 	public String findUserInfo() {
 		return "user/find";
 	}
@@ -34,8 +62,6 @@ public class UserController {
 	@PostMapping("/users/find/pw")
 	public ResponseEntity<?> findUserPw(@RequestBody UserVo bean) {
 		String userNum = userService.findUserPw(bean);
-
-		System.out.println(userNum);
 
 		if (userNum == null) {
 			return (ResponseEntity<?>) ResponseEntity.noContent();

@@ -8,16 +8,20 @@ import org.springframework.stereotype.Service;
 import com.pj.journal.model.user.UserDao;
 import com.pj.journal.model.user.UserVo;
 
-import jakarta.servlet.http.HttpSession;
-
 @Service
 public class UserService {
 
 	@Autowired
 	SqlSessionFactory sqlSessionFactory;
-	HttpSession httpsession;
-
-	public String findUserId(UserVo bean) {
+  
+  @Autowired
+	UserDao userDao;
+	
+	public UserVo selectByUser(String user, String password) {
+		return userDao.selectByUser(user, password);
+	}
+  
+  	public String findUserId(UserVo bean) {
 		
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			String findId = session.getMapper(UserDao.class).findUserId(bean);
@@ -34,4 +38,5 @@ public class UserService {
 			return findPw;
 		}
 	}
+
 }
