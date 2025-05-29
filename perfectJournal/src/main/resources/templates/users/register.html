@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>회원가입 화면</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      margin: 0; background: #d3e5f0;
+      font-family: 'Pretendard', 'Arial', sans-serif;
+    }
+    .header {
+      padding: 24px 0 0 60px;
+      color: #7d8b99;
+      font-size: 16px;
+      letter-spacing: -1px;
+    }
+    .main-bg {
+      background: #e9eff3;
+      min-height: 100vh;
+      padding-top: 40px;
+      box-sizing: border-box;
+    }
+    .form-box {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(30,40,90,0.06);
+      width: 540px;
+      margin: 48px auto 0 auto;
+      padding: 36px 40px 32px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .form-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 22px;
+      letter-spacing: -1px;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-label {
+      margin-bottom: 4px;
+      font-weight: 500;
+      font-size: 1rem;
+      color: #222c3a;
+      letter-spacing: -0.5px;
+      display: block;
+    }
+    .form-input, .form-select {
+      width: 100%;
+      padding: 10px 18px;
+      font-size: 1rem;
+      border: 1px solid #e2e6ea;
+      border-radius: 22px;
+      outline: none;
+      transition: border-color .2s;
+      box-sizing: border-box;
+      background: #f8fafc;
+    }
+    .form-input:focus {
+      border-color: #6c8bcf;
+      background: #fff;
+    }
+    .error-msg {
+      color: #ec3b38;
+      font-size: 0.93em;
+      margin-top: 3px;
+      min-height: 20px;
+      letter-spacing: -0.5px;
+    }
+    .form-btn {
+      width: 100%;
+      background: linear-gradient(90deg,#2281f7 70%,#0c46b9 100%);
+      color: #fff;
+      font-size: 1.08em;
+      font-weight: bold;
+      border: none;
+      border-radius: 20px;
+      padding: 13px 0;
+      margin-top: 16px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(30,40,90,0.03);
+      letter-spacing: 0.5px;
+      transition: background .15s;
+    }
+    .form-btn:active { background: #1a5bb7; }
+    @media (max-width: 700px) {
+      .form-box { width: 95vw; padding: 24px 8px; }
+      .header { font-size: 15px; padding-left: 18px;}
+    }
+  </style>
+  
+</head>
+<body>
+  <div class="header">회원가입 화면</div>
+  <div class="main-bg">
+    <form class="form-box" th:action="@{/users/signup}" method="post" autocomplete="off">
+      <div class="form-title">감사 일기 (로고)</div>
+
+      <!-- 아이디 -->
+      <div class="form-group">
+        <label class="form-label" for="userid">아이디</label>
+        <input class="form-input" id="userid" name="userid" maxlength="15"
+               placeholder="대소문자, 숫자 포함 8자 이상 15자 이하(공백 미포함)">
+        <div class="error-msg" id="useridError"></div>
+      </div>
+      <!-- 비밀번호 -->
+      <div class="form-group">
+        <label class="form-label" for="password">비밀번호</label>
+        <input class="form-input" id="password" name="password" type="password" maxlength="20"
+               placeholder="대소문자, 숫자, 특수문자 1개 이상 포함하여 8자 이상 15자 이하(공백 미포함)">
+        <div class="error-msg" id="passwordError"></div>
+      </div>
+      <!-- 비밀번호 확인 -->
+      <div class="form-group">
+        <label class="form-label" for="password2">비밀번호 확인</label>
+        <input class="form-input" id="password2" name="password2" type="password" maxlength="20"
+               placeholder="비밀번호를 한번 더 입력해주세요.">
+        <div class="error-msg" id="password2Error"></div>
+      </div>
+      <!-- 이메일 -->
+      <div class="form-group">
+        <label class="form-label" for="email">이메일</label>
+        <input class="form-input" id="email" name="email" maxlength="32"
+               placeholder="아이디/비밀번호 찾기를 위해 이메일을 정확하게 입력해주세요.">
+        <div class="error-msg" id="emailError"></div>
+      </div>
+      <!-- 닉네임 -->
+      <div class="form-group">
+        <label class="form-label" for="nickname">닉네임</label>
+        <input class="form-input" id="nickname" name="nickname" maxlength="12"
+               placeholder="한글, 영문자, 숫자 가능 12자 이하">
+        <div class="error-msg" id="nicknameError"></div>
+      </div>
+      <!-- 본인 확인용 질문 -->
+      <div class="form-group">
+        <label class="form-label" for="question">본인 확인용 질문</label>
+        <select class="form-select" id="question" name="question">
+          <option>1.어머니/아버지 성함은?</option>
+          <option>2.가장 친한 친구 이름은?</option>
+          <option>3.가장 기억에 남는 선생님 이름은?</option>
+          <option>4.졸업한 초등학교 이름은?</option>
+          <option>5.나의 버킷리스트는?</option>
+          <option>6.내가 가장 좋아하는 카페 메뉴 이름은?</option>
+          <option>7.내가 가장 가고싶은 도시는?</option>
+        </select>
+      </div>
+      <!-- 본인 확인용 답변 -->
+      <div class="form-group">
+        <label class="form-label" for="answer">본인 확인용 답변</label>
+        <input class="form-input" id="answer" name="answer" maxlength="10"
+               placeholder="한글, 영문자, 숫자 가능 10자 이하">
+        <div class="error-msg" id="answerError"></div>
+      </div>
+
+      <button class="form-btn" id="submitBtn" type="submit">회원가입</button>
+    </form>
+  </div>
+<script>
+$(function(){
+  // ----- 유효성 함수들 -----
+  function checkUserId(val) {
+    return /^[A-Za-z0-9]{8,15}$/.test(val);
+  }
+  function checkPassword(val) {
+    return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[~!@#$%^&*()_+=`{}|\\[\]:;"'<>,.?/-]).{8,15}$/.test(val);
+  }
+  function checkNickname(val) {
+    return /^[가-힣a-zA-Z0-9]{1,12}$/.test(val);
+  }
+  function checkEMail(val){
+    return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(val);
+  }
+  function checkAnswer(val){
+    return /^[가-힣a-zA-Z0-9]{1,10}$/.test(val);
+  }
+
+  // ----- 실시간 입력 검증 -----
+  $('#userid').on('input', function() {
+    let val = $(this).val();
+    if (!checkUserId(val)) {
+      $('#useridError').text('아이디 형식이 일치하지 않습니다. 대소문자, 숫자 포함 8자 이상 15자 이하로 작성해주세요.');
+    } else {
+      $('#useridError').text('');
+    }
+  });
+  $('#password').on('input', function() {
+    let val = $(this).val();
+    if (!checkPassword(val)) {
+      $('#passwordError').text('비밀번호 형식이 일치하지 않습니다. 대소문자, 숫자, 특수문자 1개 이상을 포함해 8자 이상 15자 이하로 작성해주세요.');
+    } else {
+      $('#passwordError').text('');
+    }
+  });
+  $('#password2').on('input', function() {
+    let val = $(this).val();
+    if (val !== $('#password').val()) {
+      $('#password2Error').text('입력한 비밀번호가 일치하지 않습니다.');
+    } else {
+      $('#password2Error').text('');
+    }
+  });
+   $('#email').on('input', function() {
+    let val = $(this).val();
+    if (!checkEMail(val)) {
+      $('#emailError').text('이메일 형식이 일치하지 않습니다. 올바른 형식으로 작성하세요.');
+    } else {
+      $('#emailError').text('');
+    }
+  });
+  $('#nickname').on('input', function() {
+    let val = $(this).val();
+    if (!checkNickname(val)) {
+      $('#nicknameError').text('닉네임 형식이 일치하지 않습니다. 특수문자 제외 12자 이하로 작성해주세요.');
+    } else {
+      $('#nicknameError').text('');
+    }
+  });
+  $('#answer').on('input', function() {
+    let val = $(this).val();
+    if (!checkAnswer(val)) {
+      $('#answerError').text('아이디/비밀번호 찾기에 사용되는 답변입니다. 한글, 숫자, 영문자를 사용해 10자 이내로 작성하세요.');
+    } else {
+      $('#answerError').text('');
+    }
+  });
+  // ----- 중복 검사: 아이디 -----
+  $('#userid').on('blur', function() {
+    let val = $(this).val();
+    if (checkUserId(val)) {
+      $.ajax({
+        url: '/check-userId',
+        method: 'GET',
+        data: {userid: val},
+        success: function(data) {
+          if (data === 'exists') {
+            $('#useridError').text('이미 사용중인 아이디입니다.');
+          }
+        }
+      });
+    }
+  });
+  // ----- 중복 검사: 이메일 -----
+  $('#email').on('blur', function() {
+    let val = $(this).val();
+    if (checkEMail(val)) {
+      $.ajax({
+        url: '/check-email',
+        method: 'GET',
+        data: {email: val},
+        success: function(data) {
+          if (data === 'exists') {
+            $('#nicknameError').text('이미 사용중인 이메일입니다.');
+          }
+        }
+      });
+    }
+  });
+  // ----- 중복 검사: 닉네임 -----
+  $('#nickname').on('blur', function() {
+    let val = $(this).val();
+    if (checkNickname(val)) {
+      $.ajax({
+        url: '/check-nickname',
+        method: 'GET',
+        data: {nickname: val},
+        success: function(data) {
+          if (data === 'exists') {
+            $('#nicknameError').text('이미 사용중인 닉네임입니다.');
+          }
+        }
+      });
+    }
+  });
+
+  // ----- 회원가입 버튼 검증 -----
+  $('#submitBtn').on('click', function(){
+    let hasError = false;
+    // 모든 에러 체크
+    $('.error-msg').each(function(){
+      if($(this).text() !== '') hasError = true;
+    });
+    if ($('#userid').val().trim() === '' || $('#password').val().trim() === '' ||
+        $('#password2').val().trim() === '' || $('#nickname').val().trim() === ''||
+        $('#email').val().trim() === '' || $('#answer').val().trim() === '') {
+      alert('필수 항목을 모두 입력해주세요.');
+      return false;
+    }
+    if (hasError) {
+      alert('입력값 오류를 확인해주세요.');
+      return false;
+    }
+    // 실제 회원가입 로직 (서버 전송 등)
+    alert('회원가입 성공! 로그인 페이지로 이동합니다');
+    window.location.href = '/login';
+    //로그인 페이지 주소 변경되면 재작성 요망
+    return false;
+  });
+});
+</script>
+<script th:inline="javascript">
+  let signupError = /*[[${signupError}]]*/ null;
+  let signupSuccess = /*[[${signupSuccess}]]*/ null;
+  if(signupError) alert(signupError);
+  if(signupSuccess) {
+    alert(signupSuccess);
+    window.location.href = '/login';
+  }
+</script>
+
+</body>
+</html>

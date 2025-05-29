@@ -12,13 +12,13 @@
 			alias="boardBean" />
 		<typeAlias type="com.pj.journal.model.comment.CommentVo"
 			alias="commentBean" />
-		<typeAlias type="com.pj.journal.model.member.MemberVo"
-			alias="memberBean" />
+		<typeAlias type="com.pj.journal.model.user.UserVo"
+			alias="UserBean" />
 	</typeAliases>
 
 	<mappers>
 		<mapper resource="mappers/board-mapper.xml" />
 		<mapper resource="mappers/comment-mapper.xml" />
-		<mapper resource="mappers/member-mapper.xml" />
+		<mapper resource="mappers/user-mapper.xml" />
 	</mappers>
 </configuration>

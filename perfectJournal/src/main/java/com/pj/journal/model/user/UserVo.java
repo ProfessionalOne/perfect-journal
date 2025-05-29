@@ -1,16 +1,16 @@
-package com.pj.journal.model.member;
+package com.pj.journal.model.user;
 
 import java.util.Date;
 import java.util.Objects;
 
-public class MemberVo {
+public class UserVo {
 	private int userId, question;
 	private String email, user, password, nickname, answer;
 	private Date createdAt;
 	
-	public MemberVo(){}
+	public UserVo(){}
 
-	public MemberVo(int userId, int question, String email, String user, String password, String nickname,
+	public UserVo(int userId, int question, String email, String user, String password, String nickname,
 			String answer, Date createdAt) {
 		super();
 		this.userId = userId;
@@ -43,7 +43,7 @@ public class MemberVo {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		MemberVo other = (MemberVo) obj;
+		UserVo other = (UserVo) obj;
 		return Objects.equals(answer, other.answer) && Objects.equals(createdAt, other.createdAt)
 				&& Objects.equals(email, other.email) && Objects.equals(nickname, other.nickname)
 				&& Objects.equals(password, other.password) && question == other.question
