@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>감사일기 - 로그인</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap");
+
+      body {
+        font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Roboto, sans-serif;
+        background-color: #f5f5f7;
+        color: #1d1d1f;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .login-container {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.4) 0%,
+          rgba(255, 255, 255, 0.2) 100%
+        );
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        border-radius: 24px;
+        padding: 2rem;
+        width: 100%;
+        max-width: 400px;
+        margin: 2rem auto;
+      }
+
+      .bg-pattern {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.4;
+        background-image: radial-gradient(
+            circle at 25% 25%,
+            rgba(0, 113, 227, 0.2) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 75% 75%,
+            rgba(255, 149, 0, 0.2) 0%,
+            transparent 50%
+          );
+      }
+
+      .logo-icon {
+        filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.1));
+        width: 64px;
+        height: 64px;
+        margin-bottom: 1rem;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+
+      .floating {
+        animation: float 6s ease-in-out infinite;
+      }
+
+      .form-control {
+        background-color: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+      }
+
+      .form-control:focus {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.2);
+      }
+
+      .btn-primary {
+        background-color: #0d6efd;
+        border: none;
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        background-color: #0b5ed7;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(13, 110, 253, 0.4);
+      }
+
+      .btn-outline-secondary {
+        border: 1px solid rgba(108, 117, 125, 0.5);
+        background-color: rgba(255, 255, 255, 0.7);
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-outline-secondary:hover {
+        background-color: rgba(108, 117, 125, 0.1);
+        border-color: rgba(108, 117, 125, 0.7);
+      }
+
+      .social-login-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-bottom: 0.75rem;
+      }
+
+      .social-login-btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .btn-kakao {
+        background-color: #fee500;
+        color: #000000;
+        border: none;
+        box-shadow: 0 4px 12px rgba(254, 229, 0, 0.3);
+      }
+
+      .btn-kakao:hover {
+        background-color: #f2d900;
+        color: #000000;
+        box-shadow: 0 6px 16px rgba(254, 229, 0, 0.4);
+      }
+
+      .btn-naver {
+        background-color: #03c75a;
+        color: #ffffff;
+        border: none;
+        box-shadow: 0 4px 12px rgba(3, 199, 90, 0.3);
+      }
+
+      .btn-naver:hover {
+        background-color: #02b150;
+        color: #ffffff;
+        box-shadow: 0 6px 16px rgba(3, 199, 90, 0.4);
+      }
+
+      .btn-google {
+        background-color: #ffffff;
+        color: #757575;
+        border: 1px solid #dadce0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      .btn-google:hover {
+        background-color: #f8f9fa;
+        color: #202124;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .divider {
+        display: flex;
+        align-items: center;
+        margin: 1.5rem 0;
+      }
+
+      .divider-line {
+        flex-grow: 1;
+        height: 1px;
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+
+      .divider-text {
+        padding: 0 1rem;
+        color: #6c757d;
+        font-size: 0.875rem;
+      }
+
+      .footer {
+        position: absolute;
+        bottom: 1rem;
+        width: 100%;
+        text-align: center;
+        font-size: 0.75rem;
+        color: #6c757d;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-pattern"></div>
+
+    <div class="container">
+      <div class="login-container">
+        <div class="text-center mb-4">
+          <div class="d-inline-block">
+            <svg
+              class="logo-icon floating"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M18.7101 19.5C17.8801 20.74 17.0001 21.95 15.6601 21.97C14.3201 22 13.8901 21.18 12.3701 21.18C10.8501 21.18 10.3701 21.95 9.10005 22C7.79005 22.05 6.80005 20.68 5.96005 19.47C4.25005 17 2.94005 12.45 4.70005 9.39C5.57005 7.87 7.13005 6.91 8.82005 6.88C10.1001 6.86 11.3201 7.75 12.1101 7.75C12.8901 7.75 14.3701 6.68 15.9201 6.84C16.5701 6.87 18.3901 7.1 19.5601 8.82C19.4701 8.88 17.3901 10.1 17.4101 12.63C17.4401 15.65 20.0601 16.66 20.0901 16.67C20.0601 16.74 19.6701 18.11 18.7101 19.5ZM13.0001 3.5C13.7301 2.67 14.9401 2.04 15.9401 2C16.0701 3.17 15.6001 4.35 14.9001 5.19C14.2101 6.04 13.0701 6.7 11.9501 6.61C11.8001 5.46 12.2701 4.35 13.0001 3.5Z"
+                fill="#0d6efd"
+              />
+            </svg>
+          </div>
+          <h1 class="fs-2 fw-bold">감사일기</h1>
+          <p class="text-secondary mt-2">매일 감사한 일을 기록하세요</p>
+        </div>
+
+        <form id="loginForm" th:action="@{/users/login}" method="post">
+          <div class="mb-3">
+            <label for="user" class="form-label">아이디</label>
+            <input
+              name="user"
+              type="text"
+              class="form-control"
+              id="user"
+              placeholder="아이디를 입력하세요"
+              required
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">비밀번호</label>
+            <input
+              name="password"
+              type="password"
+              class="form-control"
+              id="password"
+              placeholder="비밀번호를 입력하세요"
+              required
+            />
+          </div>
+
+          <div class="mb-4 form-check">
+            <input type="checkbox" class="form-check-input" id="remember-me" />
+            <label class="form-check-label" for="remember-me"
+              >로그인 상태 유지</label
+            >
+          </div>
+
+          <div class="d-grid mb-3">
+            <button type="submit" id="login-btn" class="btn btn-primary">
+              로그인
+            </button>
+          </div>
+
+          <div class="d-flex justify-content-between mb-4">
+            <a
+              href="find-account.html"
+              class="text-decoration-none text-secondary small"
+              >아이디/비밀번호 찾기</a
+            >
+            <a
+              href="signup.html"
+              class="text-decoration-none text-secondary small"
+              >회원가입</a
+            >
+          </div>
+<!-- 
+          <div class="divider">
+            <div class="divider-line"></div>
+            <div class="divider-text">간편 로그인</div>
+            <div class="divider-line"></div>
+          </div>
+
+          <div class="social-login">
+            <button type="button" class="social-login-btn btn-kakao">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 18 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M9 0.5C4.30375 0.5 0.5 3.32375 0.5 6.8C0.5 9.0175 2.05313 10.9529 4.35125 12.0358L3.26938 15.6208C3.2025 15.8458 3.44938 16.0271 3.64938 15.9033L7.95125 13.1483C8.29 13.1771 8.63938 13.1917 9 13.1917C13.6963 13.1917 17.5 10.3679 17.5 6.8C17.5 3.32375 13.6963 0.5 9 0.5Z"
+                  fill="black"
+                />
+              </svg>
+              <span>카카오로 로그인</span>
+            </button>
+
+            <button type="button" class="social-login-btn btn-naver">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 18 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12.2825 9.52893L5.54443 0H0V18H5.71557V8.47107L12.4536 18H18V0H12.2825V9.52893Z"
+                  fill="white"
+                />
+              </svg>
+              <span>네이버로 로그인</span>
+            </button>
+
+            <button type="button" class="social-login-btn btn-google">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 18 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M17.64 9.20455C17.64 8.56636 17.5827 7.95273 17.4764 7.36364H9V10.845H13.8436C13.635 11.97 13.0009 12.9232 12.0477 13.5614V15.8195H14.9564C16.6582 14.2527 17.64 11.9455 17.64 9.20455Z"
+                  fill="#4285F4"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M9 18C11.43 18 13.4673 17.1941 14.9564 15.8195L12.0477 13.5614C11.2418 14.1014 10.2109 14.4205 9 14.4205C6.65591 14.4205 4.67182 12.8373 3.96409 10.71H0.957275V13.0418C2.43818 15.9832 5.48182 18 9 18Z"
+                  fill="#34A853"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M3.96409 10.71C3.78409 10.17 3.68182 9.59318 3.68182 9C3.68182 8.40682 3.78409 7.83 3.96409 7.29V4.95818H0.957273C0.347727 6.17318 0 7.54773 0 9C0 10.4523 0.347727 11.8268 0.957273 13.0418L3.96409 10.71Z"
+                  fill="#FBBC05"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M9 3.57955C10.3214 3.57955 11.5077 4.03364 12.4405 4.92545L15.0218 2.34409C13.4632 0.891818 11.4259 0 9 0C5.48182 0 2.43818 2.01682 0.957275 4.95818L3.96409 7.29C4.67182 5.16273 6.65591 3.57955 9 3.57955Z"
+                  fill="#EA4335"
+                />
+              </svg>
+              <span>Google로 로그인</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div> -->
+
+    <div class="footer">© 2025 감사일기. All rights reserved.</div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // 로그인 버튼 클릭 이벤트
+      document
+        .getElementById("login-btn")
+        .addEventListener("click", function () {
+          const user = document.getElementById("user").value;
+          const password = document.getElementById("password").value;
+
+          // 입력값 검증
+          if (!user || !password) {
+            alert("아이디와 비밀번호를 모두 입력해주세요.");
+            return;
+          }
+
+          // 로그인 처리 (실제로는 서버 통신)
+          console.log("로그인 시도:", { user, password });
+
+          // 임시 알림
+          alert("로그인 성공! 메인 페이지로 이동합니다.");
+        });
+
+      // 소셜 로그인 버튼 클릭 이벤트
+      // const socialButtons = document.querySelectorAll(".social-login-btn");
+      // socialButtons.forEach((button) => {
+      //   button.addEventListener("click", function () {
+      //     const provider = this.classList.contains("btn-kakao")
+      //       ? "카카오"
+      //       : this.classList.contains("btn-naver")
+      //       ? "네이버"
+      //       : "Google";
+
+      //     // 소셜 로그인 처리 (실제로는 각 플랫폼 OAuth 연동)
+      //     console.log(`${provider} 로그인 시도`);
+
+      //     // 임시 알림
+      //     alert(
+      //       `${provider} 로그인 시도 중입니다. 실제 환경에서는 ${provider} 인증 페이지로 이동합니다.`
+      //     );
+      //   });
+      // });
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'9473c5d616313063',t:'MTc0ODQ5ODQ0MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>
