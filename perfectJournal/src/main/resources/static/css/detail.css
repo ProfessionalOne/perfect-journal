@@ -40,6 +40,12 @@
   color: #888;
 }
 
+.post-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .post-content {
   font-size: 1.1rem;
   line-height: 1.8;

@@ -1,7 +1,7 @@
 package com.pj.journal.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -9,50 +9,50 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.pj.journal.model.board.BoardDao;
 import com.pj.journal.model.comment.CommentDao;
 import com.pj.journal.model.comment.CommentVo;
 
 @Service
-@Transactional
 public class CommentService {
 
-    @Autowired
-    SqlSessionFactory sqlSessionFactory;
+	@Autowired
+	SqlSessionFactory sqlSessionFactory;
 
-    private CommentDao commentDao;
-
-    public List<CommentVo> getCommentList(int postId) {
-        try (SqlSession session = sqlSessionFactory.openSession()) {
-			return session.getMapper(CommentDao.class).selectAllCommentnReply(postId);
+	public List<CommentVo> getCommentList(int postId) {
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			return session.getMapper(CommentDao.class).selectAllComments(postId);
 		}
-        }
+	}
 
+	@Transactional
+	public void addComment(CommentVo comment, int targetGroupId) {
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			if (comment.getLevel() == 0) {
+				comment.setUserId(2);
+				comment.setGroupId(0);
+				session.getMapper(CommentDao.class).insertComment(comment);
+				comment.setGroupId(comment.getCommentId()); // 생성된 commentId를 groupId로 설정
+				session.getMapper(CommentDao.class).updateGroupId(comment.getCommentId(), comment.getGroupId());
+			} else {
+				comment.setUserId(2);
+				comment.setGroupId(targetGroupId);
+				session.getMapper(CommentDao.class).insertComment(comment);
+			}
 
-    public void addComment(CommentVo bean) {
-        commentDao.insertOneComment(bean);
-    }
+		}
 
+	}
 
-    public void addReply(CommentVo bean) {
-        commentDao.insertOneReply(bean);
-    }
+	public void updateComment(CommentVo bean) {
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			session.getMapper(CommentDao.class).updateComment(bean);
+		}
+	}
 
-    public int editCommentnReply(CommentVo bean) {
-        int count = commentDao.updateOneCommentnReply(bean);
-        if (count == 0) {
-            throw new NoSuchElementException("해당 댓글이 없거나 수정 권한이 없습니다.");
-        }
-        return count;
-    }
+	public void updateCommentIsDeleted(int commentId) {
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			session.getMapper(CommentDao.class).updateCommentIsDeleted(commentId);
+		}
+	}
 
-    public int deleteCommentnReply(CommentVo bean) {
-        int count = commentDao.deleteOneCommentnReply(bean);
-        if (count == 0) {
-            throw new NoSuchElementException("해당 댓글이 없거나 삭제 권한이 없습니다.");
-        }
-        return count;
-    }
 }
-
-

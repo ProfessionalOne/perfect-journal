@@ -4,71 +4,121 @@ import java.util.Date;
 import java.util.Objects;
 
 public class CommentVo {
-	
-	public CommentVo() {}
-	
-	private int commentId,PostId,UserId,ord,level;
-	private String content;
-	private Date createdAt,updatedAt;
+	private int commentId, postId, userId, groupId, level;
+	private String nickname, content;
+	private Date createdAt, updatedAt;
 	private boolean isDeleted;
+
+	public CommentVo() {
+	}
+
+	public CommentVo(int commentId, int postId, int userId, int groupId, int level, String nickname, String content,
+			Date createdAt, Date updatedAt, boolean isDeleted) {
+		super();
+		this.commentId = commentId;
+		this.postId = postId;
+		this.userId = userId;
+		this.groupId = groupId;
+		this.level = level;
+		this.nickname = nickname;
+		this.content = content;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.isDeleted = isDeleted;
+	}
+
 	public int getCommentId() {
 		return commentId;
 	}
+
 	public void setCommentId(int commentId) {
 		this.commentId = commentId;
 	}
+
 	public int getPostId() {
-		return PostId;
+		return postId;
 	}
+
 	public void setPostId(int postId) {
-		PostId = postId;
+		this.postId = postId;
 	}
+
 	public int getUserId() {
-		return UserId;
+		return userId;
 	}
+
 	public void setUserId(int userId) {
-		UserId = userId;
+		this.userId = userId;
 	}
-	public int getOrd() {
-		return ord;
+
+	public int getGroupId() {
+		return groupId;
 	}
-	public void setOrd(int ord) {
-		this.ord = ord;
+
+	public void setGroupId(int groupId) {
+		this.groupId = groupId;
 	}
+
 	public int getLevel() {
 		return level;
 	}
+
 	public void setLevel(int level) {
 		this.level = level;
 	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
 	public String getContent() {
 		return content;
 	}
+
 	public void setContent(String content) {
 		this.content = content;
 	}
+
 	public Date getCreatedAt() {
 		return createdAt;
 	}
+
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
+
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}
+
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+
 	public boolean isDeleted() {
 		return isDeleted;
 	}
+
 	public void setDeleted(boolean isDeleted) {
 		this.isDeleted = isDeleted;
 	}
+
+	@Override
+	public String toString() {
+		return "CommentVo [commentId=" + commentId + ", postId=" + postId + ", userId=" + userId + ", groupId=" + groupId
+				+ ", level=" + level + ", nickname=" + nickname + ", content=" + content + ", createdAt=" + createdAt
+				+ ", updatedAt=" + updatedAt + ", isDeleted=" + isDeleted + "]";
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(PostId, UserId, commentId, content, createdAt, isDeleted, level, ord, updatedAt);
+		return Objects.hash(commentId, content, createdAt, isDeleted, level, nickname, groupId, postId, updatedAt, userId);
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -78,30 +128,10 @@ public class CommentVo {
 		if (getClass() != obj.getClass())
 			return false;
 		CommentVo other = (CommentVo) obj;
-		return PostId == other.PostId && UserId == other.UserId && commentId == other.commentId
-				&& Objects.equals(content, other.content) && Objects.equals(createdAt, other.createdAt)
-				&& isDeleted == other.isDeleted && level == other.level && ord == other.ord
-				&& Objects.equals(updatedAt, other.updatedAt);
+		return commentId == other.commentId && Objects.equals(content, other.content)
+				&& Objects.equals(createdAt, other.createdAt) && isDeleted == other.isDeleted && level == other.level
+				&& Objects.equals(nickname, other.nickname) && groupId == other.groupId && postId == other.postId
+				&& Objects.equals(updatedAt, other.updatedAt) && userId == other.userId;
 	}
-	@Override
-	public String toString() {
-		return "CommentVo [commentId=" + commentId + ", PostId=" + PostId + ", UserId=" + UserId + ", order=" + ord
-				+ ", level=" + level + ", content=" + content + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
-				+ ", isDeleted=" + isDeleted + "]";
-	}
-	public CommentVo(int commentId, int postId, int userId, int ord, int level, String content, Date createdAt,
-			Date updatedAt, boolean isDeleted) {
-		super();
-		this.commentId = commentId;
-		PostId = postId;
-		UserId = userId;
-		this.ord = ord;
-		this.level = level;
-		this.content = content;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		this.isDeleted = isDeleted;
-	}
-	
-	
+
 }

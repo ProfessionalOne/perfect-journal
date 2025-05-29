@@ -29,11 +29,6 @@
       th:href="@{/css/home.css}"
       href="../static/css/home.css"
     />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
-      crossorigin="anonymous"
-    ></script>
   </head>
   <body>
     <nav th:replace="~{layout/header :: headerFrag}">네비게이션</nav>
@@ -73,8 +68,12 @@
             method="get"
             th:action="@{/posts}"
           >
-            <div class="input-group me-2" style="max-width: 350px">
-              <select class="form-select me-1" name="searchField">
+            <div class="input-group me-2" style="max-width: 450px">
+              <select
+                class="form-select me-1"
+                name="searchField"
+                style="width: auto"
+              >
                 <option
                   value="titleContent"
                   th:selected="${searchField} == 'titleContent'"
@@ -87,7 +86,7 @@
               </select>
               <input
                 class="form-control"
-                style="width: 100px"
+                style="width: 200px"
                 type="search"
                 name="keyword"
                 placeholder="검색"
@@ -192,5 +191,11 @@
         </a>
       </div>
     </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

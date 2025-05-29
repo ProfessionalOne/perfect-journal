@@ -2,13 +2,14 @@ package com.pj.journal.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,40 +46,16 @@ public class BoardController {
 	}
 
 	@GetMapping("/posts/{postId}")
+	@Transactional
 	public String detail(@PathVariable int postId, Model model) {
 
 		BoardVo post = boardService.getBoardList(postId);
-		model.addAttribute("post", post);
+		model.addAttribute("bean", post);
 
-//		List<CommentVo> comments = commentService.getCommentList(postId);
-//		System.out.println(Arrays.toString(comments.toArray()));
-//		model.addAttribute("commentNReplyList", comments);
+		List<CommentVo> comments = commentService.getCommentList(postId);
+		model.addAttribute("commentsList", comments);
 
 		return "board/detail";
-	}
-
-	@PostMapping("/posts/{postId}/comment")
-	public String postComment(@PathVariable int postId, @RequestParam(defaultValue = "0") int level,
-			@RequestParam String content
-	// ,HttpSession session // 로그인할때 spring security 사용하시나요?
-	) {
-
-		CommentVo vo = new CommentVo();
-		vo.setPostId(postId);
-		// Integer userId = (Integer)session.getAttribute("userId");
-		// vo.setUserId(userId);
-		vo.setContent(content);
-
-		if (level == 0) {
-			// 새 댓글
-			commentService.addComment(vo);
-		} else {
-			// 대댓글(이대로 하면 아마 오류생길거예요 내일 와서 수정할게요)
-			commentService.addReply(vo);
-			vo.setLevel(level);
-		}
-
-		return "redirect:/board/detail/" + postId;
 	}
 
 	@GetMapping("/posts/create")
@@ -88,7 +65,6 @@ public class BoardController {
 
 	@PostMapping("/posts/create")
 	public String addBoardList(@RequestParam("file") MultipartFile file, @ModelAttribute BoardVo bean) {
-
 		if (!file.isEmpty() && file.getSize() <= 5242880) {
 			try {
 				String originalFilename = file.getOriginalFilename();
@@ -128,6 +104,7 @@ public class BoardController {
 				String uuidFileName = UUID.randomUUID().toString() + ext;
 
 				String uploadPath = new File("src/main/resources/static/images").getAbsolutePath();
+				System.out.println(uploadPath);
 				File saveFile = new File(uploadPath, uuidFileName);
 				file.transferTo(saveFile);
 
@@ -143,14 +120,13 @@ public class BoardController {
 
 		bean.setPostId(postId);
 		boardService.updateBoardList(bean);
-		return "redirect:/posts/" + postId;
+		return "redirect:/posts/"+postId;
 	}
 
-	@PostMapping("/posts/delete")
-	public String deletePost(@RequestParam("postId") int postId) {
+	@DeleteMapping("/posts/{postId}")
+	public String deletePost(@PathVariable int postId) {
 		boardService.deletePost(postId);
 		return "redirect:/posts";
-
 	}
 
 }
