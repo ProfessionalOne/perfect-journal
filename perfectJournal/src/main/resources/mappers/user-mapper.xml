@@ -23,4 +23,19 @@
 		AND user = #{user}
 		AND question = #{question}
 	</select>
+
+	<update id="changeUserPw" parameterType="map">
+		UPDATE users SET password = #{password}
+		WHERE user = #{user}
+	</update>
+
+
+	<insert id="insertOneUser" parameterType="userBean">
+		INSERT INTO users (email, user, password, nickname, created_at,
+		question, answer)
+		VALUES (#{email}, #{user}, #{password}, #{nickname}, now(), #{question},
+		#{answer})
+	</insert>
+
+
 </mapper>

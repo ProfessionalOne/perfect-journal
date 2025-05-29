@@ -274,7 +274,7 @@
 
           <div class="d-flex justify-content-between mb-4">
             <a
-              href="find-account.html"
+              th:href="@{/users/find}"
               class="text-decoration-none text-secondary small"
               >아이디/비밀번호 찾기</a
             >
@@ -284,87 +284,9 @@
               >회원가입</a
             >
           </div>
-<!-- 
-          <div class="divider">
-            <div class="divider-line"></div>
-            <div class="divider-text">간편 로그인</div>
-            <div class="divider-line"></div>
-          </div>
-
-          <div class="social-login">
-            <button type="button" class="social-login-btn btn-kakao">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M9 0.5C4.30375 0.5 0.5 3.32375 0.5 6.8C0.5 9.0175 2.05313 10.9529 4.35125 12.0358L3.26938 15.6208C3.2025 15.8458 3.44938 16.0271 3.64938 15.9033L7.95125 13.1483C8.29 13.1771 8.63938 13.1917 9 13.1917C13.6963 13.1917 17.5 10.3679 17.5 6.8C17.5 3.32375 13.6963 0.5 9 0.5Z"
-                  fill="black"
-                />
-              </svg>
-              <span>카카오로 로그인</span>
-            </button>
-
-            <button type="button" class="social-login-btn btn-naver">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12.2825 9.52893L5.54443 0H0V18H5.71557V8.47107L12.4536 18H18V0H12.2825V9.52893Z"
-                  fill="white"
-                />
-              </svg>
-              <span>네이버로 로그인</span>
-            </button>
-
-            <button type="button" class="social-login-btn btn-google">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M17.64 9.20455C17.64 8.56636 17.5827 7.95273 17.4764 7.36364H9V10.845H13.8436C13.635 11.97 13.0009 12.9232 12.0477 13.5614V15.8195H14.9564C16.6582 14.2527 17.64 11.9455 17.64 9.20455Z"
-                  fill="#4285F4"
-                />
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M9 18C11.43 18 13.4673 17.1941 14.9564 15.8195L12.0477 13.5614C11.2418 14.1014 10.2109 14.4205 9 14.4205C6.65591 14.4205 4.67182 12.8373 3.96409 10.71H0.957275V13.0418C2.43818 15.9832 5.48182 18 9 18Z"
-                  fill="#34A853"
-                />
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M3.96409 10.71C3.78409 10.17 3.68182 9.59318 3.68182 9C3.68182 8.40682 3.78409 7.83 3.96409 7.29V4.95818H0.957273C0.347727 6.17318 0 7.54773 0 9C0 10.4523 0.347727 11.8268 0.957273 13.0418L3.96409 10.71Z"
-                  fill="#FBBC05"
-                />
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M9 3.57955C10.3214 3.57955 11.5077 4.03364 12.4405 4.92545L15.0218 2.34409C13.4632 0.891818 11.4259 0 9 0C5.48182 0 2.43818 2.01682 0.957275 4.95818L3.96409 7.29C4.67182 5.16273 6.65591 3.57955 9 3.57955Z"
-                  fill="#EA4335"
-                />
-              </svg>
-              <span>Google로 로그인</span>
-            </button>
-          </div>
         </form>
       </div>
-    </div> -->
+    </div>
 
     <div class="footer">© 2025 감사일기. All rights reserved.</div>
 
@@ -385,32 +307,9 @@
             return;
           }
 
-          // 로그인 처리 (실제로는 서버 통신)
-          console.log("로그인 시도:", { user, password });
-
           // 임시 알림
           alert("로그인 성공! 메인 페이지로 이동합니다.");
         });
-
-      // 소셜 로그인 버튼 클릭 이벤트
-      // const socialButtons = document.querySelectorAll(".social-login-btn");
-      // socialButtons.forEach((button) => {
-      //   button.addEventListener("click", function () {
-      //     const provider = this.classList.contains("btn-kakao")
-      //       ? "카카오"
-      //       : this.classList.contains("btn-naver")
-      //       ? "네이버"
-      //       : "Google";
-
-      //     // 소셜 로그인 처리 (실제로는 각 플랫폼 OAuth 연동)
-      //     console.log(`${provider} 로그인 시도`);
-
-      //     // 임시 알림
-      //     alert(
-      //       `${provider} 로그인 시도 중입니다. 실제 환경에서는 ${provider} 인증 페이지로 이동합니다.`
-      //     );
-      //   });
-      // });
     </script>
     <script>
       (function () {

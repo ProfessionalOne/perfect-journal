@@ -28,7 +28,7 @@ public class UserController {
 	public String login(@RequestParam("user") String user,
 			@RequestParam("password") String password,
 			HttpSession session, Model model) {
-		UserVo userVo=userService.selectByUser(user, password);
+			UserVo userVo=userService.selectByUser(user, password);
 		
 		if(userVo == null || !password.equals(userVo.getPassword())) {
 //			 model.addAttribute("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
@@ -70,4 +70,22 @@ public class UserController {
 		return ResponseEntity.ok(userNum);
 	}
 
+	@GetMapping("/users/changePw")
+	public String changePwForm() {
+	    return "user/changePw"; // templates/user/changePw.html
+	}
+
+	@PostMapping("/users/changePw")
+	public String changePassword(@RequestParam("user") String user,
+	                             @RequestParam("password") String password,
+	                             Model model) {
+	    int result = userService.changeUserPw(user, password);
+
+	    if (result > 0) {
+	        return "redirect:/users/login";  // 성공 시 로그인 페이지로 리디렉션
+	    } else {
+	        return "user/changePw";          // 실패 시 비밀번호 변경 페이지로 다시
+	    }
+	}
+	
 }

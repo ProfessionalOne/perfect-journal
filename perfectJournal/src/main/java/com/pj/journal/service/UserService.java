@@ -38,5 +38,9 @@ public class UserService {
 			return findPw;
 		}
 	}
+	
+	public int changeUserPw(String user, String password) {
+        return userDao.changeUserPw(user, password);
+    }
 
 }
