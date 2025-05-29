@@ -43,4 +43,33 @@ public class UserService {
         return userDao.changeUserPw(user, password);
     }
 
+
+	public int isIdAlreadyExists(String user){
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			return session.getMapper(UserDao.class).isIdAlreadyExists(user);
+		}
+	}
+	public int isEmailAlreadyExists(String email){
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			return session.getMapper(UserDao.class).isEmailAlreadyExists(email);
+		}
+	}
+	public int isNickNameAlreadyExists(String nickname){
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			return session.getMapper(UserDao.class).isNickNameAlreadyExists(nickname);
+		}
+	}
+
+	public void insertOneUser(UserVo bean) {
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			session.getMapper(UserDao.class).insertOneUser(bean);
+			session.commit();
+		}
+	}
+		
 }
+
+
+
+
+	

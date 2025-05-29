@@ -5,10 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.pj.journal.model.user.UserDao;
 import com.pj.journal.model.user.UserVo;
 import com.pj.journal.service.UserService;
 
@@ -72,7 +75,7 @@ public class UserController {
 
 	@GetMapping("/users/changePw")
 	public String changePwForm() {
-	    return "user/changePw"; // templates/user/changePw.html
+	    return "user/changePw"; 
 	}
 
 	@PostMapping("/users/changePw")
@@ -88,4 +91,51 @@ public class UserController {
 	    }
 	}
 	
+	@Autowired
+    UserDao userDao;
+
+	@GetMapping("/users/signup")
+	public String register() {
+	    return "user/register";
+	}
+	
+    @PostMapping("/users/signup")
+    public String register(@ModelAttribute UserVo bean, Model model) {
+        if (userService.isIdAlreadyExists(bean.getUser()) > 0) {
+            model.addAttribute("signupError", "이미 사용중인 아이디입니다.");
+            return "user/register";
+        }
+        if (userService.isEmailAlreadyExists(bean.getEmail()) > 0) {
+            model.addAttribute("signupError", "이미 사용중인 이메일입니다.");
+            return "user/register";
+        }
+        if (userService.isNickNameAlreadyExists(bean.getNickname()) > 0) {
+            model.addAttribute("signupError", "이미 사용중인 닉네임입니다.");
+            return "user/register";
+        }
+        System.out.println(bean);
+        userService.insertOneUser(bean);
+        // 회원가입 성공 시 로그인 페이지로 리다이렉트
+        model.addAttribute("signupSuccess", "회원가입 성공! 로그인 해주세요.");
+        return "user/login";
+    }
+
+
+    @GetMapping("/check-userId")
+    @ResponseBody
+    public String checkUser(@RequestParam String userid) {
+        return userDao.isIdAlreadyExists(userid) > 0 ? "exists" : "available";
+    }
+
+    @GetMapping("/check-nickname")
+    @ResponseBody
+    public String checkNickname(@RequestParam String nickname) {
+        return userDao.isNickNameAlreadyExists(nickname) > 0 ? "exists" : "available";
+    }
+
+	@GetMapping("/check-email")
+	@ResponseBody
+	public String checkEmail(@RequestParam String email) {
+		return userDao.isEmailAlreadyExists(email) > 0 ? "exists" : "available";
+}
 }
