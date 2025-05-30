@@ -13,48 +13,49 @@ public class UserService {
 
 	@Autowired
 	SqlSessionFactory sqlSessionFactory;
-  
-  @Autowired
+
+	@Autowired
 	UserDao userDao;
-	
+
 	public UserVo selectByUser(String user, String password) {
 		return userDao.selectByUser(user, password);
 	}
-  
-  	public String findUserId(UserVo bean) {
-		
+
+	public String findUserId(UserVo bean) {
+
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			String findId = session.getMapper(UserDao.class).findUserId(bean);
-			
+
 			return findId;
 		}
 	}
 
 	public String findUserPw(UserVo bean) {
-		
+
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			String findPw = session.getMapper(UserDao.class).findUserPw(bean);
-			
+
 			return findPw;
 		}
 	}
-	
+
 	public int changeUserPw(String user, String password) {
-        return userDao.changeUserPw(user, password);
-    }
+		return userDao.changeUserPw(user, password);
+	}
 
-
-	public int isIdAlreadyExists(String user){
+	public int isIdAlreadyExists(String user) {
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			return session.getMapper(UserDao.class).isIdAlreadyExists(user);
 		}
 	}
-	public int isEmailAlreadyExists(String email){
+
+	public int isEmailAlreadyExists(String email) {
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			return session.getMapper(UserDao.class).isEmailAlreadyExists(email);
 		}
 	}
-	public int isNickNameAlreadyExists(String nickname){
+
+	public int isNickNameAlreadyExists(String nickname) {
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			return session.getMapper(UserDao.class).isNickNameAlreadyExists(nickname);
 		}
@@ -66,10 +67,5 @@ public class UserService {
 			session.commit();
 		}
 	}
-		
+
 }
-
-
-
-
-	

@@ -166,13 +166,14 @@
               th:onclick="'location.href=\'/posts/'+${bean.postId}+'\''"
             >
               <img
+			  	th:if="${bean.image}"
                 th:src="@{${bean.image}}"
                 class="card-img-top"
                 th:alt="${bean.title}"
               />
               <div class="card-body">
                 <h5 class="card-title" th:text="${bean.title}"></h5>
-                <p class="card-text" th:text="${bean.content}"></p>
+                <p class="card-text" th:utext="${bean.content}"></p>
               </div>
               <div class="card-footer">
                 <span class="card-author" th:text="${bean.nickname}"></span>
