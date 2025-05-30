@@ -27,7 +27,7 @@
     <nav th:replace="~{layout/header :: headerFrag}">네비게이션</nav>
 
     <div class="container">
-      <a href="#" class="back-button" id="backToList">
+      <a th:href="@{/posts}" class="back-button" id="backToList">
         <i class="bi bi-arrow-left"></i> 목록으로 돌아가기
       </a>
 
@@ -160,7 +160,8 @@
           ) {
             // 목록 페이지로 이동
             // window.location.href = 'index.html';
-            alert("목록 페이지로 이동합니다.");
+            alert("상세 페이지로 이동합니다.");
+			window.location.href = '/posts/' + [[${bean.postId}]];
           }
         });
     </script>
