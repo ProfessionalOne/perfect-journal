@@ -28,13 +28,11 @@ public class CommentService {
 	public void addComment(CommentVo comment, int targetGroupId) {
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			if (comment.getLevel() == 0) {
-				comment.setUserId(2);
 				comment.setGroupId(0);
 				session.getMapper(CommentDao.class).insertComment(comment);
 				comment.setGroupId(comment.getCommentId()); // 생성된 commentId를 groupId로 설정
 				session.getMapper(CommentDao.class).updateGroupId(comment.getCommentId(), comment.getGroupId());
 			} else {
-				comment.setUserId(2);
 				comment.setGroupId(targetGroupId);
 				session.getMapper(CommentDao.class).insertComment(comment);
 			}
