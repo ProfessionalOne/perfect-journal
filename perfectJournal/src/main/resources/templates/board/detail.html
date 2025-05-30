@@ -163,6 +163,7 @@
                 <div
                   th:id="'commentButtons-' + ${comment.commentId}"
                   class="comment-buttons-group"
+				  th:if="${!comment.isDeleted}"
                 >
                   <form
                     th:action="@{'/posts/' + ${bean.postId} + '/comments/' + ${comment.commentId}}"
@@ -187,7 +188,7 @@
                   </button>
                   <span
                     class="comment-date"
-                    th:text="${#dates.format(comment.createdAt, 'yyyy/MM/dd HH:mm')}"
+                    th:text="${#dates.format(comment.updatedAt, 'yyyy/MM/dd HH:mm')}"
                     >2023-11-01 14:23</span
                   >
                 </div>
@@ -200,10 +201,10 @@
                 th:id="'commentDisplay-' + ${comment.commentId}"
                 th:unless="${comment.isDeleted}"
               >
-                <div class="comment-text" th:text="${comment.content}">
+                <pre class="comment-text" th:text="${comment.content}">
                   저도 오늘 아침 맑은 하늘을 보고 기분이 좋아졌어요. 작은 것에
                   감사하는 마음이 중요한 것 같아요.
-                </div>
+                </pre>
                 <div class="comment-actions">
                   <button
                     th:if="${comment.level == 0}"

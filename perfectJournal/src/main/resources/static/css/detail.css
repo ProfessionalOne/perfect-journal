@@ -141,10 +141,15 @@
   font-size: 0.85rem;
 }
 
-.comment-text {
+.comment-text pre,
+pre.comment-text {
   font-size: 1rem;
   line-height: 1.6;
   margin-bottom: 1rem;
+  font-family: 'Pretendard', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  white-space: pre-wrap;  /* 줄바꿈+공백 보존, 줄넘침 시 자동 줄바꿈 */
+  word-break: break-all;  /* 긴 단어 잘라주기 */
+  overflow-x: auto;  /* 넘치면 스크롤 */
 }
 
 .comment-actions {
