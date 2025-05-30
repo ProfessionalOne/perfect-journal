@@ -143,7 +143,7 @@
             <li class="page-item" th:hidden="${endPage == totalPages}">
               <a
                 class="page-link bi bi-chevron-double-right"
-                th:href="@{/posts(page=${endPage}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
+                th:href="@{/posts(page=${endPage + 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
               ></a>
             </li>
           </ul>

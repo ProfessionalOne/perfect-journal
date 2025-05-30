@@ -268,7 +268,7 @@
                 <button
                   type="button"
                   class="btn btn-primary"
-                  onclick="window.location.href='login.html'"
+                  th:href="@{/users/login}"
                 >
                   로그인 페이지로 이동
                 </button>
@@ -278,10 +278,7 @@
         </div>
 
         <div class="mt-4 text-center">
-          <a
-            href="#"
-            class="text-decoration-none"
-            onclick="window.location.href='login.html'"
+          <a href="#" class="text-decoration-none" th:href="@{/users/login}"
             >로그인 페이지로 돌아가기</a
           >
         </div>
@@ -412,7 +409,7 @@
 
             const foundUserNumber = await response.text();
 
-            window.location.href = "/posts";
+            window.location.href = "/users/changePw";
           } catch (error) {
             console.error("비밀번호 찾기 오류:", error);
             alert("비밀번호 찾기 중 오류가 발생했습니다: " + error.message);

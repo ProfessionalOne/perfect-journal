@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>감사일기 - 회원가입</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT"
+      crossorigin="anonymous"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap");
+
+      body {
+        font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Roboto, sans-serif;
+        background-color: #f5f5f7;
+        color: #1d1d1f;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .signup-container {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.4) 0%,
+          rgba(255, 255, 255, 0.2) 100%
+        );
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        border-radius: 24px;
+        padding: 2rem;
+        width: 100%;
+        max-width: 450px;
+        margin: 2rem auto;
+      }
+
+      .bg-pattern {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.4;
+        background-image: radial-gradient(
+            circle at 25% 25%,
+            rgba(0, 113, 227, 0.2) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 75% 75%,
+            rgba(255, 149, 0, 0.2) 0%,
+            transparent 50%
+          );
+      }
+
+      .logo-icon {
+        filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.1));
+        width: 64px;
+        height: 64px;
+        margin-bottom: 1rem;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+
+      .floating {
+        animation: float 6s ease-in-out infinite;
+      }
+
+      .form-control {
+        background-color: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+      }
+
+      .form-control:focus {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.2);
+      }
+
+      .form-select {
+        background-color: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+      }
+
+      .form-select:focus {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.2);
+      }
+
+      .btn-primary {
+        background-color: #0d6efd;
+        border: none;
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        background-color: #0b5ed7;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(13, 110, 253, 0.4);
+      }
+
+      .form-text {
+        font-size: 0.75rem;
+        margin-top: 0.25rem;
+        margin-left: 0.5rem;
+      }
+
+      .progress {
+        height: 4px;
+        background-color: #e0e0e0;
+        border-radius: 2px;
+        margin-top: 0.5rem;
+        overflow: hidden;
+      }
+
+      .progress-bar {
+        height: 100%;
+        background-color: #0d6efd;
+        border-radius: 2px;
+        transition: width 0.3s ease;
+      }
+
+      .form-check-input:checked {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+      }
+
+      .form-control.is-valid {
+        border-color: #198754;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right calc(0.375em + 0.1875rem) center;
+        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+      }
+
+      .form-control.is-invalid {
+        border-color: #dc3545;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right calc(0.375em + 0.1875rem) center;
+        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+      }
+
+      .modal-content {
+        border-radius: 1rem;
+        box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.1);
+        background-color: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        border: none;
+      }
+
+      .modal-header {
+        border-bottom: none;
+        padding: 1.5rem 2rem 0.5rem 2rem;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .modal-header .modal-title {
+        color: #1d1d1f;
+        font-weight: 600;
+        font-size: 1.35rem;
+        margin-top: 0.5rem;
+      }
+
+      .modal-header .modal-title i {
+        font-size: 2.5rem;
+        color: #0d6efd;
+        margin-bottom: 0.5rem;
+      }
+
+      .modal-header .btn-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%236c757d'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e");
+        opacity: 0.7;
+        padding: 0.5rem;
+        transition: opacity 0.2s ease;
+      }
+      .modal-header .btn-close:hover {
+        opacity: 1;
+      }
+
+      .modal-body {
+        padding: 1rem 2rem 2rem 2rem;
+        text-align: center;
+        color: #4a4a4a;
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+
+      .modal-footer {
+        border-top: none;
+        padding: 0 2rem 2rem 2rem;
+        display: flex;
+        justify-content: center;
+      }
+
+      .modal-footer .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: #fff;
+        border-radius: 0.75rem;
+        padding: 0.7rem 2rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+      .modal-footer .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-pattern"></div>
+
+    <div class="container">
+      <div class="signup-container">
+        <div class="text-center mb-4">
+          <div class="d-inline-block">
+            <svg
+              class="logo-icon floating"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M18.7101 19.5C17.8801 20.74 17.0001 21.95 15.6601 21.97C14.3201 22 13.8901 21.18 12.3701 21.18C10.8501 21.18 10.3701 21.95 9.10005 22C7.79005 22.05 6.80005 20.68 5.96005 19.47C4.25005 17 2.94005 12.45 4.70005 9.39C5.57005 7.87 7.13005 6.91 8.82005 6.88C10.1001 6.86 11.3201 7.75 12.1101 7.75C12.8901 7.75 14.3701 6.68 15.9201 6.84C16.5701 6.87 18.3901 7.1 19.5601 8.82C19.4701 8.88 17.3901 10.1 17.4101 12.63C17.4401 15.65 20.0601 16.66 20.0901 16.67C20.0601 16.74 19.6701 18.11 18.7101 19.5ZM13.0001 3.5C13.7301 2.67 14.9401 2.04 15.9401 2C16.0701 3.17 15.6001 4.35 14.9001 5.19C14.2101 6.04 13.0701 6.7 11.9501 6.61C11.8001 5.46 12.2701 4.35 13.0001 3.5Z"
+                fill="#0d6efd"
+              />
+            </svg>
+          </div>
+          <h1 class="fs-2 fw-bold">감사일기</h1>
+          <p class="text-secondary mt-2">회원가입</p>
+        </div>
+
+        <form id="signupForm" th:action="@{/users/signup}" method="post">
+          <div class="mb-3">
+            <label for="username" class="form-label"
+              >아이디 <span class="text-danger">*</span></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="username"
+              maxlength="15"
+              placeholder="아이디"
+              name="user"
+              required
+            />
+            <div class="form-text" id="username-feedback">
+              대소문자, 숫자 포함 8자 이상 15자 이하(공백 미포함)입니다.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label"
+              >비밀번호 <span class="text-danger">*</span></label
+            >
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              placeholder="비밀번호"
+              required
+            />
+            <div class="progress mt-2">
+              <div
+                class="progress-bar"
+                id="password-strength"
+                role="progressbar"
+                style="width: 0%"
+              ></div>
+            </div>
+            <div class="form-text" id="password-feedback">
+              대소문자, 숫자, 특수문자 1개 이상 포함하여 8자 이상입니다.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="password-confirm" class="form-label"
+              >비밀번호 확인 <span class="text-danger">*</span></label
+            >
+            <input
+              type="password"
+              class="form-control"
+              name="password-confirm"
+              id="password-confirm"
+              placeholder="비밀번호를 다시 입력하세요"
+              required
+            />
+            <div class="form-text" id="password-confirm-feedback"></div>
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label"
+              >이메일 <span class="text-danger">*</span></label
+            >
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              placeholder="아이디/비밀번호 찾기를 위해 이메일을 정확하게 입력해주세요."
+              required
+            />
+            <div class="form-text" id="email-feedback"></div>
+          </div>
+
+          <div class="mb-3">
+            <label for="nickname" class="form-label"
+              >닉네임 <span class="text-danger">*</span></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="nickname"
+              name="nickname"
+              maxlength="12"
+              placeholder="닉네임"
+              required
+            />
+            <div class="form-text" id="nickname-feedback">
+              한글, 영문자, 숫자 가능 12자 이하로 작성해주세요.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="security-question" class="form-label"
+              >본인 확인용 질문 <span class="text-danger">*</span></label
+            >
+            <select
+              class="form-select"
+              id="security-question"
+              name="question"
+              required
+            >
+              <option value="" disabled selected>질문을 선택하세요</option>
+              <option value="1">내가 태어난 곳은?</option>
+              <option value="2">나의 보물 1호는?</option>
+              <option value="3">내가 다닌 초등학교 이름은?</option>
+              <option value="4">내가 좋아하는 음식은?</option>
+              <option value="5">내가 존경하는 인물은?</option>
+              <option value="6">어머니 성함은?</option>
+              <option value="7">아버지 성함은?</option>
+              <option value="8">내가 가장 가고싶은 도시는?</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label for="security-answer" class="form-label"
+              >본인 확인용 답변 <span class="text-danger">*</span></label
+            >
+            <input
+              name="answer"
+              type="text"
+              class="form-control"
+              id="security-answer"
+              maxlength="10"
+              placeholder="한글, 영문자, 숫자 가능 10자 이하"
+              required
+            />
+            <div class="form-text">
+              비밀번호 찾기에 사용되니 10자 이하 기억하기 쉬운 답변으로
+              입력해주세요.
+            </div>
+          </div>
+
+          <div class="d-grid mb-4">
+            <button type="submit" id="signup-btn" class="btn btn-primary">
+              회원가입
+            </button>
+          </div>
+
+          <div class="text-center">
+            <span class="text-secondary">이미 계정이 있으신가요?</span>
+            <a th:href="@{/users/login}" class="text-decoration-none ms-1"
+              >로그인하기</a
+            >
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div
+      th:if="${signupSuccess}"
+      class="modal fade"
+      id="signupErrorModal"
+      tabindex="-1"
+      aria-labelledby="signupErrorModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <i class="ri-information-line"></i>
+            <h5 class="modal-title" id="signupErrorModalLabel">안내</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" th:text="${signupSuccess}"></div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              th:onclick="'location.href=\'/users/login\''"
+              data-bs-dismiss="modal"
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      th:if="${signupError}"
+      class="modal fade"
+      id="signupErrorModal"
+      tabindex="-1"
+      aria-labelledby="signupErrorModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <i class="ri-information-line"></i>
+            <h5 class="modal-title" id="signupErrorModalLabel">
+              회원가입 안내
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" th:text="${signupError}"></div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const signupErrorModalElement =
+          document.getElementById("signupErrorModal");
+        if (signupErrorModalElement) {
+          const signupErrorModal = new bootstrap.Modal(signupErrorModalElement);
+          signupErrorModal.show();
+        }
+      });
+
+      // 비밀번호 강도 표시 기능
+      const passwordInput = document.getElementById("password");
+      const passwordStrength = document.getElementById("password-strength");
+      const passwordFeedback = document.getElementById("password-feedback");
+
+      passwordInput.addEventListener("input", function () {
+        const password = this.value;
+        let strength = 0;
+
+        // 길이 체크
+        if (password.length >= 8) strength += 25;
+
+        // 대문자 체크
+        if (/[A-Z]/.test(password)) strength += 25;
+
+        // 소문자 체크
+        if (/[a-z]/.test(password)) strength += 25;
+
+        // 숫자 체크
+        if (/[0-9]/.test(password)) strength += 12.5;
+
+        // 특수문자 체크
+        if (/[^A-Za-z0-9]/.test(password)) strength += 12.5;
+
+        passwordStrength.style.width = `${strength}%`;
+
+        // 강도에 따른 색상 변경
+        if (strength < 30) {
+          passwordStrength.className = "progress-bar bg-danger";
+          passwordFeedback.className = "form-text text-danger";
+          passwordFeedback.textContent = "비밀번호가 너무 약합니다";
+        } else if (strength < 60) {
+          passwordStrength.className = "progress-bar bg-warning";
+          passwordFeedback.className = "form-text text-warning";
+          passwordFeedback.textContent = "비밀번호가 적당합니다";
+        } else {
+          passwordStrength.className = "progress-bar bg-success";
+          passwordFeedback.className = "form-text text-success";
+          passwordFeedback.textContent = "비밀번호가 안전합니다";
+        }
+      });
+
+      // 비밀번호 확인 일치 체크
+      const passwordConfirmInput = document.getElementById("password-confirm");
+      const passwordConfirmFeedback = document.getElementById(
+        "password-confirm-feedback"
+      );
+
+      passwordConfirmInput.addEventListener("input", function () {
+        if (this.value === passwordInput.value) {
+          this.classList.add("is-valid");
+          this.classList.remove("is-invalid");
+          passwordConfirmFeedback.className = "form-text text-success";
+          passwordConfirmFeedback.textContent = "비밀번호가 일치합니다";
+        } else {
+          this.classList.add("is-invalid");
+          this.classList.remove("is-valid");
+          passwordConfirmFeedback.className = "form-text text-danger";
+          passwordConfirmFeedback.textContent = "비밀번호가 일치하지 않습니다";
+        }
+      });
+
+      // 아이디 유효성 체크
+      const usernameInput = document.getElementById("username");
+      const usernameFeedback = document.getElementById("username-feedback");
+
+      usernameInput.addEventListener("input", function () {
+        const username = this.value;
+        const isValid = /^[A-Za-z0-9]{8,15}$/.test(username);
+
+        if (isValid) {
+          this.classList.add("is-valid");
+          this.classList.remove("is-invalid");
+          usernameFeedback.className = "form-text text-success";
+          usernameFeedback.textContent = "사용 가능한 아이디입니다";
+        } else {
+          this.classList.add("is-invalid");
+          this.classList.remove("is-valid");
+          usernameFeedback.className = "form-text text-danger";
+          usernameFeedback.textContent = "영문, 숫자 8-15자로 입력해주세요";
+        }
+      });
+
+      // 닉네임 유효성 체크
+      const nicknameInput = document.getElementById("nickname");
+      const nicknameFeedback = document.getElementById("nickname-feedback");
+
+      nicknameInput.addEventListener("input", function () {
+        const nickname = this.value;
+
+        if (nickname.length >= 2 && nickname.length <= 12) {
+          this.classList.add("is-valid");
+          this.classList.remove("is-invalid");
+          nicknameFeedback.className = "form-text text-success";
+          nicknameFeedback.textContent = "사용 가능한 닉네임입니다";
+        } else {
+          this.classList.add("is-invalid");
+          this.classList.remove("is-valid");
+          nicknameFeedback.className = "form-text text-danger";
+          nicknameFeedback.textContent =
+            "12자 이내로 한글, 영문, 숫자만 활용하여 입력해주세요";
+        }
+      });
+
+      // 이메일 유효성 체크
+      const emailInput = document.getElementById("email");
+      const emailFeedback = document.getElementById("email-feedback");
+
+      emailInput.addEventListener("input", function () {
+        const email = this.value;
+        const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+        if (isValid) {
+          this.classList.add("is-valid");
+          this.classList.remove("is-invalid");
+          emailFeedback.className = "form-text text-success";
+          emailFeedback.textContent = "유효한 이메일 형식입니다";
+        } else {
+          this.classList.add("is-invalid");
+          this.classList.remove("is-valid");
+          emailFeedback.className = "form-text text-danger";
+          emailFeedback.textContent = "유효한 이메일 주소를 입력해주세요";
+        }
+      });
+
+      // 회원가입 버튼 클릭 이벤트
+      // const signupButton = document.getElementById("signup-btn");
+      // const signupForm = document.getElementById("signupForm");
+
+      // signupForm.addEventListener("submit", function (event) {
+      //   event.preventDefault();
+
+      //   // 필수 입력값 검증
+      //   const username = document.getElementById("username").value;
+      //   const password = document.getElementById("password").value;
+      //   const passwordConfirm =
+      //     document.getElementById("password-confirm").value;
+      //   const email = document.getElementById("email").value;
+      //   const nickname = document.getElementById("nickname").value;
+      //   const securityQuestion =
+      //     document.getElementById("security-question").value;
+      //   const securityAnswer = document.getElementById("security-answer").value;
+
+      //   if (
+      //     !username ||
+      //     !password ||
+      //     !passwordConfirm ||
+      //     !email ||
+      //     !nickname ||
+      //     !securityQuestion ||
+      //     !securityAnswer
+      //   ) {
+      //     showMessageModal("모든 필수 항목을 입력해주세요.");
+      //     return;
+      //   }
+
+      //   if (password !== passwordConfirm) {
+      //     showMessageModal("비밀번호가 일치하지 않습니다.");
+      //     return;
+      //   }
+
+      //   const isUsernameValid = /^[A-Za-z0-9]{8,15}$/.test(username);
+      //   const isPasswordStrongEnough =
+      //     password.length >= 8 &&
+      //     /[A-Z]/.test(password) &&
+      //     /[a-z]/.test(password) &&
+      //     /[0-9]/.test(password) &&
+      //     /[^A-Za-z0-9]/.test(password);
+      //   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      //   const isNicknameValid = nickname.length >= 2 && nickname.length <= 12;
+
+      //   if (!isUsernameValid) {
+      //     showMessageModal("아이디 형식이 올바르지 않습니다.");
+      //     return;
+      //   }
+      //   if (!isPasswordStrongEnough) {
+      //     showMessageModal("비밀번호 강도 요구사항을 충족하지 못했습니다.");
+      //     return;
+      //   }
+      //   if (!isEmailValid) {
+      //     showMessageModal("이메일 형식이 올바르지 않습니다.");
+      //     return;
+      //   }
+      //   if (!isNicknameValid) {
+      //     showMessageModal("닉네임 형식이 올바르지 않습니다.");
+      //     return;
+      //   }
+
+      //   showMessageModal("회원가입이 완료되었습니다!");
+      // });
+    </script>
+  </body>
+</html>

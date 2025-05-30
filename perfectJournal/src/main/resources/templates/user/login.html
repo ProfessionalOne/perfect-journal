@@ -6,8 +6,10 @@
     <title>감사일기 - 로그인</title>
     <!-- Bootstrap CSS -->
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css"
       rel="stylesheet"
+      integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT"
+      crossorigin="anonymous"
     />
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap");
@@ -201,13 +203,80 @@
         font-size: 0.875rem;
       }
 
-      .footer {
+      .modal-content {
+        border-radius: 1rem;
+        box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.1);
+        background-color: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        border: none;
+      }
+
+      .modal-header {
+        border-bottom: none;
+        padding: 1.5rem 2rem 0.5rem 2rem;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .modal-header .modal-title {
+        color: #1d1d1f;
+        font-weight: 600;
+        font-size: 1.35rem;
+        margin-top: 0.5rem;
+      }
+
+      .modal-header .modal-title i {
+        font-size: 2.5rem;
+        color: #0d6efd;
+        margin-bottom: 0.5rem;
+      }
+
+      .modal-header .btn-close {
         position: absolute;
-        bottom: 1rem;
-        width: 100%;
+        top: 1rem;
+        right: 1rem;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%236c757d'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e");
+        opacity: 0.7;
+        padding: 0.5rem;
+        transition: opacity 0.2s ease;
+      }
+      .modal-header .btn-close:hover {
+        opacity: 1;
+      }
+
+      .modal-body {
+        padding: 1rem 2rem 2rem 2rem;
         text-align: center;
-        font-size: 0.75rem;
-        color: #6c757d;
+        color: #4a4a4a;
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+
+      .modal-footer {
+        border-top: none;
+        padding: 0 2rem 2rem 2rem;
+        display: flex;
+        justify-content: center;
+      }
+
+      .modal-footer .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: #fff;
+        border-radius: 0.75rem;
+        padding: 0.7rem 2rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+      .modal-footer .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       }
     </style>
   </head>
@@ -274,178 +343,70 @@
 
           <div class="d-flex justify-content-between mb-4">
             <a
-              href="find-account.html"
+              th:href="@{/users/find}"
               class="text-decoration-none text-secondary small"
               >아이디/비밀번호 찾기</a
             >
             <a
-              href="signup.html"
+              th:href="@{/users/signup}"
               class="text-decoration-none text-secondary small"
               >회원가입</a
             >
           </div>
-<!-- 
-          <div class="divider">
-            <div class="divider-line"></div>
-            <div class="divider-text">간편 로그인</div>
-            <div class="divider-line"></div>
-          </div>
-
-          <div class="social-login">
-            <button type="button" class="social-login-btn btn-kakao">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M9 0.5C4.30375 0.5 0.5 3.32375 0.5 6.8C0.5 9.0175 2.05313 10.9529 4.35125 12.0358L3.26938 15.6208C3.2025 15.8458 3.44938 16.0271 3.64938 15.9033L7.95125 13.1483C8.29 13.1771 8.63938 13.1917 9 13.1917C13.6963 13.1917 17.5 10.3679 17.5 6.8C17.5 3.32375 13.6963 0.5 9 0.5Z"
-                  fill="black"
-                />
-              </svg>
-              <span>카카오로 로그인</span>
-            </button>
-
-            <button type="button" class="social-login-btn btn-naver">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12.2825 9.52893L5.54443 0H0V18H5.71557V8.47107L12.4536 18H18V0H12.2825V9.52893Z"
-                  fill="white"
-                />
-              </svg>
-              <span>네이버로 로그인</span>
-            </button>
-
-            <button type="button" class="social-login-btn btn-google">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M17.64 9.20455C17.64 8.56636 17.5827 7.95273 17.4764 7.36364H9V10.845H13.8436C13.635 11.97 13.0009 12.9232 12.0477 13.5614V15.8195H14.9564C16.6582 14.2527 17.64 11.9455 17.64 9.20455Z"
-                  fill="#4285F4"
-                />
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M9 18C11.43 18 13.4673 17.1941 14.9564 15.8195L12.0477 13.5614C11.2418 14.1014 10.2109 14.4205 9 14.4205C6.65591 14.4205 4.67182 12.8373 3.96409 10.71H0.957275V13.0418C2.43818 15.9832 5.48182 18 9 18Z"
-                  fill="#34A853"
-                />
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M3.96409 10.71C3.78409 10.17 3.68182 9.59318 3.68182 9C3.68182 8.40682 3.78409 7.83 3.96409 7.29V4.95818H0.957273C0.347727 6.17318 0 7.54773 0 9C0 10.4523 0.347727 11.8268 0.957273 13.0418L3.96409 10.71Z"
-                  fill="#FBBC05"
-                />
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M9 3.57955C10.3214 3.57955 11.5077 4.03364 12.4405 4.92545L15.0218 2.34409C13.4632 0.891818 11.4259 0 9 0C5.48182 0 2.43818 2.01682 0.957275 4.95818L3.96409 7.29C4.67182 5.16273 6.65591 3.57955 9 3.57955Z"
-                  fill="#EA4335"
-                />
-              </svg>
-              <span>Google로 로그인</span>
-            </button>
-          </div>
         </form>
       </div>
-    </div> -->
+    </div>
 
-    <div class="footer">© 2025 감사일기. All rights reserved.</div>
+    <div
+      th:if="${error}"
+      class="modal fade"
+      id="signupErrorModal"
+      tabindex="-1"
+      aria-labelledby="signupErrorModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <i class="ri-information-line"></i>
+            <h5 class="modal-title" id="signupErrorModalLabel">로그인 안내</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" th:text="${error}"></div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
-      // 로그인 버튼 클릭 이벤트
-      document
-        .getElementById("login-btn")
-        .addEventListener("click", function () {
-          const user = document.getElementById("user").value;
-          const password = document.getElementById("password").value;
-
-          // 입력값 검증
-          if (!user || !password) {
-            alert("아이디와 비밀번호를 모두 입력해주세요.");
-            return;
-          }
-
-          // 로그인 처리 (실제로는 서버 통신)
-          console.log("로그인 시도:", { user, password });
-
-          // 임시 알림
-          alert("로그인 성공! 메인 페이지로 이동합니다.");
-        });
-
-      // 소셜 로그인 버튼 클릭 이벤트
-      // const socialButtons = document.querySelectorAll(".social-login-btn");
-      // socialButtons.forEach((button) => {
-      //   button.addEventListener("click", function () {
-      //     const provider = this.classList.contains("btn-kakao")
-      //       ? "카카오"
-      //       : this.classList.contains("btn-naver")
-      //       ? "네이버"
-      //       : "Google";
-
-      //     // 소셜 로그인 처리 (실제로는 각 플랫폼 OAuth 연동)
-      //     console.log(`${provider} 로그인 시도`);
-
-      //     // 임시 알림
-      //     alert(
-      //       `${provider} 로그인 시도 중입니다. 실제 환경에서는 ${provider} 인증 페이지로 이동합니다.`
-      //     );
-      //   });
-      // });
-    </script>
-    <script>
-      (function () {
-        function c() {
-          var b = a.contentDocument || a.contentWindow.document;
-          if (b) {
-            var d = b.createElement("script");
-            d.innerHTML =
-              "window.__CF$cv$params={r:'9473c5d616313063',t:'MTc0ODQ5ODQ0MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
-            b.getElementsByTagName("head")[0].appendChild(d);
-          }
+      document.addEventListener("DOMContentLoaded", function () {
+        const signupErrorModalElement =
+          document.getElementById("signupErrorModal");
+        if (signupErrorModalElement) {
+          const signupErrorModal = new bootstrap.Modal(signupErrorModalElement);
+          signupErrorModal.show();
         }
-        if (document.body) {
-          var a = document.createElement("iframe");
-          a.height = 1;
-          a.width = 1;
-          a.style.position = "absolute";
-          a.style.top = 0;
-          a.style.left = 0;
-          a.style.border = "none";
-          a.style.visibility = "hidden";
-          document.body.appendChild(a);
-          if ("loading" !== document.readyState) c();
-          else if (window.addEventListener)
-            document.addEventListener("DOMContentLoaded", c);
-          else {
-            var e = document.onreadystatechange || function () {};
-            document.onreadystatechange = function (b) {
-              e(b);
-              "loading" !== document.readyState &&
-                ((document.onreadystatechange = e), c());
-            };
-          }
-        }
-      })();
+      });
     </script>
   </body>
 </html>
