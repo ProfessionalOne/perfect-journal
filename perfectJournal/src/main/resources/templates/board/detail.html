@@ -1,368 +1,253 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>감사일기 - 상세 페이지</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
-    />
-    <link
-      rel="stylesheet"
-      th:href="@{/css/common.css}"
-      href="../static/css/common.css"
-    />
-    <link
-      rel="stylesheet"
-      th:href="@{/css/detail.css}"
-      href="../static/css/detail.css"
-    />
-  </head>
-  <body>
-    <nav th:replace="~{layout/header :: headerFrag}">네비게이션</nav>
 
-    <div class="container">
-      <a th:href="@{/posts}" class="back-button" id="backToList">
-        <i class="bi bi-arrow-left"></i> 목록으로 돌아가기
-      </a>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>감사일기 - 상세 페이지</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+	<link rel="stylesheet" th:href="@{/css/common.css}" href="../static/css/common.css" />
+	<link rel="stylesheet" th:href="@{/css/detail.css}" href="../static/css/detail.css" />
+</head>
 
-      <div class="post-container">
-        <div id="postDisplay">
-          <div class="post-header">
-            <h1 class="post-title" id="postTitle" th:text="${bean.title}">
-              오늘의 감사한 순간
-            </h1>
-            <div class="post-meta">
-              <span
-                class="post-author"
-                id="postAuthor"
-                th:text="${bean.nickname}"
-                >김감사</span
-              >
-              <span
-                class="post-date"
-                id="postDate"
-                th:text="${#dates.format(bean.createdAt, 'yyyy/MM/dd HH:mm')}"
-                >2023-11-01 11:11</span
-              >
-            </div>
-          </div>
-          <div th:hidden="${bean.image}" class="d-flex justify-content-center">
-            <img
-              th:src="${bean.image}"
-              alt="${bean.title}"
-              class="post-image"
-            />
-          </div>
-          <div class="post-content mt-4" id="postContent">
-            <pre
-              th:text="${bean.content}"
-              style="white-space: pre-wrap; word-break: break-word"
-              class="content"
-            >
-감사데스\n오늘도감사감사링</pre
-            >
-          </div>
-          <div class="d-flex justify-content-between">
-            <form
-              th:action="@{'/posts/' + ${bean.postId}}"
-              method="post"
-              onsubmit="return confirm('정말로 이 게시글을 삭제하시겠습니까?');"
-            >
-              <input type="hidden" name="_method" value="delete" />
-              <button type="submit" class="btn btn-danger">삭제하기</button>
-            </form>
-            <button
-              class="btn btn-primary"
-              id="editPostButton"
-              th:onclick="'location.href =\'/posts/' + ${bean.postId} + '/edit\''"
-            >
-              수정하기
-            </button>
-          </div>
-        </div>
+<body>
+	<nav th:replace="~{layout/header :: headerFrag}">네비게이션</nav>
 
-        <div id="editPostForm" style="display: none; margin-top: 20px">
-          <form th:action="@{'/posts/' + ${bean.postId}}" method="post">
-            <input type="hidden" name="_method" value="put" />
+	<div class="container">
+		<a th:href="@{/posts}" class="back-button" id="backToList">
+			<i class="bi bi-arrow-left"></i> 목록으로 돌아가기
+		</a>
 
-            <div class="mb-3">
-              <label for="editTitle" class="form-label">제목</label>
-              <input
-                type="text"
-                class="form-control"
-                id="editTitle"
-                name="title"
-                th:value="${bean.title}"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="editContent" class="form-label">내용</label>
-              <textarea
-                class="form-control"
-                id="editContent"
-                name="content"
-                rows="10"
-                th:text="${bean.content}"
-              ></textarea>
-            </div>
-            <button type="submit" class="btn btn-success">수정 완료</button>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              id="cancelPostEditButton"
-            >
-              취소
-            </button>
-          </form>
-        </div>
-      </div>
+		<div class="post-container">
+			<div id="postDisplay">
+				<div class="post-header">
+					<h1 class="post-title" id="postTitle" th:text="${bean.title}">
+						오늘의 감사한 순간
+					</h1>
+					<div class="post-meta">
+						<span class="post-author" id="postAuthor" th:text="${bean.nickname}">김감사</span>
+						<span class="post-date" id="postDate"
+							th:text="${#dates.format(bean.createdAt, 'yyyy/MM/dd HH:mm')}">2023-11-01 11:11</span>
+					</div>
+				</div>
+				<div th:if="${bean.image}" class="d-flex justify-content-center">
+					<img th:src="${bean.image}" alt="${bean.title}" class="post-image" />
+				</div>
+				<div class="post-content mt-4" id="postContent">
+					<div th:utext="${bean.content}" class="content">
+						감사데스\n오늘도감사감사링</div>
+				</div>
+				<div class="d-flex justify-content-between">
+					<form th:action="@{'/posts/' + ${bean.postId}}" method="post"
+						onsubmit="return confirm('정말로 이 게시글을 삭제하시겠습니까?');">
+						<input type="hidden" name="_method" value="delete" />
+						<button type="submit" class="btn btn-danger">삭제하기</button>
+					</form>
+					<button class="btn btn-primary" id="editPostButton"
+						th:onclick="'location.href =\'/posts/' + ${bean.postId} + '/edit\''">
+						수정하기
+					</button>
+				</div>
+			</div>
 
-      <div class="comments-section">
-        <h2 class="comments-title">
-          댓글
-          <span
-            class="comments-count"
-            id="commentsCount"
-            th:text="${#lists.size(commentsList)}"
-          ></span>
-        </h2>
+			
+		</div>
 
-        <form
-          class="comment-form"
-          th:action="@{'/posts/' + ${bean.postId} +'/comments'}"
-          method="post"
-        >
-          <input type="hidden" name="level" value="0" />
-          <textarea
-            name="content"
-            class="form-control comment-input"
-            rows="3"
-            placeholder="댓글을 작성해주세요..."
-          ></textarea>
-          <button class="btn btn-comment" type="submit">댓글 작성</button>
-          <div class="clearfix"></div>
-        </form>
+		<div class="comments-section">
+			<h2 class="comments-title">
+				댓글
+				<span class="comments-count" id="commentsCount" th:text="${#lists.size(commentsList)}"></span>
+			</h2>
 
-        <div class="comments-list" id="commentsList">
-          <div th:each="comment : ${commentsList}" class="comment-wrapper">
-            <div
-              class="comment-item"
-              th:classappend="${comment.level > 0 ? 'reply-item' : ''}"
-              th:style="${'margin-left: ' + (comment.level * 20) + 'px;'}"
-            >
-              <div class="comment-header d-flex justify-content-between">
-                <div class="comment-author" th:text="${comment.nickname}">
-                  이행복
-                </div>
-                <div
-                  th:id="'commentButtons-' + ${comment.commentId}"
-                  class="comment-buttons-group"
-                >
-                  <form
-                    th:action="@{'/posts/' + ${bean.postId} + '/comments/' + ${comment.commentId}}"
-                    method="post"
-                    style="display: inline-block"
-                    onsubmit="return confirm('정말로 이 댓글을 삭제하시겠습니까?');"
-                  >
-                    <input type="hidden" name="_method" value="delete" />
-                    <button
-                      type="submit"
-                      class="btn btn-danger btn-sm delete-comment-button"
-                    >
-                      삭제
-                    </button>
-                  </form>
-                  <button
-                    class="btn btn-primary btn-sm edit-comment-button"
-                    th:data-comment-id="${comment.commentId}"
-                    th:data-comment-content="${comment.content}"
-                  >
-                    수정
-                  </button>
-                  <span
-                    class="comment-date"
-                    th:text="${#dates.format(comment.createdAt, 'yyyy/MM/dd HH:mm')}"
-                    >2023-11-01 14:23</span
-                  >
-                </div>
-              </div>
-              <div th:if="${comment.isDeleted}">
-                <em style="color: gray">삭제된 댓글입니다.</em>
-              </div>
-              <div
-                class="comment-content-and-actions"
-                th:id="'commentDisplay-' + ${comment.commentId}"
-                th:unless="${comment.isDeleted}"
-              >
-                <div class="comment-text" th:text="${comment.content}">
-                  저도 오늘 아침 맑은 하늘을 보고 기분이 좋아졌어요. 작은 것에
-                  감사하는 마음이 중요한 것 같아요.
-                </div>
-                <div class="comment-actions">
-                  <button
-                    th:if="${comment.level == 0}"
-                    class="btn-reply"
-                    th:data-comment-id="${comment.commentId}"
-                  >
-                    <i class="bi bi-reply"></i> 답글 달기
-                  </button>
-                </div>
-              </div>
+			<form class="comment-form" th:action="@{'/posts/' + ${bean.postId} +'/comments'}" method="post">
+				<input type="hidden" name="level" value="0" />
+				<textarea name="content" class="form-control comment-input" rows="3"
+					placeholder="댓글을 작성해주세요..."></textarea>
+				<button class="btn btn-comment" type="submit">댓글 작성</button>
+				<div class="clearfix"></div>
+			</form>
 
-              <form
-                th:id="'editCommentForm-' + ${comment.commentId}"
-                class="edit-comment-form"
-                th:style="${'display: none; margin-left: ' + (comment.level * 20) + 'px;'}"
-                th:action="@{'/posts/' + ${bean.postId} + '/comments/' + ${comment.commentId}}"
-                method="post"
-              >
-                <input type="hidden" name="_method" value="put" />
-                <textarea
-                  class="form-control comment-edit-input"
-                  rows="2"
-                  name="content"
-                  th:id="'editCommentContent-' + ${comment.commentId}"
-                ></textarea>
-                <div class="d-flex justify-content-end mt-2">
-                  <button type="submit" class="btn btn-success btn-sm me-2">
-                    수정 완료
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-secondary btn-sm cancel-comment-edit"
-                    th:data-comment-id="${comment.commentId}"
-                  >
-                    취소
-                  </button>
-                </div>
-              </form>
+			<div class="comments-list" id="commentsList">
+				<div th:each="comment : ${commentsList}" class="comment-wrapper">
+					<div class="comment-item" th:classappend="${comment.level > 0 ? 'reply-item' : ''}"
+						th:style="${'margin-left: ' + (comment.level * 20) + 'px;'}">
+						<div class="comment-header d-flex justify-content-between">
+							<div class="comment-author" th:text="${comment.nickname}">
+								이행복
+							</div>
+							<div th:id="'commentButtons-' + ${comment.commentId}" class="comment-buttons-group">
+								<form th:action="@{'/posts/' + ${bean.postId} + '/comments/' + ${comment.commentId}}"
+									method="post" style="display: inline-block"
+									onsubmit="return confirm('정말로 이 댓글을 삭제하시겠습니까?');">
+									<input type="hidden" name="_method" value="delete" />
+									<button type="submit" class="btn btn-danger btn-sm delete-comment-button">
+										삭제
+									</button>
+								</form>
+								<button class="btn btn-primary btn-sm edit-comment-button"
+									th:data-comment-id="${comment.commentId}"
+									th:data-comment-content="${comment.content}">
+									수정
+								</button>
+								<span class="comment-date"
+									th:text="${#dates.format(comment.createdAt, 'yyyy/MM/dd HH:mm')}">2023-11-01
+									14:23</span>
+							</div>
+						</div>
+						<div th:if="${comment.isDeleted}">
+							<em style="color: gray">삭제된 댓글입니다.</em>
+						</div>
+						<div class="comment-content-and-actions" th:id="'commentDisplay-' + ${comment.commentId}"
+							th:unless="${comment.isDeleted}">
+							<div class="comment-text" th:text="${comment.content}">
+								저도 오늘 아침 맑은 하늘을 보고 기분이 좋아졌어요. 작은 것에
+								감사하는 마음이 중요한 것 같아요.
+							</div>
+							<div class="comment-actions">
+								<button th:if="${comment.level == 0}" class="btn-reply"
+									th:data-comment-id="${comment.commentId}">
+									<i class="bi bi-reply"></i> 답글 달기
+								</button>
+							</div>
+						</div>
 
-              <form
-                class="reply-form"
-                th:id="'replyForm-' + ${comment.commentId}"
-                th:style="${'margin-left: ' + ((comment.level + 1) * 20) + 'px;'}"
-                th:action="@{'/posts/' + ${bean.postId}+'/comments'}"
-                method="post"
-              >
-                <input type="hidden" name="level" value="1" />
-                <input
-                  type="hidden"
-                  name="groupId"
-                  th:value="${comment.commentId}"
-                />
-                <textarea
-                  class="form-control comment-input"
-                  rows="2"
-                  placeholder="답글을 작성해주세요..."
-                  name="content"
-                ></textarea>
-                <button
-                  class="btn btn-comment btn-sm btn-submit-reply"
-                  th:data-parent-id="${comment.commentId}"
-                  type="submit"
-                >
-                  답글 작성
-                </button>
-                <div class="clearfix"></div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+						<form th:id="'editCommentForm-' + ${comment.commentId}" class="edit-comment-form"
+							th:style="${'display: none; margin-left: ' + (comment.level * 20) + 'px;'}"
+							th:action="@{'/posts/' + ${bean.postId} + '/comments/' + ${comment.commentId}}"
+							method="post">
+							<input type="hidden" name="_method" value="put" />
+							<textarea class="form-control comment-edit-input" rows="2" name="content"
+								th:id="'editCommentContent-' + ${comment.commentId}"></textarea>
+							<div class="d-flex justify-content-end mt-2">
+								<button type="submit" class="btn btn-success btn-sm me-2">
+									수정 완료
+								</button>
+								<button type="button" class="btn btn-secondary btn-sm cancel-comment-edit"
+									th:data-comment-id="${comment.commentId}">
+									취소
+								</button>
+							</div>
+						</form>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      document.querySelectorAll(".btn-reply").forEach((button) => {
-        button.addEventListener("click", function () {
-          const commentId = this.dataset.commentId;
-          const replyForm = document.getElementById(`replyForm-${commentId}`);
+						<form class="reply-form" th:id="'replyForm-' + ${comment.commentId}"
+							th:style="${'margin-left: ' + ((comment.level + 1) * 20) + 'px;'}"
+							th:action="@{'/posts/' + ${bean.postId}+'/comments'}" method="post">
+							<input type="hidden" name="level" value="1" />
+							<input type="hidden" name="groupId" th:value="${comment.commentId}" />
+							<textarea class="form-control comment-input" rows="2" placeholder="답글을 작성해주세요..."
+								name="content"></textarea>
+							<button class="btn btn-comment btn-sm btn-submit-reply"
+								th:data-parent-id="${comment.commentId}" type="submit">
+								답글 작성
+							</button>
+							<div class="clearfix"></div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-          document.querySelectorAll(".reply-form").forEach((form) => {
-            if (form !== replyForm) {
-              form.style.display = "none";
-            }
-          });
+	<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+	<script>
+		let myEditor;
+		ClassicEditor.create(document.querySelector('#eidtor')).then(editor => {
+			myEditor = editor;
+		});
 
-          if (replyForm.style.display === "block") {
-            replyForm.style.display = "none";
-          } else {
-            replyForm.style.display = "block";
-          }
-        });
-      });
+		document.querySelector('form').addEventListener('submit', function () {
+			document.querySelector('#editor').value = myEditor.getData();
+		});
+	</script>
 
-      document.querySelectorAll(".edit-comment-button").forEach((button) => {
-        button.addEventListener("click", function () {
-          const commentId = this.dataset.commentId;
-          const commentContent = this.dataset.commentContent;
-          const commentDisplayElement = document.getElementById(
-            `commentDisplay-${commentId}`
-          );
-          const editForm = document.getElementById(
-            `editCommentForm-${commentId}`
-          );
-          const editContentTextarea = document.getElementById(
-            `editCommentContent-${commentId}`
-          );
-          const commentButtonsGroup = document.getElementById(
-            `commentButtons-${commentId}`
-          );
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		document.querySelectorAll(".btn-reply").forEach((button) => {
+			button.addEventListener("click", function () {
+				const commentId = this.dataset.commentId;
+				const replyForm = document.getElementById(`replyForm-${commentId}`);
 
-          document.querySelectorAll(".edit-comment-form").forEach((form) => {
-            if (
-              form.id !== `editCommentForm-${commentId}` &&
-              form.style.display === "block"
-            ) {
-              form.style.display = "none";
-              const otherCommentId = form.id.replace("editCommentForm-", "");
-              document.getElementById(
-                `commentDisplay-${otherCommentId}`
-              ).style.display = "block";
-              document.getElementById(
-                `commentButtons-${otherCommentId}`
-              ).style.display = "block";
-            }
-          });
+				document.querySelectorAll(".reply-form").forEach((form) => {
+					if (form !== replyForm) {
+						form.style.display = "none";
+					}
+				});
 
-          if (editForm.style.display === "block") {
-            editForm.style.display = "none";
-            commentDisplayElement.style.display = "block";
-            commentButtonsGroup.style.display = "block";
-          } else {
-            editForm.style.display = "block";
-            commentDisplayElement.style.display = "none";
-            commentButtonsGroup.style.display = "none";
-            editContentTextarea.value = commentContent;
-            editContentTextarea.focus();
-          }
-        });
-      });
+				if (replyForm.style.display === "block") {
+					replyForm.style.display = "none";
+				} else {
+					replyForm.style.display = "block";
+				}
+			});
+		});
 
-      document.querySelectorAll(".cancel-comment-edit").forEach((button) => {
-        button.addEventListener("click", function () {
-          const commentId = this.dataset.commentId;
-          const editForm = document.getElementById(
-            `editCommentForm-${commentId}`
-          );
-          const commentDisplayElement = document.getElementById(
-            `commentDisplay-${commentId}`
-          );
-          const commentButtonsGroup = document.getElementById(
-            `commentButtons-${commentId}`
-          );
+		document.querySelectorAll(".edit-comment-button").forEach((button) => {
+			button.addEventListener("click", function () {
+				const commentId = this.dataset.commentId;
+				const commentContent = this.dataset.commentContent;
+				const commentDisplayElement = document.getElementById(
+					`commentDisplay-${commentId}`
+				);
+				const editForm = document.getElementById(
+					`editCommentForm-${commentId}`
+				);
+				const editContentTextarea = document.getElementById(
+					`editCommentContent-${commentId}`
+				);
+				const commentButtonsGroup = document.getElementById(
+					`commentButtons-${commentId}`
+				);
 
-          editForm.style.display = "none";
-          commentDisplayElement.style.display = "block";
-          commentButtonsGroup.style.display = "block";
-        });
-      });
-    </script>
-  </body>
+				document.querySelectorAll(".edit-comment-form").forEach((form) => {
+					if (
+						form.id !== `editCommentForm-${commentId}` &&
+						form.style.display === "block"
+					) {
+						form.style.display = "none";
+						const otherCommentId = form.id.replace("editCommentForm-", "");
+						document.getElementById(
+							`commentDisplay-${otherCommentId}`
+						).style.display = "block";
+						document.getElementById(
+							`commentButtons-${otherCommentId}`
+						).style.display = "block";
+					}
+				});
+
+				if (editForm.style.display === "block") {
+					editForm.style.display = "none";
+					commentDisplayElement.style.display = "block";
+					commentButtonsGroup.style.display = "block";
+				} else {
+					editForm.style.display = "block";
+					commentDisplayElement.style.display = "none";
+					commentButtonsGroup.style.display = "none";
+					editContentTextarea.value = commentContent;
+					editContentTextarea.focus();
+				}
+			});
+		});
+
+		document.querySelectorAll(".cancel-comment-edit").forEach((button) => {
+			button.addEventListener("click", function () {
+				const commentId = this.dataset.commentId;
+				const editForm = document.getElementById(
+					`editCommentForm-${commentId}`
+				);
+				const commentDisplayElement = document.getElementById(
+					`commentDisplay-${commentId}`
+				);
+				const commentButtonsGroup = document.getElementById(
+					`commentButtons-${commentId}`
+				);
+
+				editForm.style.display = "none";
+				commentDisplayElement.style.display = "block";
+				commentButtonsGroup.style.display = "block";
+			});
+		});
+	</script>
+</body>
+
 </html>
