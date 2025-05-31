@@ -106,7 +106,7 @@
         <div class="board-controls-right">
           <button
             class="btn btn-new-post"
-            th:onclick="'location.href=\'/posts/create\''"
+            th:onclick="${session.loginUser != null} ? 'location.href=\'/posts/create\'' : 'location.href=\'/users/login\''"
           >
             <i class="bi bi-pencil-fill me-1"></i> 새 글 작성
           </button>
@@ -158,6 +158,7 @@
           <span class="bi bi-chevron-left"></span>
         </a>
 
+        <!-- 카드 -->
         <div class="row row-cols-lg-5 g-4">
           <div class="col" th:each="bean : ${boardList}">
             <div
@@ -166,14 +167,17 @@
               th:onclick="'location.href=\'/posts/'+${bean.postId}+'\''"
             >
               <img
-			  	th:if="${bean.image}"
+                th:if="${bean.image}"
                 th:src="@{${bean.image}}"
                 class="card-img-top"
                 th:alt="${bean.title}"
               />
               <div class="card-body">
                 <h5 class="card-title" th:text="${bean.title}"></h5>
-                <p class="card-text" th:utext="${bean.content}"></p>
+                <p
+                  class="card-text"
+                  th:utext="${#strings.length(bean.content) > 20 ? #strings.substring(bean.content, 0, 20) + '...' : bean.content}"
+                ></p>
               </div>
               <div class="card-footer">
                 <span class="card-author" th:text="${bean.nickname}"></span>
