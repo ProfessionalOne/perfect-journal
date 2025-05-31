@@ -106,7 +106,7 @@
         <div class="board-controls-right">
           <button
             class="btn btn-new-post"
-            th:onclick="'location.href=\'/posts/create\''"
+            th:onclick="${session.loginUser != null} ? 'location.href=\'/posts/create\'' : 'location.href=\'/users/login\''"
           >
             <i class="bi bi-pencil-fill me-1"></i> 새 글 작성
           </button>

@@ -20,8 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.pj.journal.model.board.BoardVo;
 import com.pj.journal.model.comment.CommentVo;
+import com.pj.journal.model.user.UserVo;
 import com.pj.journal.service.BoardService;
 import com.pj.journal.service.CommentService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class BoardController {
@@ -47,14 +50,19 @@ public class BoardController {
 
 	@GetMapping("/posts/{postId}")
 	@Transactional
-	public String detail(@PathVariable int postId, Model model) {
-
+	public String detail(@PathVariable int postId, HttpSession session, Model model) {
 		BoardVo post = boardService.getBoardList(postId);
 		model.addAttribute("bean", post);
 
 		List<CommentVo> comments = commentService.getCommentList(postId);
 		model.addAttribute("commentsList", comments);
 
+		UserVo loginUser = (UserVo) session.getAttribute("loginUser");
+		boolean isOwner = false;
+		if(loginUser != null && post.getNickname().equals(loginUser.getNickname())) {
+			isOwner = true;
+		}
+		model.addAttribute("isOwner", isOwner);
 		return "board/detail";
 	}
 
@@ -64,7 +72,9 @@ public class BoardController {
 	}
 
 	@PostMapping("/posts/create")
-	public String addBoardList(@RequestParam("file") MultipartFile file, @ModelAttribute BoardVo bean) {
+	public String addBoardList(@RequestParam("file") MultipartFile file
+			, HttpSession session
+			, @ModelAttribute BoardVo bean) {
 		if (!file.isEmpty() && file.getSize() <= 5242880) {
 			try {
 				String originalFilename = file.getOriginalFilename();
@@ -82,7 +92,8 @@ public class BoardController {
 			}
 
 		}
-		bean.setUserId(2);
+		UserVo loginUser = (UserVo) session.getAttribute("loginUser");
+		bean.setUserId(loginUser.getUserId());
 		boardService.addBoardList(bean);
 		return "redirect:/posts";
 	}

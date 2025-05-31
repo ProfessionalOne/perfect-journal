@@ -38,7 +38,8 @@
 					<div th:utext="${bean.content}" class="content">
 						감사데스\n오늘도감사감사링</div>
 				</div>
-				<div class="d-flex justify-content-between">
+				<div class="d-flex justify-content-between" 
+				th:if="${isOwner}">
 					<form th:action="@{'/posts/' + ${bean.postId}}" method="post"
 						onsubmit="return confirm('정말로 이 게시글을 삭제하시겠습니까?');">
 						<input type="hidden" name="_method" value="delete" />
@@ -76,10 +77,11 @@
 							<div class="comment-author" th:text="${comment.nickname}">
 								이행복
 							</div>
-							<div th:id="'commentButtons-' + ${comment.commentId}" class="comment-buttons-group">
+							<div th:id="'commentButtons-' + ${comment.commentId}" class="comment-buttons-group" >
 								<form th:action="@{'/posts/' + ${bean.postId} + '/comments/' + ${comment.commentId}}"
 									method="post" style="display: inline-block"
-									onsubmit="return confirm('정말로 이 댓글을 삭제하시겠습니까?');">
+									onsubmit="return confirm('정말로 이 댓글을 삭제하시겠습니까?');"
+									th:if="${comment.nickname == session.loginUser.nickname}">
 									<input type="hidden" name="_method" value="delete" />
 									<button type="submit" class="btn btn-danger btn-sm delete-comment-button">
 										삭제
@@ -87,7 +89,8 @@
 								</form>
 								<button class="btn btn-primary btn-sm edit-comment-button"
 									th:data-comment-id="${comment.commentId}"
-									th:data-comment-content="${comment.content}">
+									th:data-comment-content="${comment.content}"
+									th:if="${comment.nickname == session.loginUser.nickname}">
 									수정
 								</button>
 								<span class="comment-date"
