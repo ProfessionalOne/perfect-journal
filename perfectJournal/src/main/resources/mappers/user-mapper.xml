@@ -4,7 +4,7 @@
 
 	<select id="selectByUser" resultType="userBean">
 		SELECT * FROM users
-		WHERE user = #{user} AND password = #{password}
+		WHERE user = #{user}
 	</select>
     
     	<select id="findUserId" parameterType="userBean"

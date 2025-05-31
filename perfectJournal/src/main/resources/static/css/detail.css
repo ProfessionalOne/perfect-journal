@@ -147,6 +147,17 @@
   margin-bottom: 1rem;
 }
 
+.comment-text pre,
+pre.comment-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  font-family: "Pretendard", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow-x: auto;
+}
+
 .comment-actions {
   display: flex;
   gap: 1rem;

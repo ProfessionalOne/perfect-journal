@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface UserDao {
 	// 로그인 내용
-	UserVo selectByUser(@Param("user") String user, @Param("password") String password);
+	UserVo selectByUser(@Param("user") String user);
 
 	String findUserId(UserVo bean);
 

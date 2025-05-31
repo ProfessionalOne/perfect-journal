@@ -30,7 +30,7 @@ public class UserController {
 			HttpSession session, Model model) {
 		UserVo userVo = userService.selectByUser(user, password);
 
-		if (userVo == null || !password.equals(userVo.getPassword())) {
+		if (userVo == null) {
 			model.addAttribute("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
 			return "user/login";
 		}

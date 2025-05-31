@@ -2,6 +2,7 @@ package com.pj.journal.service;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,14 @@ public class UserService {
 	UserDao userDao;
 
 	public UserVo selectByUser(String user, String password) {
-		return userDao.selectByUser(user, password);
+		
+		UserVo bean = userDao.selectByUser(user);
+		
+		if (bean != null && BCrypt.checkpw(password, bean.getPassword())) {
+			return bean;
+		}
+		
+		return null;
 	}
 
 	public String findUserId(UserVo bean) {
@@ -40,7 +48,9 @@ public class UserService {
 	}
 
 	public int changeUserPw(String user, String password) {
-		return userDao.changeUserPw(user, password);
+		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+
+		return userDao.changeUserPw(user, hashedPassword);
 	}
 
 	public int isIdAlreadyExists(String user) {
@@ -63,6 +73,10 @@ public class UserService {
 
 	public void insertOneUser(UserVo bean) {
 		try (SqlSession session = sqlSessionFactory.openSession()) {
+			String hashedPassword = BCrypt.hashpw(bean.getPassword(), BCrypt.gensalt());
+
+			bean.setPassword(hashedPassword);
+
 			session.getMapper(UserDao.class).insertOneUser(bean);
 			session.commit();
 		}
