@@ -40,23 +40,28 @@
           th:action="@{/posts/create}"
           enctype="multipart/form-data"
         >
-          <div class="mb-4">
-            <label for="postTitle" class="form-label">제목</label>
-            <input
-              name="title"
-              type="text"
-              class="form-control"
-              id="postTitle"
-              placeholder="제목을 입력해주세요"
-              maxlength="30"
-              required
-            />
-            <div
-              id="titleCountDiv"
-              class="d-flex justify-content-end form-text"
-            >
-              <span id="titleCount">0</span> / 30자
-            </div>
+		<div class="mb-4 d-flex align-items-center">
+		  <label for="postTitle" class="form-label mb-0 me-3">제목</label>
+		  <input
+		    name="title"
+		    type="text"
+		    class="form-control me-3"
+		    id="postTitle"
+		    placeholder="제목을 입력해주세요"
+		    maxlength="30"
+		    required
+		    style="width: 60%;"
+		  />
+		  <div class="form-check ms-2">
+		    <input class="form-check-input" type="checkbox" value="true" id="isLocked" name="isLocked">
+		    <label class="form-check-label" for="isLocked">
+		      비밀글로 등록하기
+		    </label>
+		  </div>
+		</div>
+		<div id="titleCountDiv" class="d-flex justify-content-end form-text">
+		  <span id="titleCount">0</span> / 30자
+		</div>
           </div>
 
           <div class="mb-4">

@@ -19,7 +19,8 @@ public interface BoardDao {
 	int deleteOneBoard(int pk);
 
 	List<BoardVo> selectBySearch(@Param("offset") int offset, @Param("pageSize") int pageSize,
-			@Param("sort") String sort, @Param("searchField") String field, @Param("keyword") String keyword);
+			@Param("sort") String sort, @Param("searchField") String field, 
+			@Param("keyword") String keyword, @Param("userId") int userId, @Param("OnlyMine") Boolean onlyMine);
 
 	int getTotalCount(@Param("searchField") String searchField, @Param("keyword") String keyword);
 }

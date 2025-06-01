@@ -12,6 +12,12 @@ public interface UserDao {
 	String findUserId(UserVo bean);
 
 	String findUserPw(UserVo bean);
+	
+	//bcrypted 적용버전
+	
+	UserVo findUserIdEncrypted(UserVo bean);
+	
+	UserVo findUserPwEncrypted(UserVo bean);
 
 	int changeUserPw(String user, String password);
 

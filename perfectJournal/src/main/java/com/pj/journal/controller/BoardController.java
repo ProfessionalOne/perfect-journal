@@ -42,9 +42,19 @@ public class BoardController {
 	@GetMapping("/posts")
 	public String boardList(@RequestParam(defaultValue = "1") int page,
 			@RequestParam(defaultValue = "latest") String sort, @RequestParam(required = false) String searchField,
-			@RequestParam(required = false) String keyword, Model model) {
-
-		boardService.getBoardList(model, page, sort, searchField, keyword);
+			@RequestParam(required = false) String keyword, Model model,
+			HttpSession session, @RequestParam(required = false) Boolean onlyMine) {
+		
+		UserVo loginUser = (UserVo) session.getAttribute("loginUser");
+		
+		//로그인 되지 않은 상태에서 '내 글만 보기' 옵션을 사용했을 경우
+		//이 부분 지우시면 로그인 안 한 상태에서 누를 때 그냥 빈 리스트만 출력하게 됩니다
+	    if (Boolean.TRUE.equals(onlyMine) && loginUser == null) {
+	    	model.addAttribute("msg", "로그인 후 내 글만 보기 옵션을 사용할 수 있습니다.");
+	        return "redirect:/users/login";
+	
+	    }
+		boardService.getBoardList(model, page, sort, searchField, keyword, loginUser, onlyMine);
 		return "board/home";
 	}
 
@@ -52,12 +62,22 @@ public class BoardController {
 	@Transactional
 	public String detail(@PathVariable int postId, HttpSession session, Model model) {
 		BoardVo post = boardService.getBoardList(postId);
-		model.addAttribute("bean", post);
+		UserVo loginUser = (UserVo) session.getAttribute("loginUser");
+		
+	    if (post.isLocked()) {
+	        if (loginUser == null || !(post.getUserId()==(loginUser.getUserId()))) {
+	            // 권한 없으면 에러페이지 혹은 안내
+	            model.addAttribute("errorMsg", "비밀글입니다. 본인만 볼 수 있습니다.");
+	            return "board/home"; 
+	        }
+	    }
+
+	    model.addAttribute("bean", post);
 
 		List<CommentVo> comments = commentService.getCommentList(postId);
 		model.addAttribute("commentsList", comments);
 
-		UserVo loginUser = (UserVo) session.getAttribute("loginUser");
+		
 		boolean isOwner = false;
 		if(loginUser != null && post.getNickname().equals(loginUser.getNickname())) {
 			isOwner = true;

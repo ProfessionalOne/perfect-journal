@@ -29,22 +29,23 @@ public class UserService {
 		return null;
 	}
 
-	public String findUserId(UserVo bean) {
-
-		try (SqlSession session = sqlSessionFactory.openSession()) {
-			String findId = session.getMapper(UserDao.class).findUserId(bean);
-
-			return findId;
-		}
+	public String findUserId(UserVo bean, String answer) {
+		
+		UserVo vo = userDao.findUserIdEncrypted(bean);
+		if (vo != null && BCrypt.checkpw(answer, vo.getAnswer())) {
+	        return vo.getUser(); // 찾은 id 반환 (UserVo에 getUser()가 아이디 반환)
+	    } else {
+	        return "notFound";
+	    }
 	}
 
-	public String findUserPw(UserVo bean) {
-
-		try (SqlSession session = sqlSessionFactory.openSession()) {
-			String findPw = session.getMapper(UserDao.class).findUserPw(bean);
-
-			return findPw;
-		}
+	public String findUserPw(UserVo bean, String answer) {
+		UserVo vo = userDao.findUserIdEncrypted(bean);
+		if (vo != null && BCrypt.checkpw(answer, vo.getAnswer())) {
+			return "findPw"; 
+	    } else {
+	        return "notFound";
+	    }
 	}
 
 	public int changeUserPw(String user, String password) {
@@ -74,8 +75,9 @@ public class UserService {
 	public void insertOneUser(UserVo bean) {
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			String hashedPassword = BCrypt.hashpw(bean.getPassword(), BCrypt.gensalt());
-
+			String hashedAnswer = BCrypt.hashpw(bean.getAnswer(), BCrypt.gensalt());
 			bean.setPassword(hashedPassword);
+			bean.setAnswer(hashedAnswer);
 
 			session.getMapper(UserDao.class).insertOneUser(bean);
 			session.commit();

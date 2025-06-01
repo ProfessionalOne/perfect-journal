@@ -10,39 +10,41 @@ import org.springframework.ui.Model;
 
 import com.pj.journal.model.board.BoardDao;
 import com.pj.journal.model.board.BoardVo;
+import com.pj.journal.model.user.UserVo;
 
 @Service
 public class BoardService {
 	@Autowired
 	SqlSessionFactory sqlSessionFactory;
 
-	public void getBoardList(Model model, int page, String sort, String field, String keyword) {
-		int pageSize = 10;
-		int offset = (page - 1) * pageSize;
+	public void getBoardList(Model model, int page, String sort, String field, String keyword, UserVo loginUser, Boolean onlyMine) {
+	    int pageSize = 10;
+	    int offset = (page - 1) * pageSize;
+	    Integer userId = (loginUser != null) ? loginUser.getUserId() : null;
 
-		try (SqlSession session = sqlSessionFactory.openSession()) {
-			BoardDao boardDao = session.getMapper(BoardDao.class);
+	    try (SqlSession session = sqlSessionFactory.openSession()) {
+	        BoardDao boardDao = session.getMapper(BoardDao.class);
 
-			List<BoardVo> boardList = boardList = boardDao.selectBySearch(offset, pageSize, sort, field, keyword);
+	        List<BoardVo> boardList = boardDao.selectBySearch(offset, pageSize, sort, field, keyword, userId, onlyMine);
 
-			int totalCount = boardDao.getTotalCount(field, keyword);
-			int totalPages = (int) Math.ceil((double) totalCount / pageSize);
-			int beginPage = pageSize * ((page - 1) / pageSize) + 1;
-			int endPage = beginPage + (pageSize - 1);
-			if (endPage > totalPages) {
-				endPage = totalPages;
-			}
 
-			model.addAttribute("boardList", boardList);
-			model.addAttribute("currentPage", page);
-			model.addAttribute("beginPage", beginPage);
-			model.addAttribute("endPage", endPage);
-			model.addAttribute("totalPages", totalPages);
-			model.addAttribute("currentSort", sort);
-			model.addAttribute("searchField", field);
-			model.addAttribute("keyword", keyword);
-		}
+	        int totalCount = (int) boardList.size(); // 필터링 이후 갯수로 수정 필요
+	        int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+	        int beginPage = pageSize * ((page - 1) / pageSize) + 1;
+	        int endPage = beginPage + (pageSize - 1);
+	        if (endPage > totalPages) endPage = totalPages;
+
+	        model.addAttribute("boardList", boardList);
+	        model.addAttribute("currentPage", page);
+	        model.addAttribute("beginPage", beginPage);
+	        model.addAttribute("endPage", endPage);
+	        model.addAttribute("totalPages", totalPages);
+	        model.addAttribute("currentSort", sort);
+	        model.addAttribute("searchField", field);
+	        model.addAttribute("keyword", keyword);
+	    }
 	}
+
 
 	public BoardVo getBoardList(int postId) {
 		try (SqlSession session = sqlSessionFactory.openSession()) {
