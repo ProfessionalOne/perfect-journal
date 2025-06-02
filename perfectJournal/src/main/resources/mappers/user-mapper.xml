@@ -4,7 +4,7 @@
 
 	<select id="selectByUser" resultType="userBean">
 		SELECT * FROM users
-		WHERE user = #{user} AND password = #{password}
+		WHERE user = #{user}
 	</select>
     
     	<select id="findUserId" parameterType="userBean"
@@ -14,12 +14,26 @@
 		#{answer} AND question = #{question}
 	</select>
 
+	<select id="findUserIdCrypted" parameterType="userBean"
+		resultType="userBean">
+		SELECT user, answer FROM users
+		WHERE email = #{email} AND question = #{question}
+	</select>
+	
 	<select id="findUserPw" parameterType="userBean"
 		resultType="String">
 		SELECT user_id FROM users
 		WHERE email = #{email}
 		AND answer =
 		#{answer}
+		AND user = #{user}
+		AND question = #{question}
+	</select>
+
+	<select id="findUserPwCrypted" parameterType="userBean"
+		resultType="userBean">
+		SELECT user_id, answer FROM users
+		WHERE email = #{email}
 		AND user = #{user}
 		AND question = #{question}
 	</select>

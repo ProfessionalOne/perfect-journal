@@ -14,13 +14,14 @@
 		isLocked, u.nickname
 		FROM posts p
 		JOIN users u ON p.user_id = u.user_id
+		WHERE p.isLocked = false
 		ORDER BY p.created_at DESC
 	</select>
 
 	<!-- 게시글 등록 -->
 	<insert id="insertOneBoard" parameterType="boardBean">
-		INSERT INTO posts (user_id, title, image, content)
-		VALUES (#{userId}, #{title}, #{image}, #{content})
+		INSERT INTO posts (user_id, title, image, content, is_locked)
+		VALUES (#{userId}, #{title}, #{image}, #{content}, #{isLocked})
 	</insert>
 
 	<!-- 게시글 상세 조회 -->
@@ -35,14 +36,14 @@
 		FROM posts p
 		JOIN users u
 		ON p.user_id = u.user_id
-		WHERE p.post_id = #{val}
+		WHERE p.post_id = #{val} 
 	</select>
 
 	<!-- 게시글 수정 -->
 	<update id="updatetOneBoard" parameterType="boardBean">
 		UPDATE posts
 		SET title = #{title}, image = #{image}, content = #{content}, updated_at
-		= NOW()
+		= NOW(), is_locked = #{isLocked}
 		WHERE post_id = #{postId}
 	</update>
 
@@ -53,33 +54,51 @@
 	</delete>
 
 	<!-- ✅ 페이징된 게시글 조회 -->
-	<select id="selectBySearch" resultType="boardBean">
-		SELECT p.post_id AS postId, u.user_id AS userId, p.views, p.title,
-		p.content,
-		p.image, p.created_at AS createdAt, p.updated_at AS
-		updatedAt,
-		p.is_locked AS isLocked, u.nickname
-		FROM posts p
-		JOIN users u
-		ON p.user_id = u.user_id
-		<where>
-			<if test="searchField == 'titleContent' and keyword != null">
-				(p.title LIKE CONCAT('%', #{keyword}, '%')
-				OR p.content
-				LIKE CONCAT('%', #{keyword}, '%'))
-			</if>
-			<if test="searchField == 'writer' and keyword != null">
-				u.nickname LIKE CONCAT('%', #{keyword}, '%')
-			</if>
-		</where>
-		ORDER BY p.created_at
-		<choose>
-			<when test="sort == 'oldest'">ASC</when>
-			<otherwise>DESC</otherwise>
-		</choose>
-		LIMIT #{pageSize} OFFSET #{offset}
-	</select>
-
+<select id="selectBySearch" resultType="boardBean">
+    SELECT
+        p.post_id AS postId,
+        u.user_id AS userId,
+        p.views,
+        p.title,
+        p.content,
+        p.image,
+        p.created_at AS createdAt,
+        p.updated_at AS updatedAt,
+        p.is_locked AS isLocked,
+        u.nickname
+    FROM posts p
+    JOIN users u ON p.user_id = u.user_id
+    <where>
+        <!-- 1. 내 글만 보기 -->
+        <if test="onlyMine != null and onlyMine">
+            p.user_id = #{userId}
+        </if>
+        <!-- 2. 전체 보기 -->
+        <if test="onlyMine == null or !onlyMine">
+            <choose>
+                <when test="userId != null">
+                    (p.is_locked = 0 OR (p.is_locked = 1 AND p.user_id = #{userId}))
+                </when>
+                <otherwise>
+                    p.is_locked = 0
+                </otherwise>
+            </choose>
+        </if>
+        <!-- 3. 검색 조건 추가 -->
+        <if test="searchField == 'titleContent' and keyword != null">
+            AND (p.title LIKE CONCAT('%', #{keyword}, '%') OR p.content LIKE CONCAT('%', #{keyword}, '%'))
+        </if>
+        <if test="searchField == 'writer' and keyword != null">
+            AND u.nickname LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+    </where>
+    ORDER BY p.created_at
+    <choose>
+        <when test="sort == 'oldest'">ASC</when>
+        <otherwise>DESC</otherwise>
+    </choose>
+    LIMIT #{pageSize} OFFSET #{offset}
+</select>
 
 	<!-- ✅ 전체 게시글 수 조회 -->
 	<select id="getTotalCount" resultType="int">

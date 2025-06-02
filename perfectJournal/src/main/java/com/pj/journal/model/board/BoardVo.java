@@ -7,7 +7,7 @@ public class BoardVo {
 	private int postId, userId, views;
 	private String nickname, title, content, image;
 	private Date createdAt, updatedAt;
-	private boolean isLocked;
+	public int isLocked = 0;
 
 	public BoardVo() {
 	}
@@ -29,7 +29,7 @@ public class BoardVo {
 	}
 
 	public BoardVo(int postId, int userId, int views, String nickname, String title, String content, String image,
-			Date createdAt, Date updatedAt, boolean isLocked) {
+			Date createdAt, Date updatedAt, int isLocked) {
 		super();
 		this.postId = postId;
 		this.userId = userId;
@@ -99,11 +99,11 @@ public class BoardVo {
 		this.updatedAt = updatedAt;
 	}
 
-	public boolean isLocked() {
+	public int getIsLocked() {
 		return isLocked;
 	}
 
-	public void setLocked(boolean isLocked) {
+	public void setIsLocked(int isLocked) {
 		this.isLocked = isLocked;
 	}
 

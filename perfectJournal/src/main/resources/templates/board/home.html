@@ -63,27 +63,12 @@
               </li>
             </ul>
           </div>
-          <form
-            class="search-form d-flex ms-2"
-            method="get"
-            th:action="@{/posts}"
-          >
+          <form id="searchForm" th:action="@{/posts}" method="get" class="d-flex align-items-center gap-2">
             <div class="input-group me-2" style="max-width: 450px">
-              <select
-                class="form-select me-1"
-                name="searchField"
-                style="width: auto"
-              >
-                <option
-                  value="titleContent"
-                  th:selected="${searchField} == 'titleContent'"
-                >
-                  제목+내용
-                </option>
-                <option value="writer" th:selected="${searchField} == 'writer'">
-                  글쓴이
-                </option>
-              </select>
+				<select name="searchField" class="form-select w-auto">
+				      <option th:selected="${searchField == 'titleContent'}" value="titleContent">제목+내용</option>
+				      <option th:selected="${searchField == 'writer'}" value="writer">작성자</option>
+				    </select>
               <input
                 class="form-control"
                 style="width: 200px"
@@ -106,7 +91,7 @@
         <div class="board-controls-right">
           <button
             class="btn btn-new-post"
-            th:onclick="'location.href=\'/posts/create\''"
+            th:onclick="${session.loginUser != null} ? 'location.href=\'/posts/create\'' : 'location.href=\'/users/login\''"
           >
             <i class="bi bi-pencil-fill me-1"></i> 새 글 작성
           </button>
@@ -143,7 +128,7 @@
             <li class="page-item" th:hidden="${endPage == totalPages}">
               <a
                 class="page-link bi bi-chevron-double-right"
-                th:href="@{/posts(page=${endPage}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
+                th:href="@{/posts(page=${endPage + 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
               ></a>
             </li>
           </ul>
@@ -158,6 +143,7 @@
           <span class="bi bi-chevron-left"></span>
         </a>
 
+        <!-- 카드 -->
         <div class="row row-cols-lg-5 g-4">
           <div class="col" th:each="bean : ${boardList}">
             <div
@@ -166,13 +152,17 @@
               th:onclick="'location.href=\'/posts/'+${bean.postId}+'\''"
             >
               <img
+                th:if="${bean.image}"
                 th:src="@{${bean.image}}"
                 class="card-img-top"
                 th:alt="${bean.title}"
               />
               <div class="card-body">
                 <h5 class="card-title" th:text="${bean.title}"></h5>
-                <p class="card-text" th:text="${bean.content}"></p>
+                <p
+                  class="card-text"
+                  th:utext="${#strings.length(bean.content) > 20 ? #strings.substring(bean.content, 0, 20) + '...' : bean.content}"
+                ></p>
               </div>
               <div class="card-footer">
                 <span class="card-author" th:text="${bean.nickname}"></span>

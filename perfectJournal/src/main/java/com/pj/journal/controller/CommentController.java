@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import com.pj.journal.model.comment.CommentVo;
+import com.pj.journal.model.user.UserVo;
 import com.pj.journal.service.CommentService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class CommentController {
@@ -17,7 +20,11 @@ public class CommentController {
 	CommentService commentService;
 
 	@PostMapping("/posts/{postId}/comments")
-	public String addComment(@PathVariable int postId, @ModelAttribute CommentVo bean) {
+	public String addComment(@PathVariable int postId
+			, @ModelAttribute CommentVo bean
+			, HttpSession session) {
+		UserVo loginUser = (UserVo) session.getAttribute("loginUser");
+		bean.setUserId(loginUser.getUserId());
 		commentService.addComment(bean, bean.getGroupId());
 
 		return "redirect:/posts/" + postId;
