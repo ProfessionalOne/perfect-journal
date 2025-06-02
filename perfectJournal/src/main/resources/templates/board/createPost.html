@@ -202,12 +202,37 @@
         return false;
       }
     </script>
-	<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
-	<script>
-		ClassicEditor.create(document.querySelector('#editor'))
-		.catch(error => {
-			console.error(error);
-		})
-	</script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+    <script>
+      let editorInstance;
+
+      async function insertStyledQuestion(editor) {
+        const response = await fetch("/questions.json");
+        const questions = await response.json();
+        const random = questions[Math.floor(Math.random() * questions.length)];
+        const rawQuestion = `#${random}`;
+        const styledHTML = `<p><span style="color:gray; font-style:italic;">${rawQuestion}</span></p><p><br></p>`;
+        editor.setData(styledHTML);
+      }
+
+      ClassicEditor.create(document.querySelector("#editor")).then((editor) => {
+        editorInstance = editor;
+        insertStyledQuestion(editor);
+
+        // 폼 제출 전에 editor 내용 순수 텍스트로 바꿔서 textarea에 넣기
+        const form = document.getElementById("postForm");
+        form.addEventListener("submit", function () {
+          const html = editor.getData();
+
+          // HTML 제거: span, p, br 등
+          const tempEl = document.createElement("div");
+          tempEl.innerHTML = html;
+          const plainText = tempEl.innerText;
+
+          // textarea에 plainText 넣기
+          document.getElementById("editor").value = plainText;
+        });
+      });
+    </script>
   </body>
 </html>
