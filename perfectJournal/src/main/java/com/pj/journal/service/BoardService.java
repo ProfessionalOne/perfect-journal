@@ -67,5 +67,11 @@ public class BoardService {
 			session.getMapper(BoardDao.class).deleteOneBoard(postId);
 		}
 	}
+	
+	public void increaseViews(int postId) {
+	    try (SqlSession session = sqlSessionFactory.openSession()) {
+	        session.getMapper(BoardDao.class).increaseViews(postId);
+	    }
+	}
 
 }

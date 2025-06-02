@@ -22,4 +22,6 @@ public interface BoardDao {
 			@Param("sort") String sort, @Param("searchField") String field, @Param("keyword") String keyword);
 
 	int getTotalCount(@Param("searchField") String searchField, @Param("keyword") String keyword);
+	
+	void increaseViews(int postId);
 }
