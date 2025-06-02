@@ -88,10 +88,9 @@
             <textarea
               name="content"
               class="form-control content-editor"
-              id="postContent"
+              id="editor"
               rows="10"
               placeholder="오늘 감사했던 일을 작성해주세요..."
-              required
             ></textarea>
           </div>
 
@@ -203,5 +202,12 @@
         return false;
       }
     </script>
+	<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+	<script>
+		ClassicEditor.create(document.querySelector('#editor'))
+		.catch(error => {
+			console.error(error);
+		})
+	</script>
   </body>
 </html>

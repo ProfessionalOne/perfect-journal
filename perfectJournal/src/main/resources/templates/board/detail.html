@@ -23,6 +23,7 @@
       href="../static/css/detail.css"
     />
   </head>
+
   <body>
     <nav th:replace="~{layout/header :: headerFrag}">네비게이션</nav>
 
@@ -52,7 +53,7 @@
               >
             </div>
           </div>
-          <div th:hidden="${bean.image}" class="d-flex justify-content-center">
+          <div th:if="${bean.image}" class="d-flex justify-content-center">
             <img
               th:src="${bean.image}"
               alt="${bean.title}"
@@ -60,15 +61,11 @@
             />
           </div>
           <div class="post-content mt-4" id="postContent">
-            <pre
-              th:text="${bean.content}"
-              style="white-space: pre-wrap; word-break: break-word"
-              class="content"
-            >
-감사데스\n오늘도감사감사링</pre
-            >
+            <div th:utext="${bean.content}" class="content">
+              감사데스\n오늘도감사감사링
+            </div>
           </div>
-          <div class="d-flex justify-content-between">
+          <div class="d-flex justify-content-between" th:if="${isOwner}">
             <form
               th:action="@{'/posts/' + ${bean.postId}}"
               method="post"
@@ -85,41 +82,6 @@
               수정하기
             </button>
           </div>
-        </div>
-
-        <div id="editPostForm" style="display: none; margin-top: 20px">
-          <form th:action="@{'/posts/' + ${bean.postId}}" method="post">
-            <input type="hidden" name="_method" value="put" />
-
-            <div class="mb-3">
-              <label for="editTitle" class="form-label">제목</label>
-              <input
-                type="text"
-                class="form-control"
-                id="editTitle"
-                name="title"
-                th:value="${bean.title}"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="editContent" class="form-label">내용</label>
-              <textarea
-                class="form-control"
-                id="editContent"
-                name="content"
-                rows="10"
-                th:text="${bean.content}"
-              ></textarea>
-            </div>
-            <button type="submit" class="btn btn-success">수정 완료</button>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              id="cancelPostEditButton"
-            >
-              취소
-            </button>
-          </form>
         </div>
       </div>
 
@@ -163,12 +125,14 @@
                 <div
                   th:id="'commentButtons-' + ${comment.commentId}"
                   class="comment-buttons-group"
+                  th:if="${!comment.isDeleted}"
                 >
                   <form
                     th:action="@{'/posts/' + ${bean.postId} + '/comments/' + ${comment.commentId}}"
                     method="post"
                     style="display: inline-block"
                     onsubmit="return confirm('정말로 이 댓글을 삭제하시겠습니까?');"
+                    th:if="${session.loginUser != null and comment.nickname == session.loginUser.nickname}"
                   >
                     <input type="hidden" name="_method" value="delete" />
                     <button
@@ -182,12 +146,13 @@
                     class="btn btn-primary btn-sm edit-comment-button"
                     th:data-comment-id="${comment.commentId}"
                     th:data-comment-content="${comment.content}"
+                    th:if="${session.loginUser != null and comment.nickname == session.loginUser.nickname}"
                   >
                     수정
                   </button>
                   <span
                     class="comment-date"
-                    th:text="${#dates.format(comment.createdAt, 'yyyy/MM/dd HH:mm')}"
+                    th:text="${#dates.format(comment.updatedAt, 'yyyy/MM/dd HH:mm')}"
                     >2023-11-01 14:23</span
                   >
                 </div>
@@ -200,10 +165,11 @@
                 th:id="'commentDisplay-' + ${comment.commentId}"
                 th:unless="${comment.isDeleted}"
               >
-                <div class="comment-text" th:text="${comment.content}">
+                <pre class="comment-text" th:text="${comment.content}">
                   저도 오늘 아침 맑은 하늘을 보고 기분이 좋아졌어요. 작은 것에
                   감사하는 마음이 중요한 것 같아요.
-                </div>
+				</pre
+                >
                 <div class="comment-actions">
                   <button
                     th:if="${comment.level == 0}"
@@ -276,6 +242,18 @@
         </div>
       </div>
     </div>
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+    <script>
+      let myEditor;
+      ClassicEditor.create(document.querySelector("#eidtor")).then((editor) => {
+        myEditor = editor;
+      });
+
+      document.querySelector("form").addEventListener("submit", function () {
+        document.querySelector("#editor").value = myEditor.getData();
+      });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
