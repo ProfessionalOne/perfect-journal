@@ -41,6 +41,15 @@
           enctype="multipart/form-data"
         >
           <div class="mb-4">
+            <label for="duration" class="form-label">제목</label>
+            <select name="duration">
+              <option value="">선택 안 함</option>
+              <option value="7">일주일</option>
+              <option value="30">한 달</option>
+              <option value="365">일 년</option>
+            </select>
+          </div>
+          <div class="mb-4">
             <label for="postTitle" class="form-label">제목</label>
             <input
               name="title"
@@ -202,12 +211,11 @@
         return false;
       }
     </script>
-	<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
-	<script>
-		ClassicEditor.create(document.querySelector('#editor'))
-		.catch(error => {
-			console.error(error);
-		})
-	</script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+    <script>
+      ClassicEditor.create(document.querySelector("#editor")).catch((error) => {
+        console.error(error);
+      });
+    </script>
   </body>
 </html>

@@ -22,4 +22,7 @@ public interface BoardDao {
 			@Param("sort") String sort, @Param("searchField") String field, @Param("keyword") String keyword);
 
 	int getTotalCount(@Param("searchField") String searchField, @Param("keyword") String keyword);
+
+	List<BoardVo> selectByTime(@Param("userId") int userId, @Param("offset") int offset, @Param("pageSize") int pageSize,
+			@Param("sort") String sort, @Param("searchField") String field, @Param("keyword") String keyword);
 }

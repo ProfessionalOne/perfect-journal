@@ -48,7 +48,7 @@
               <span
                 class="post-date"
                 id="postDate"
-                th:text="${#dates.format(bean.createdAt, 'yyyy/MM/dd HH:mm')}"
+                th:text="${#temporals.format(bean.createdAt, 'yyyy/MM/dd HH:mm')}"
                 >2023-11-01 11:11</span
               >
             </div>
