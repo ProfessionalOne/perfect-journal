@@ -23,8 +23,7 @@ public class BoardService {
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			BoardDao boardDao = session.getMapper(BoardDao.class);
 
-			List<BoardVo> boardList = boardList = boardDao.selectBySearch(offset, pageSize, sort, field, keyword);
-
+			List<BoardVo> boardList = boardDao.selectBySearch(offset, pageSize, sort, field, keyword);
 			int totalCount = boardDao.getTotalCount(field, keyword);
 			int totalPages = (int) Math.ceil((double) totalCount / pageSize);
 			int beginPage = pageSize * ((page - 1) / pageSize) + 1;
