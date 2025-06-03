@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>감사일기 - 상세 페이지</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <link
+      rel="stylesheet"
+      th:href="@{/css/common.css}"
+      href="../static/css/common.css"
+    />
+    <link
+      rel="stylesheet"
+      th:href="@{/css/detail.css}"
+      href="../static/css/detail.css"
+    />
+  </head>
+
+  <body>
+    <nav th:replace="~{layout/header :: headerFrag}">네비게이션</nav>
+
+    <div class="container">
+      <a th:href="@{/time}" class="back-button" id="backToList">
+        <i class="bi bi-arrow-left"></i> 목록으로 돌아가기
+      </a>
+
+      <div class="post-container">
+        <div id="postDisplay">
+          <div
+            class="post-header"
+            th:if="${bean.releaseDate != null and bean.releaseDate > today}"
+          >
+            <h1 class="post-title" id="postTitle">
+              아직 공개 전인 타임캡슐입니다.
+            </h1>
+            <div class="post-meta">
+              <span
+                class="post-author"
+                id="postAuthor"
+                th:text="${#temporals.format(bean.createdAt, 'yyyy/MM/dd HH:mm')}"
+                >2023-11-01 11:11</span
+              >
+              <span
+                class="post-date"
+                id="postDate"
+                th:text="${#temporals.format(bean.releaseDate, 'yyyy/MM/dd HH:mm')}"
+                >2023-11-01 11:11</span
+              >
+            </div>
+          </div>
+          <div
+            class="post-header"
+            th:unless="${bean.releaseDate != null and bean.releaseDate > today}"
+          >
+            <h1 class="post-title" id="postTitle" th:text="${bean.title}">
+              오늘의 감사한 순간
+            </h1>
+            <div class="post-meta">
+              <span
+                class="post-author"
+                id="postAuthor"
+                th:text="${bean.nickname}"
+                >김감사</span
+              >
+              <span
+                class="post-date"
+                id="postDate"
+                th:text="${#temporals.format(bean.createdAt, 'yyyy/MM/dd HH:mm')}"
+                >2023-11-01 11:11</span
+              >
+            </div>
+          </div>
+          <div
+            th:if="${bean.releaseDate != null and bean.releaseDate > today}"
+            class="d-flex justify-content-center"
+          >
+            <img
+              th:src="@{/images/Journie_Moment_logo.png}"
+              alt="${bean.title}"
+              class="post-image"
+            />
+          </div>
+          <div
+            th:unless="${bean.releaseDate != null and bean.releaseDate > today}"
+            class="d-flex justify-content-center"
+          >
+            <img
+              th:src="${bean.image}"
+              alt="${bean.title}"
+              class="post-image"
+            />
+          </div>
+          <div th:if="${bean.releaseDate != null and bean.releaseDate > today}">
+            <p class="text-center mt-4">
+              이 게시글은 아직 공개되지 않았습니다.
+            </p>
+          </div>
+          <div
+            class="post-content mt-4"
+            id="postContent"
+            th:unless="${bean.releaseDate != null and bean.releaseDate > today}"
+          >
+            <div th:utext="${bean.content}" class="content">
+              감사데스\n오늘도감사감사링
+            </div>
+          </div>
+          <div
+            class="d-flex justify-content-between"
+            th:if="${isOwner and (bean.releaseDate == null or bean.releaseDate <= today)}"
+          >
+            <form
+              th:action="@{'/posts/' + ${bean.postId}}"
+              method="post"
+              onsubmit="return confirm('정말로 이 게시글을 삭제하시겠습니까?');"
+            >
+              <input type="hidden" name="_method" value="delete" />
+              <button type="submit" class="btn btn-danger">삭제하기</button>
+            </form>
+            <button
+              class="btn btn-primary"
+              id="editPostButton"
+              th:onclick="'location.href =\'/posts/' + ${bean.postId} + '/edit\''"
+            >
+              수정하기
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+    <script>
+      let myEditor;
+      ClassicEditor.create(document.querySelector("#eidtor")).then((editor) => {
+        myEditor = editor;
+      });
+
+      document.querySelector("form").addEventListener("submit", function () {
+        document.querySelector("#editor").value = myEditor.getData();
+      });
+    </script>
+  </body>
+</html>

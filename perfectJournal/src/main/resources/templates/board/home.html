@@ -183,7 +183,7 @@
                 <span class="card-author" th:text="${bean.nickname}"></span>
                 <span
                   class="card-date"
-                  th:text="${#dates.format(bean.createdAt, 'yyyy/MM/dd')}"
+                  th:text="${#temporals.format(bean.createdAt, 'yyyy/MM/dd')}"
                 ></span>
               </div>
             </div>

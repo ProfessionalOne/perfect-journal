@@ -148,29 +148,29 @@
         });
 
       // 목록으로 돌아가기 버튼 이벤트
-      document
-        .getElementById("backToList")
-        .addEventListener("click", function (e) {
-          e.preventDefault();
+      // document
+      //   .getElementById("backToList")
+      //   .addEventListener("click", function (e) {
+      //     e.preventDefault();
 
-          if (
-            document.getElementById("postTitle").value.trim() ||
-            document.getElementById("postContent").value.trim() ||
-            document.getElementById("thumbnailInput").files.length > 0
-          ) {
-            if (
-              confirm(
-                "작성 중인 내용이 저장되지 않습니다. 정말 목록으로 돌아가시겠습니까?"
-              )
-            ) {
-              // 목록 페이지로 이동
-              // window.location.href = 'index.html';
-              alert("목록 페이지로 이동합니다.");
-            }
-          } else {
-            window.location.href = "/posts";
-          }
-        });
+      //     if (
+      //       document.getElementById("postTitle").value.trim() ||
+      //       document.getElementById("postContent").value.trim() ||
+      //       document.getElementById("thumbnailInput").files.length > 0
+      //     ) {
+      //       if (
+      //         confirm(
+      //           "작성 중인 내용이 저장되지 않습니다. 정말 목록으로 돌아가시겠습니까?"
+      //         )
+      //       ) {
+      //         // 목록 페이지로 이동
+      //         // window.location.href = 'index.html';
+      //         alert("목록 페이지로 이동합니다.");
+      //       }
+      //     } else {
+      //       window.location.href = "/posts";
+      //     }
+      //   });
 
       // 제목 글자 수 확인
       const titleCountEl = document.getElementById("titleCount");

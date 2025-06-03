@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pj.journal.model.comment.CommentDao">
+
+	<select id="selectAllComments" parameterType="int"
+		resultType="commentBean">
+		SELECT
+		c.comment_id AS commentId,
+		u.user_id AS userId,
+		c.post_id AS postId,
+		c.content,
+		u.nickname,
+		c.created_at AS createdAt,
+		c.updated_at AS updatedAt,
+		c.group_id AS groupId,
+		c.level,
+		c.is_deleted
+		AS isDeleted
+		FROM
+		comments c
+		JOIN users u ON c.user_id = u.user_id
+		JOIN
+		posts p ON
+		c.post_id = p.post_id
+		WHERE c.post_id = #{postId}
+		ORDER BY
+		c.group_id ASC,
+		c.created_at ASC
+	</select>
+
+	<insert id="insertComment" useGeneratedKeys="true"
+		keyProperty="commentId">
+		INSERT INTO comments (
+		user_id,
+		post_id,
+		content,
+		group_id,
+		level
+		) VALUES (
+		#{userId},
+		#{postId},
+		#{content},
+		#{groupId}, #{level}
+		)
+	</insert>
+
+	<update id="updateGroupId">
+		UPDATE comments
+		SET group_id = #{groupId}
+		WHERE comment_id = #{commentId} AND level = 0
+	</update>
+	
+	<update id="updateComment" parameterType="commentBean">
+		UPDATE comments
+		SET content = #{content}, updated_at = now()
+		WHERE
+		comment_id = #{commentId}
+	</update>
+	
+	<update id="updateCommentIsDeleted" parameterType="int">
+		UPDATE comments
+		SET is_deleted = TRUE
+		WHERE
+		comment_id = #{commentId}
+	</update>
+
+
+<!-- 	<update id="updateOneCommentnReply" parameterType="commentBean"> UPDATE
+		Comments SET (content=#{content}, updatedAt=now())
+		WHERE
+		post_id=#{post_id} AND comment_id=#{comment_id} AND ord=#{ord} AND
+		level=#{level} AND user_id=#{userId})
+	</update>
+
+	<update id="deleteOneCommentnReply" parameterType="commentBean"> UPDATE
+		Comments SET is_deleted='true' WHERE
+		post_id=#{post_id} AND
+		comment_id=#{comment_id} AND ord=#{ord} AND level=#{level}
+		AND
+		user_id=#{userId})
+	</update>
+ -->
+</mapper>
