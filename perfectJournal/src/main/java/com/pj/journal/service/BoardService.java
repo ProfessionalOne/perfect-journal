@@ -56,11 +56,7 @@ public class BoardService {
 
 	public void addBoardList(BoardVo bean) {
 		try (SqlSession session = sqlSessionFactory.openSession();) {
-			LocalDate now = LocalDate.now();
-			LocalDate releaseDate = now.plusDays(bean.getDuration());
 			bean.setCreatedAt(LocalDateTime.now());
-			bean.setReleaseDate(releaseDate);
-			bean.setTimeCapsule(true);
 			session.getMapper(BoardDao.class).insertOneBoard(bean);
 		}
 	}

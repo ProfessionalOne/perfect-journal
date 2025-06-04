@@ -1,337 +1,433 @@
 <!DOCTYPE html>
 <html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>감사일기 - 아이디/비밀번호 찾기</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      th:href="@{/css/find.css}"
+      href="../static/css/find.css"
+    />
+  </head>
 
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>감사일기 - 아이디/비밀번호 찾기</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
-	<link rel="stylesheet" th:href="@{/css/find.css}" href="../static/css/find.css" />
-</head>
+  <body>
+    <div class="bg-pattern"></div>
+    <div class="container">
+      <div class="find-container">
+        <div class="text-center mb-4">
+          <div class="d-inline-block">
+            <img
+              class="logo-icon floating"
+              viewBox="0 0 24 24"
+              fill="none"
+              src="/images/logoIcon.png"
+            />
+          </div>
+          <h2><img class="logo" src="/images/logo.png" /></h2>
+          <p class="text-secondary mt-2">계정 정보 찾기</p>
+        </div>
 
-<body>
-	<div class="bg-pattern"></div>
+        <ul class="nav nav-tabs mb-4" id="findTab" role="tablist">
+          <li class="nav-item flex-fill" role="presentation">
+            <button
+              class="nav-link active w-100"
+              id="find-id-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#find-id-content"
+              type="button"
+              role="tab"
+              aria-controls="find-id-content"
+              aria-selected="true"
+            >
+              아이디 찾기
+            </button>
+          </li>
+          <li class="nav-item flex-fill" role="presentation">
+            <button
+              class="nav-link w-100"
+              id="find-pw-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#find-pw-content"
+              type="button"
+              role="tab"
+              aria-controls="find-pw-content"
+              aria-selected="false"
+            >
+              비밀번호 찾기
+            </button>
+          </li>
+        </ul>
 
-	<div class="container">
-		<div class="find-container">
-			<div class="text-center mb-4">
-				<div class="d-inline-block">
-					<svg class="logo-icon floating" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path
-							d="M18.7101 19.5C17.8801 20.74 17.0001 21.95 15.6601 21.97C14.3201 22 13.8901 21.18 12.3701 21.18C10.8501 21.18 10.3701 21.95 9.10005 22C7.79005 22.05 6.80005 20.68 5.96005 19.47C4.25005 17 2.94005 12.45 4.70005 9.39C5.57005 7.87 7.13005 6.91 8.82005 6.88C10.1001 6.86 11.3201 7.75 12.1101 7.75C12.8901 7.75 14.3701 6.68 15.9201 6.84C16.5701 6.87 18.3901 7.1 19.5601 8.82C19.4701 8.88 17.3901 10.1 17.4101 12.63C17.4401 15.65 20.0601 16.66 20.0901 16.67C20.0601 16.74 19.6701 18.11 18.7101 19.5ZM13.0001 3.5C13.7301 2.67 14.9401 2.04 15.9401 2C16.0701 3.17 15.6001 4.35 14.9001 5.19C14.2101 6.04 13.0701 6.7 11.9501 6.61C11.8001 5.46 12.2701 4.35 13.0001 3.5Z"
-							fill="#0d6efd" />
-					</svg>
-				</div>
-				<h1 class="fs-2 fw-bold">감사일기</h1>
-				<p class="text-secondary mt-2">계정 정보 찾기</p>
-			</div>
+        <div class="tab-content" id="findTabContent">
+          <div
+            class="tab-pane fade show active"
+            id="find-id-content"
+            role="tabpanel"
+            aria-labelledby="find-id-tab"
+          >
+            <form id="form-find-id">
+              <div class="mb-3">
+                <label for="id-email" class="form-label"
+                  >이메일 <span class="text-danger">*</span></label
+                >
+                <input
+                  type="email"
+                  class="form-control"
+                  id="id-email"
+                  placeholder="가입 시 등록한 이메일을 입력하세요"
+                  required
+                />
+              </div>
 
-			<ul class="nav nav-tabs mb-4" id="findTab" role="tablist">
-				<li class="nav-item flex-fill" role="presentation">
-					<button class="nav-link active w-100" id="find-id-tab" data-bs-toggle="tab"
-						data-bs-target="#find-id-content" type="button" role="tab" aria-controls="find-id-content"
-						aria-selected="true">
-						아이디 찾기
-					</button>
-				</li>
-				<li class="nav-item flex-fill" role="presentation">
-					<button class="nav-link w-100" id="find-pw-tab" data-bs-toggle="tab"
-						data-bs-target="#find-pw-content" type="button" role="tab" aria-controls="find-pw-content"
-						aria-selected="false">
-						비밀번호 찾기
-					</button>
-				</li>
-			</ul>
+              <div class="mb-3">
+                <label for="id-security-question" class="form-label"
+                  >본인 확인용 질문 <span class="text-danger">*</span></label
+                >
+                <select class="form-select" id="id-security-question" required>
+                  <option value="" disabled selected>질문을 선택하세요</option>
+                  <option value="1">내가 태어난 곳은?</option>
+                  <option value="2">나의 보물 1호는?</option>
+                  <option value="3">내가 다닌 초등학교 이름은?</option>
+                  <option value="4">내가 좋아하는 음식은?</option>
+                  <option value="5">내가 존경하는 인물은?</option>
+                  <option value="6">어머니 성함은?</option>
+                  <option value="7">아버지 성함은?</option>
+                  <option value="8">내가 가장 가고싶은 도시는?</option>
+                </select>
+              </div>
 
-			<div class="tab-content" id="findTabContent">
-				<div class="tab-pane fade show active" id="find-id-content" role="tabpanel"
-					aria-labelledby="find-id-tab">
-					<form id="form-find-id">
-						<div class="mb-3">
-							<label for="id-email" class="form-label">이메일 <span class="text-danger">*</span></label>
-							<input type="email" class="form-control" id="id-email" placeholder="가입 시 등록한 이메일을 입력하세요"
-								required />
-						</div>
+              <div class="mb-4">
+                <label for="id-security-answer" class="form-label"
+                  >본인 확인용 답변 <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="id-security-answer"
+                  placeholder="가입 시 등록한 답변을 입력하세요"
+                  required
+                />
+              </div>
 
-						<div class="mb-3">
-							<label for="id-security-question" class="form-label">본인 확인용 질문 <span
-									class="text-danger">*</span></label>
-							<select class="form-select" id="id-security-question" required>
-								<option value="" disabled selected>질문을 선택하세요</option>
-								<option value="1">내가 태어난 곳은?</option>
-								<option value="2">나의 보물 1호는?</option>
-								<option value="3">내가 다닌 초등학교 이름은?</option>
-								<option value="4">내가 좋아하는 음식은?</option>
-								<option value="5">내가 존경하는 인물은?</option>
-								<option value="6">어머니 성함은?</option>
-								<option value="7">아버지 성함은?</option>
-								<option value="8">내가 가장 가고싶은 도시는?</option>
-							</select>
-						</div>
+              <div class="d-grid">
+                <button type="button" id="btn-find-id" class="btn btn-primary">
+                  아이디 찾기
+                </button>
+              </div>
+            </form>
 
-						<div class="mb-4">
-							<label for="id-security-answer" class="form-label">본인 확인용 답변 <span
-									class="text-danger">*</span></label>
-							<input type="text" class="form-control" id="id-security-answer"
-								placeholder="가입 시 등록한 답변을 입력하세요" required />
-						</div>
+            <div id="result-id" class="result-box">
+              <div class="result-icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
+                </svg>
+              </div>
+              <h3 class="fs-5 fw-medium text-dark mb-2">아이디 찾기 결과</h3>
+              <p class="text-secondary mb-3">
+                회원님의 아이디는 다음과 같습니다.
+              </p>
+              <div class="bg-primary bg-opacity-10 rounded p-3 mb-4">
+                <p id="found-id" class="text-primary fw-medium">gra***user</p>
+              </div>
+              <div class="d-grid">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  onclick="window.location.href='/users/login'"
+                >
+                  로그인 하기
+                </button>
+              </div>
+            </div>
+          </div>
 
-						<div class="d-grid">
-							<button type="button" id="btn-find-id" class="btn btn-primary">
-								아이디 찾기
-							</button>
-						</div>
-					</form>
+          <div
+            class="tab-pane fade"
+            id="find-pw-content"
+            role="tabpanel"
+            aria-labelledby="find-pw-tab"
+          >
+            <form id="form-find-pw">
+              <div class="mb-3">
+                <label for="pw-userid" class="form-label"
+                  >아이디 <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="pw-userid"
+                  placeholder="아이디를 입력하세요"
+                  required
+                />
+              </div>
 
-					<div id="result-id" class="result-box">
-						<div class="result-icon">
-							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-								stroke="currentColor">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-									d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-							</svg>
-						</div>
-						<h3 class="fs-5 fw-medium text-dark mb-2">아이디 찾기 결과</h3>
-						<p class="text-secondary mb-3">
-							회원님의 아이디는 다음과 같습니다.
-						</p>
-						<div class="bg-primary bg-opacity-10 rounded p-3 mb-4">
-							<p id="found-id" class="text-primary fw-medium">gra***user</p>
-						</div>
-						<div class="d-grid">
-							<button type="button" class="btn btn-primary" onclick="window.location.href='/users/login'">
-								로그인 하기
-							</button>
-						</div>
-					</div>
-				</div>
+              <div class="mb-3">
+                <label for="pw-email" class="form-label"
+                  >이메일 <span class="text-danger">*</span></label
+                >
+                <input
+                  type="email"
+                  class="form-control"
+                  id="pw-email"
+                  placeholder="가입 시 등록한 이메일을 입력하세요"
+                  required
+                />
+              </div>
 
-				<div class="tab-pane fade" id="find-pw-content" role="tabpanel" aria-labelledby="find-pw-tab">
-					<form id="form-find-pw">
-						<div class="mb-3">
-							<label for="pw-userid" class="form-label">아이디 <span class="text-danger">*</span></label>
-							<input type="text" class="form-control" id="pw-userid" placeholder="아이디를 입력하세요" required />
-						</div>
+              <div class="mb-3">
+                <label for="pw-security-question" class="form-label"
+                  >본인 확인용 질문 <span class="text-danger">*</span></label
+                >
+                <select class="form-select" id="pw-security-question" required>
+                  <option value="" disabled selected>질문을 선택하세요</option>
+                  <option value="1">내가 태어난 곳은?</option>
+                  <option value="2">나의 보물 1호는?</option>
+                  <option value="3">내가 다닌 초등학교 이름은?</option>
+                  <option value="4">내가 좋아하는 음식은?</option>
+                  <option value="5">내가 존경하는 인물은?</option>
+                  <option value="6">어머니 성함은?</option>
+                  <option value="7">아버지 성함은?</option>
+                  <option value="8">내가 가장 가고싶은 도시는?</option>
+                </select>
+              </div>
 
-						<div class="mb-3">
-							<label for="pw-email" class="form-label">이메일 <span class="text-danger">*</span></label>
-							<input type="email" class="form-control" id="pw-email" placeholder="가입 시 등록한 이메일을 입력하세요"
-								required />
-						</div>
+              <div class="mb-4">
+                <label for="pw-security-answer" class="form-label"
+                  >본인 확인용 답변 <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="pw-security-answer"
+                  placeholder="가입 시 등록한 답변을 입력하세요"
+                  required
+                />
+              </div>
 
-						<div class="mb-3">
-							<label for="pw-security-question" class="form-label">본인 확인용 질문 <span
-									class="text-danger">*</span></label>
-							<select class="form-select" id="pw-security-question" required>
-								<option value="" disabled selected>질문을 선택하세요</option>
-								<option value="1">내가 태어난 곳은?</option>
-								<option value="2">나의 보물 1호는?</option>
-								<option value="3">내가 다닌 초등학교 이름은?</option>
-								<option value="4">내가 좋아하는 음식은?</option>
-								<option value="5">내가 존경하는 인물은?</option>
-								<option value="6">어머니 성함은?</option>
-								<option value="7">아버지 성함은?</option>
-								<option value="8">내가 가장 가고싶은 도시는?</option>
-							</select>
-						</div>
+              <div class="d-grid">
+                <button type="button" id="btn-find-pw" class="btn btn-primary">
+                  비밀번호 찾기
+                </button>
+              </div>
+            </form>
 
-						<div class="mb-4">
-							<label for="pw-security-answer" class="form-label">본인 확인용 답변 <span
-									class="text-danger">*</span></label>
-							<input type="text" class="form-control" id="pw-security-answer"
-								placeholder="가입 시 등록한 답변을 입력하세요" required />
-						</div>
+            <div id="result-pw" class="result-box">
+              <div class="result-icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+              </div>
+              <h3 class="fs-5 fw-medium text-dark mb-2">
+                비밀번호 재설정 안내
+              </h3>
+              <p class="text-secondary mb-3">
+                입력하신 이메일로 비밀번호 재설정 링크를 발송했습니다.
+              </p>
+              <div class="bg-primary bg-opacity-10 rounded p-3 mb-3">
+                <p class="text-primary">
+                  이메일을 확인하여 비밀번호를 재설정해주세요.
+                </p>
+                <p id="masked-email" class="small text-secondary mt-1">
+                  gra***@email.com
+                </p>
+              </div>
+              <div class="small text-secondary mb-3">
+                <p>이메일을 받지 못하셨나요?</p>
+                <button
+                  type="button"
+                  class="btn btn-link p-0 text-decoration-none"
+                >
+                  이메일 재발송
+                </button>
+              </div>
+              <div class="d-grid">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  onclick="window.location.href='/users/login'"
+                >
+                  로그인 페이지로 이동
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
 
-						<div class="d-grid">
-							<button type="button" id="btn-find-pw" class="btn btn-primary">
-								비밀번호 찾기
-							</button>
-						</div>
-					</form>
+        <div class="mt-4 text-center">
+          <a
+            href="#"
+            class="text-decoration-none"
+            onclick="window.location.href='/users/login'"
+            >로그인 페이지로 돌아가기</a
+          >
+        </div>
+      </div>
+    </div>
 
-					<div id="result-pw" class="result-box">
-						<div class="result-icon">
-							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-								stroke="currentColor">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-									d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-							</svg>
-						</div>
-						<h3 class="fs-5 fw-medium text-dark mb-2">
-							비밀번호 재설정 안내
-						</h3>
-						<p class="text-secondary mb-3">
-							입력하신 이메일로 비밀번호 재설정 링크를 발송했습니다.
-						</p>
-						<div class="bg-primary bg-opacity-10 rounded p-3 mb-3">
-							<p class="text-primary">
-								이메일을 확인하여 비밀번호를 재설정해주세요.
-							</p>
-							<p id="masked-email" class="small text-secondary mt-1">
-								gra***@email.com
-							</p>
-						</div>
-						<div class="small text-secondary mb-3">
-							<p>이메일을 받지 못하셨나요?</p>
-							<button type="button" class="btn btn-link p-0 text-decoration-none">
-								이메일 재발송
-							</button>
-						</div>
-						<div class="d-grid">
-							<button type="button" class="btn btn-primary" onclick="window.location.href='/users/login'">
-								로그인 페이지로 이동
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-			<div class="mt-4 text-center">
-				<a href="#" class="text-decoration-none" onclick="window.location.href='/users/login'">로그인 페이지로 돌아가기</a>
-			</div>
-		</div>
-	</div>
+    <script>
+      // 아이디 찾기 버튼 클릭 이벤트
+      document
+        .getElementById("btn-find-id")
+        .addEventListener("click", async function () {
+          const email = document.getElementById("id-email").value;
+          const question = document.getElementById(
+            "id-security-question"
+          ).value;
+          const answer = document.getElementById("id-security-answer").value;
 
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+          // 입력값 검증
+          if (!email || !question || !answer) {
+            alert("모든 필드를 입력해주세요.");
+            return;
+          }
 
-	<script>
-		// 아이디 찾기 버튼 클릭 이벤트
-		document
-			.getElementById("btn-find-id")
-			.addEventListener("click", async function () {
-				const email = document.getElementById("id-email").value;
-				const question = document.getElementById(
-					"id-security-question"
-				).value;
-				const answer = document.getElementById("id-security-answer").value;
+          // 이메일 형식 검증
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(email)) {
+            alert("유효한 이메일 주소를 입력해주세요.");
+            return;
+          }
 
-				// 입력값 검증
-				if (!email || !question || !answer) {
-					alert("모든 필드를 입력해주세요.");
-					return;
-				}
+          const formData = {
+            email,
+            question,
+            answer,
+          };
 
-				// 이메일 형식 검증
-				const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-				if (!emailRegex.test(email)) {
-					alert("유효한 이메일 주소를 입력해주세요.");
-					return;
-				}
+          try {
+            const response = await fetch("/users/find/id", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(formData),
+            });
 
-				const formData = {
-					email,
-					question,
-					answer,
-				};
+            if (!response.ok) {
+              alert("입력하신 정보가 틀립니다. 다시 입력해주세요.");
 
-				try {
-					const response = await fetch("/users/find/id", {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						body: JSON.stringify(formData),
-					});
+              document.getElementById("id-email").value = "";
+              document.getElementById("id-security-question").value = "";
+              document.getElementById("id-security-answer").value = "";
 
-					if (!response.ok) {
-						alert("입력하신 정보가 틀립니다. 다시 입력해주세요.");
+              return;
+            }
 
-						document.getElementById("id-email").value = "";
-						document.getElementById("id-security-question").value = "";
-						document.getElementById("id-security-answer").value = "";
+            const foundUserId = await response.text();
+            const displayUserId =
+              foundUserId.substring(0, foundUserId.length - 4) + "****";
 
-						return;
-					}
+            document.getElementById("found-id").textContent = displayUserId;
+            document.getElementById("result-id").classList.add("show");
+            document.getElementById("form-find-id").style.display = "none";
+          } catch (error) {
+            console.error("아이디 찾기 오류:", error);
+            alert("아이디 찾기 중 오류가 발생했습니다: " + error.message);
+          }
+        });
 
-					const foundUserId = await response.text();
-					const displayUserId =
-						foundUserId.substring(0, foundUserId.length - 4) + "****";
+      // 비밀번호 찾기 버튼 클릭 이벤트 (UNCHANGED logic for now)
+      document
+        .getElementById("btn-find-pw")
+        .addEventListener("click", async function () {
+          const user = document.getElementById("pw-userid").value;
+          const email = document.getElementById("pw-email").value;
+          const question = document.getElementById(
+            "pw-security-question"
+          ).value;
+          const answer = document.getElementById("pw-security-answer").value;
 
-					document.getElementById("found-id").textContent = displayUserId;
-					document.getElementById("result-id").classList.add("show");
-					document.getElementById("form-find-id").style.display = "none";
-				} catch (error) {
-					console.error("아이디 찾기 오류:", error);
-					alert("아이디 찾기 중 오류가 발생했습니다: " + error.message);
-				}
-			});
+          // 입력값 검증
+          if (!user || !email || !question || !answer) {
+            alert("모든 필드를 입력해주세요.");
+            return;
+          }
 
-		// 비밀번호 찾기 버튼 클릭 이벤트 (UNCHANGED logic for now)
-		document
-			.getElementById("btn-find-pw")
-			.addEventListener("click", async function () {
-				const user = document.getElementById("pw-userid").value;
-				const email = document.getElementById("pw-email").value;
-				const question = document.getElementById(
-					"pw-security-question"
-				).value;
-				const answer = document.getElementById("pw-security-answer").value;
+          // 이메일 형식 검증
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(email)) {
+            alert("유효한 이메일 주소를 입력해주세요.");
+            return;
+          }
 
-				// 입력값 검증
-				if (!user || !email || !question || !answer) {
-					alert("모든 필드를 입력해주세요.");
-					return;
-				}
+          // 마스킹된 이메일 표시
+          const maskedEmail = email.replace(
+            /(\w{3})[\w.-]+@([\w.]+)/,
+            "$1***@$2"
+          );
+          document.getElementById("masked-email").textContent = maskedEmail;
 
-				// 이메일 형식 검증
-				const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-				if (!emailRegex.test(email)) {
-					alert("유효한 이메일 주소를 입력해주세요.");
-					return;
-				}
+          const formData = {
+            user,
+            email,
+            question,
+            answer,
+          };
 
-				// 마스킹된 이메일 표시
-				const maskedEmail = email.replace(
-					/(\w{3})[\w.-]+@([\w.]+)/,
-					"$1***@$2"
-				);
-				document.getElementById("masked-email").textContent = maskedEmail;
+          try {
+            const response = await fetch("/users/find/pw", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(formData),
+            });
 
-				const formData = {
-					user,
-					email,
-					question,
-					answer,
-				};
+            if (!response.ok) {
+              alert("입력하신 정보가 틀립니다. 다시 입력해주세요.");
 
-				try {
-					const response = await fetch("/users/find/pw", {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						body: JSON.stringify(formData),
-					});
+              document.getElementById("pw-userid").value = "";
+              document.getElementById("pw-email").value = "";
+              document.getElementById("pw-security-question").value = "";
+              document.getElementById("pw-security-answer").value = "";
 
-					if (!response.ok) {
-						alert("입력하신 정보가 틀립니다. 다시 입력해주세요.");
+              return;
+            }
 
-						document.getElementById("pw-userid").value = "";
-						document.getElementById("pw-email").value = "";
-						document.getElementById("pw-security-question").value = "";
-						document.getElementById("pw-security-answer").value = "";
+            const foundUserNumber = await response.text();
 
-						return;
-					}
+            window.location.href = "/users/changePw";
+          } catch (error) {
+            console.error("비밀번호 찾기 오류:", error);
+            alert("비밀번호 찾기 중 오류가 발생했습니다: " + error.message);
+          }
+        });
 
-					const foundUserNumber = await response.text();
-
-					window.location.href = "/users/changePw";
-				} catch (error) {
-					console.error("비밀번호 찾기 오류:", error);
-					alert("비밀번호 찾기 중 오류가 발생했습니다: " + error.message);
-				}
-			});
-
-		// 탭 전환 시 결과 박스 초기화
-		const findTab = document.getElementById("findTab");
-		findTab.addEventListener("shown.bs.tab", function (event) {
-			document.getElementById("result-id").classList.remove("show");
-			document.getElementById("form-find-id").style.display = "block";
-			document.getElementById("result-pw").classList.remove("show");
-			document.getElementById("form-find-pw").style.display = "block";
-		});
-	</script>
-</body>
-
+      // 탭 전환 시 결과 박스 초기화
+      const findTab = document.getElementById("findTab");
+      findTab.addEventListener("shown.bs.tab", function (event) {
+        document.getElementById("result-id").classList.remove("show");
+        document.getElementById("form-find-id").style.display = "block";
+        document.getElementById("result-pw").classList.remove("show");
+        document.getElementById("form-find-pw").style.display = "block";
+      });
+    </script>
+  </body>
 </html>

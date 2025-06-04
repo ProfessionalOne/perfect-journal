@@ -126,7 +126,7 @@
 }
 
 .btn-submit:hover {
-  background-color: #0077ed;
+  background-color: #3a5745;
   transform: scale(1.02);
 }
 
@@ -163,9 +163,9 @@
   }
 }
 
-#editor{
-	height: 250px;
+#editor {
+  height: 250px;
 }
-.ck-editor__editable_inline{
-	min-height: 250px;
+.ck-editor__editable_inline {
+  min-height: 250px;
 }

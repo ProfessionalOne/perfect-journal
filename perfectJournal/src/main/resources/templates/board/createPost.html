@@ -32,90 +32,93 @@
         <i class="bi bi-arrow-left"></i> 목록으로 돌아가기
       </a>
 
-      <div class="post-form-container">
-        <h1 class="form-title">새 감사일기 작성</h1>
-
-        <form
-          id="postForm"
-          method="post"
-          th:action="@{/posts/create}"
-          enctype="multipart/form-data"
+      <form
+        id="postForm"
+        method="post"
+        th:action="@{/posts/create}"
+        enctype="multipart/form-data"
+      >
+        <div
+          class="d-flex justify-content-between align-items-center mb-4"
+          style="border-bottom: 1px solid #eee; padding-bottom: 0.7rem"
         >
-         <div class="d-flex justify-content-between align-items-center mb-4" style="border-bottom:1px solid #eee; padding-bottom: 0.7rem;">
-            <div><label for="duration" class="form-label">타임캡슐</label>
+          <div>
+            <label for="duration" class="form-label">타임캡슐</label>
             <select name="duration">
               <option value="">선택 안 함</option>
-              <option value="7">일주일</option>
-              <option value="30">한 달</option>
-              <option value="365">일 년</option>
+              <option value="7">7일</option>
+              <option value="30">30일</option>
+              <option value="365">365일</option>
             </select>
           </div>
-		  <div class="form-check" style="margin-left:auto;">
-		  			<input type="hidden" name="isLocked" value="0">
-		  	        <input class="form-check-input" type="checkbox" value="1" id="isLocked" name="isLocked">
-		  	        <label class="form-check-label" for="isLocked">비밀글 설정</label>
-		  	      </div>
-		  	    </div>
-          <div class="mb-4">
-            <label for="postTitle" class="form-label">제목</label>
+          <div class="form-check" style="margin-left: auto">
+            <input type="hidden" name="isLocked" value="0" />
             <input
-              name="title"
-              type="text"
-              class="form-control"
-              id="postTitle"
-              placeholder="제목을 입력해주세요"
-              maxlength="30"
-              required
+              class="form-check-input"
+              type="checkbox"
+              value="1"
+              id="isLocked"
+              name="isLocked"
             />
-            <div
-              id="titleCountDiv"
-              class="d-flex justify-content-end form-text"
-            >
-              <span id="titleCount">0</span> / 30자
-            </div>
+            <label class="form-check-label" for="isLocked">비밀글 설정</label>
           </div>
+        </div>
+        <div class="mb-4">
+          <label for="postTitle" class="form-label">제목</label>
+          <input
+            name="title"
+            type="text"
+            class="form-control"
+            id="postTitle"
+            placeholder="제목을 입력해주세요"
+            maxlength="30"
+            required
+          />
+          <div id="titleCountDiv" class="d-flex justify-content-end form-text">
+            <span id="titleCount">0</span> / 30자
+          </div>
+        </div>
 
-          <div class="mb-4">
-            <label class="form-label">썸네일 이미지</label>
-            <div class="thumbnail-container" id="thumbnailContainer">
-              <div class="thumbnail-placeholder" id="thumbnailPlaceholder">
-                <i class="bi bi-image"></i>
-                <span>이미지를 업로드해주세요</span>
-              </div>
-              <img
-                src=""
-                alt="썸네일 미리보기"
-                class="thumbnail-preview"
-                id="thumbnailPreview"
-              />
-              <input
-                name="file"
-                type="file"
-                accept="image/*"
-                class="thumbnail-input"
-                id="thumbnailInput"
-              />
+        <div class="mb-4">
+          <label class="form-label">썸네일 이미지</label>
+          <div class="thumbnail-container" id="thumbnailContainer">
+            <div class="thumbnail-placeholder" id="thumbnailPlaceholder">
+              <i class="bi bi-image"></i>
+              <span>이미지를 업로드해주세요</span>
             </div>
-            <div class="form-text">권장 크기: 1200 x 800px, 최대 5MB</div>
+            <img
+              src=""
+              alt="썸네일 미리보기"
+              class="thumbnail-preview"
+              id="thumbnailPreview"
+            />
+            <input
+              name="file"
+              type="file"
+              accept="image/*"
+              class="thumbnail-input"
+              id="thumbnailInput"
+            />
           </div>
-          <div class="mb-4">
-            <label for="postContent" class="form-label">내용</label>
-            <textarea
-              name="content"
-              class="form-control content-editor"
-              id="editor"
-              rows="10"
-              placeholder="오늘 감사했던 일을 작성해주세요..."
-            ></textarea>
-          </div>
-          <div class="form-buttons">
-            <button type="button" class="btn btn-cancel" id="cancelButton">
-              취소하기
-            </button>
-            <button type="submit" class="btn btn-submit">등록하기</button>
-          </div>
-        </form>
-      </div>
+          <div class="form-text">권장 크기: 1200 x 800px, 최대 5MB</div>
+        </div>
+        <div class="mb-4">
+          <label for="postContent" class="form-label">내용</label>
+          <textarea
+            name="content"
+            class="form-control content-editor"
+            id="editor"
+            rows="10"
+            placeholder="오늘 감사했던 일을 작성해주세요..."
+          ></textarea>
+        </div>
+        <div class="form-buttons">
+          <button type="button" class="btn btn-cancel" id="cancelButton">
+            취소하기
+          </button>
+          <button type="submit" class="btn btn-submit">등록하기</button>
+        </div>
+      </form>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -183,13 +186,32 @@
           return false;
         });
 
+      function checkFileSize(file) {
+        if (file.size > 5242880) {
+          return true;
+        }
+
+        return false;
+      }
+
+      let editorInstance;
+
+      async function insertStyledQuestion(editor) {
+        const response = await fetch("/questions.json");
+        const questions = await response.json();
+        const random = questions[Math.floor(Math.random() * questions.length)];
+        const rawQuestion = `#${random}`;
+        const styledHTML = `<p><span style="color:gray; font-style:italic;">${rawQuestion}</span></p><p><br></p>`;
+        editor.setData(styledHTML);
+      }
+
       ClassicEditor.create(document.querySelector("#editor"), {
         simpleUpload: {
           uploadUrl: "/uploads",
         },
       })
         .then((editor) => {
-          let editorInstance = editor;
+          editorInstance = editor;
           insertStyledQuestion(editor);
 
           const form = document.getElementById("postForm");
