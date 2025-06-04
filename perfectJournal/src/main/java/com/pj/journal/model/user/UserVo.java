@@ -7,11 +7,12 @@ public class UserVo {
 	private int userId, question;
 	private String email, user, password, nickname, answer;
 	private Date createdAt;
-	
-	public UserVo(){}
 
-	public UserVo(int userId, int question, String email, String user, String password, String nickname,
-			String answer, Date createdAt) {
+	public UserVo() {
+	}
+
+	public UserVo(int userId, int question, String email, String user, String password, String nickname, String answer,
+			Date createdAt) {
 		super();
 		this.userId = userId;
 		this.question = question;
@@ -113,4 +114,5 @@ public class UserVo {
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
+
 }

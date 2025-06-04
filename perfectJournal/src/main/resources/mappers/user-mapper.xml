@@ -6,8 +6,8 @@
 		SELECT * FROM users
 		WHERE user = #{user}
 	</select>
-    
-    	<select id="findUserId" parameterType="userBean"
+
+	<select id="findUserId" parameterType="userBean"
 		resultType="String">
 		SELECT user FROM users
 		WHERE email = #{email} AND answer =
@@ -39,28 +39,35 @@
 	</select>
 
 	<update id="changeUserPw" parameterType="map">
-		UPDATE users SET password = #{password}
+		UPDATE users SET
+		password = #{password}
 		WHERE user = #{user}
 	</update>
-	
-<!--id/nickname/e-mail 중복검사용-->
-	<select id="isIdAlreadyExists" parameterType="String" resultType="int">
+
+	<!--id/nickname/e-mail 중복검사용 -->
+	<select id="isIdAlreadyExists" parameterType="String"
+		resultType="int">
 		SELECT EXISTS (SELECT 1 FROM users WHERE user = #{user})
 	</select>
-	
-	<select id="isNickNameAlreadyExists" parameterType="String" resultType="int">
-		SELECT EXISTS (SELECT 1 FROM users WHERE nickname = #{nickname})
+
+	<select id="isNickNameAlreadyExists" parameterType="String"
+		resultType="int">
+		SELECT EXISTS (SELECT 1 FROM users WHERE nickname =
+		#{nickname})
 	</select>
 
-  <select id="isEmailAlreadyExists" parameterType="String" resultType="int">
+	<select id="isEmailAlreadyExists" parameterType="String"
+		resultType="int">
 		SELECT EXISTS (SELECT 1 FROM users WHERE email = #{email})
 	</select>
 
-<!--회원가입-->
+	<!--회원가입 -->
 	<insert id="insertOneUser" parameterType="userBean">
-		INSERT INTO users (email, user, password, nickname, created_at,
+		INSERT INTO users
+		(email, user, password, nickname, created_at,
 		question, answer)
-		VALUES (#{email}, #{user}, #{password}, #{nickname}, now(), #{question},
+		VALUES
+		(#{email}, #{user}, #{password}, #{nickname}, now(), #{question},
 		#{answer})
 	</insert>
 

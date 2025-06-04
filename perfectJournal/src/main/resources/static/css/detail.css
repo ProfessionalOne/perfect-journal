@@ -50,6 +50,8 @@
   font-size: 1.1rem;
   line-height: 1.8;
   margin-bottom: 2rem;
+  word-wrap: break-word;
+  white-space: normal;
 }
 
 .post-content p {
@@ -250,7 +252,7 @@ pre.comment-text {
 
 .post-content .image img {
   display: block;
-  width: 100%; /* 부모 기준으로 꽉 차게 */
+  width: 100%;
   height: auto;
   max-width: 100%;
 }

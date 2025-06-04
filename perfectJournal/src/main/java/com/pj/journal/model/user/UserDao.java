@@ -1,7 +1,8 @@
 package com.pj.journal.model.user;
 
+import java.util.Optional;
+
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.catalina.Session;
 import org.apache.ibatis.annotations.Param;
 
 @Mapper
@@ -33,4 +34,5 @@ public interface UserDao {
 	int updateOneUser(UserVo bean);
 
 	int deleteOneUser(int pk);
+
 }

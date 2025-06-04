@@ -4,19 +4,65 @@
 }
 
 .board-header {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+  /* display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end; */
   margin-bottom: 1rem;
+  padding: 0 30px;
 }
 
 .board-controls-left {
   display: flex;
   gap: 10px;
+  align-items: flex-end;
+  margin-bottom: 25px;
+}
+
+.index {
+  display: flex;
+  align-items: center;
+}
+
+.index > a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 1.5rem;
+  margin-right: 16px;
+}
+
+.feed {
+  color: black;
+  border-bottom: 3px solid black;
+}
+
+.time {
+  color: lightgray;
+}
+
+.index > a > i {
+  margin-right: 5px;
+}
+
+.board-controls-center {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   align-items: center;
 }
 
 .board-controls-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-bottom: 20px;
+}
+
+.board-controls-right-wrapper {
   display: flex;
   gap: 10px;
   align-items: center;
@@ -197,28 +243,21 @@
   padding: 0 30px;
 }
 
-@media (max-width: 768px) {
-  .board-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+/* home.css 또는 common.css에 추가 */
+.btn.dropdown-toggle {
+  padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  height: 38px;
+  box-shadow: none;
+}
 
-  .board-controls-left,
-  .board-controls-right {
-    margin-top: 1rem;
-    width: 100%;
-  }
-
-  .page-arrow {
-    width: 40px;
-    height: 40px;
-  }
-
-  .page-arrow.prev {
-    left: -10px;
-  }
-
-  .page-arrow.next {
-    right: -10px;
-  }
+.btn.dropdown-toggle::after {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
 }
