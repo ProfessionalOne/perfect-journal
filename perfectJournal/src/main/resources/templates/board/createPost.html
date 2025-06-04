@@ -1,238 +1,205 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>감사일기 - 게시글 작성</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
-    />
-    <link
-      rel="stylesheet"
-      th:href="@{/css/common.css}"
-      href="../static/css/common.css"
-    />
-    <link
-      rel="stylesheet"
-      th:href="@{/css/createPost.css}"
-      href="../static/css/createPost.css"
-    />
-  </head>
-  <body>
-    <nav th:replace="~{layout/header :: headerFrag}">네비게이션</nav>
 
-    <div class="container">
-      <a th:href="@{/posts}" class="back-button" id="backToList">
-        <i class="bi bi-arrow-left"></i> 목록으로 돌아가기
-      </a>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>감사일기 - 게시글 작성</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+	<link rel="stylesheet" th:href="@{/css/common.css}" href="../static/css/common.css" />
+	<link rel="stylesheet" th:href="@{/css/createPost.css}" href="../static/css/createPost.css" />
+</head>
 
-      <div class="post-form-container">
-        <h1 class="form-title">새 감사일기 작성</h1>
+<body>
+	<nav th:replace="~{layout/header :: headerFrag}">네비게이션</nav>
 
-        <form
-          id="postForm"
-          method="post"
-          th:action="@{/posts/create}"
-          enctype="multipart/form-data"
-        >
-          <div class="mb-4">
-            <label for="postTitle" class="form-label">제목</label>
-            <input
-              name="title"
-              type="text"
-              class="form-control"
-              id="postTitle"
-              placeholder="제목을 입력해주세요"
-              maxlength="30"
-              required
-            />
-            <div
-              id="titleCountDiv"
-              class="d-flex justify-content-end form-text"
-            >
-              <span id="titleCount">0</span> / 30자
-            </div>
-          </div>
+	<div class="container">
+		<a th:href="@{/posts}" class="back-button" id="backToList">
+			<i class="bi bi-arrow-left"></i> 목록으로 돌아가기
+		</a>
 
-          <div class="mb-4">
-            <label class="form-label">썸네일 이미지</label>
-            <div class="thumbnail-container" id="thumbnailContainer">
-              <div class="thumbnail-placeholder" id="thumbnailPlaceholder">
-                <i class="bi bi-image"></i>
-                <span>이미지를 업로드해주세요</span>
-              </div>
-              <img
-                src=""
-                alt="썸네일 미리보기"
-                class="thumbnail-preview"
-                id="thumbnailPreview"
-              />
-              <input
-                name="file"
-                type="file"
-                accept="image/*"
-                class="thumbnail-input"
-                id="thumbnailInput"
-              />
-            </div>
-            <div class="form-text">권장 크기: 1200 x 800px, 최대 5MB</div>
-          </div>
+		<div class="post-form-container">
+			<h1 class="form-title">새 감사일기 작성</h1>
 
-          <div class="mb-4">
-            <label for="postContent" class="form-label">내용</label>
-            <textarea
-              name="content"
-              class="form-control content-editor"
-              id="editor"
-              rows="10"
-              placeholder="오늘 감사했던 일을 작성해주세요..."
-            ></textarea>
-          </div>
+			<form id="postForm" method="post" th:action="@{/posts/create}" enctype="multipart/form-data">
+				<div class="mb-4">
+					<label for="duration" class="form-label">타임캡슐</label>
+					<select name="duration">
+						<option value="">선택 안 함</option>
+						<option value="7">일주일</option>
+						<option value="30">한 달</option>
+						<option value="365">일 년</option>
+					</select>
+				</div>
+				<div class="mb-4">
+					<label for="postTitle" class="form-label">제목</label>
+					<input name="title" type="text" class="form-control" id="postTitle" placeholder="제목을 입력해주세요"
+						maxlength="30" required />
+					<div id="titleCountDiv" class="d-flex justify-content-end form-text">
+						<span id="titleCount">0</span> / 30자
+					</div>
+				</div>
 
-          <div class="form-buttons">
-            <button type="button" class="btn btn-cancel" id="cancelButton">
-              취소하기
-            </button>
-            <button type="submit" class="btn btn-submit">등록하기</button>
-          </div>
-        </form>
-      </div>
-    </div>
+				<div class="mb-4">
+					<label class="form-label">썸네일 이미지</label>
+					<div class="thumbnail-container" id="thumbnailContainer">
+						<div class="thumbnail-placeholder" id="thumbnailPlaceholder">
+							<i class="bi bi-image"></i>
+							<span>이미지를 업로드해주세요</span>
+						</div>
+						<img src="" alt="썸네일 미리보기" class="thumbnail-preview" id="thumbnailPreview" />
+						<input name="file" type="file" accept="image/*" class="thumbnail-input" id="thumbnailInput" />
+					</div>
+					<div class="form-text">권장 크기: 1200 x 800px, 최대 5MB</div>
+				</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      // 썸네일 이미지 미리보기
-      document
-        .getElementById("thumbnailInput")
-        .addEventListener("change", function (e) {
-          const file = e.target.files[0];
+				<div class="mb-4">
+					<label for="postContent" class="form-label">내용</label>
+					<textarea name="content" class="form-control content-editor" id="editor" rows="10"
+						placeholder="오늘 감사했던 일을 작성해주세요..."></textarea>
+				</div>
 
-          const isBigFile = checkFileSize(file);
+				<div class="form-buttons">
+					<button type="button" class="btn btn-cancel" id="cancelButton">
+						취소하기
+					</button>
+					<button type="submit" class="btn btn-submit">등록하기</button>
+				</div>
+			</form>
+		</div>
+	</div>
 
-          if (file && !isBigFile) {
-            const reader = new FileReader();
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		// 썸네일 이미지 미리보기
+		document
+			.getElementById("thumbnailInput")
+			.addEventListener("change", function (e) {
+				const file = e.target.files[0];
 
-            reader.onload = function (e) {
-              const preview = document.getElementById("thumbnailPreview");
-              const placeholder = document.getElementById(
-                "thumbnailPlaceholder"
-              );
+				const isBigFile = checkFileSize(file);
 
-              preview.src = e.target.result;
-              preview.style.display = "block";
-              placeholder.style.display = "none";
-            };
+				if (file && !isBigFile) {
+					const reader = new FileReader();
 
-            reader.readAsDataURL(file);
-          } else {
-            alert("이미지가 너무 큽니다.");
-          }
-        });
+					reader.onload = function (e) {
+						const preview = document.getElementById("thumbnailPreview");
+						const placeholder = document.getElementById(
+							"thumbnailPlaceholder"
+						);
 
-      // 취소 버튼 이벤트
-      document
-        .getElementById("cancelButton")
-        .addEventListener("click", function () {
-          if (
-            confirm(
-              "작성 중인 내용이 저장되지 않습니다. 정말 취소하시겠습니까?"
-            )
-          ) {
-            window.location.href = "/posts";
-          }
-        });
+						preview.src = e.target.result;
+						preview.style.display = "block";
+						placeholder.style.display = "none";
+					};
 
-      // 목록으로 돌아가기 버튼 이벤트
-      document
-        .getElementById("backToList")
-        .addEventListener("click", function (e) {
-          e.preventDefault();
+					reader.readAsDataURL(file);
+				} else {
+					alert("이미지가 너무 큽니다.");
+				}
+			});
 
-          if (
-            document.getElementById("postTitle").value.trim() ||
-            document.getElementById("postContent").value.trim() ||
-            document.getElementById("thumbnailInput").files.length > 0
-          ) {
-            if (
-              confirm(
-                "작성 중인 내용이 저장되지 않습니다. 정말 목록으로 돌아가시겠습니까?"
-              )
-            ) {
-              // 목록 페이지로 이동
-              // window.location.href = 'index.html';
-              alert("목록 페이지로 이동합니다.");
-            }
-          } else {
-            window.location.href = "/posts";
-          }
-        });
+		// 취소 버튼 이벤트
+		document
+			.getElementById("cancelButton")
+			.addEventListener("click", function () {
+				if (
+					confirm(
+						"작성 중인 내용이 저장되지 않습니다. 정말 취소하시겠습니까?"
+					)
+				) {
+					window.location.href = "/posts";
+				}
+			});
 
-      // 제목 글자 수 확인
-      const titleCountEl = document.getElementById("titleCount");
-      document
-        .getElementById("postTitle")
-        .addEventListener("keyup", function (e) {
-          if (e.target.value.length > 30) {
-            e.target.value = event.target.value.slice(0, 30);
-          }
+		// 목록으로 돌아가기 버튼 이벤트
+		// document
+		//   .getElementById("backToList")
+		//   .addEventListener("click", function (e) {
+		//     e.preventDefault();
 
-          if (e.target.value.length == 30) {
-            document
-              .getElementById("titleCountDiv")
-              .setAttribute("style", "color: red;");
-          } else {
-            document
-              .getElementById("titleCountDiv")
-              .removeAttribute("color: red;");
-          }
+		//     if (
+		//       document.getElementById("postTitle").value.trim() ||
+		//       document.getElementById("postContent").value.trim() ||
+		//       document.getElementById("thumbnailInput").files.length > 0
+		//     ) {
+		//       if (
+		//         confirm(
+		//           "작성 중인 내용이 저장되지 않습니다. 정말 목록으로 돌아가시겠습니까?"
+		//         )
+		//       ) {
+		//         // 목록 페이지로 이동
+		//         // window.location.href = 'index.html';
+		//         alert("목록 페이지로 이동합니다.");
+		//       }
+		//     } else {
+		//       window.location.href = "/posts";
+		//     }
+		//   });
 
-          titleCountEl.innerText = e.target.value.length;
-        });
+		// 제목 글자 수 확인
+		const titleCountEl = document.getElementById("titleCount");
+		document
+			.getElementById("postTitle")
+			.addEventListener("keyup", function (e) {
+				if (e.target.value.length > 30) {
+					e.target.value = event.target.value.slice(0, 30);
+				}
 
-      function checkFileSize(file) {
-        if (file.size > 5242880) {
-          return true;
-        }
+				if (e.target.value.length == 30) {
+					document
+						.getElementById("titleCountDiv")
+						.setAttribute("style", "color: red;");
+				} else {
+					document
+						.getElementById("titleCountDiv")
+						.removeAttribute("color: red;");
+				}
 
-        return false;
-      }
-    </script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
-    <script>
-      let editorInstance;
+				titleCountEl.innerText = e.target.value.length;
+			});
 
-      async function insertStyledQuestion(editor) {
-        const response = await fetch("/questions.json");
-        const questions = await response.json();
-        const random = questions[Math.floor(Math.random() * questions.length)];
-        const rawQuestion = `#${random}`;
-        const styledHTML = `<p><span style="color:gray; font-style:italic;">${rawQuestion}</span></p><p><br></p>`;
-        editor.setData(styledHTML);
-      }
+		function checkFileSize(file) {
+			if (file.size > 5242880) {
+				return true;
+			}
 
-      ClassicEditor.create(document.querySelector("#editor")).then((editor) => {
-        editorInstance = editor;
-        insertStyledQuestion(editor);
+			return false;
+		}
+	</script>
+	<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+	<script>
+		let editorInstance;
 
-        // 폼 제출 전에 editor 내용 순수 텍스트로 바꿔서 textarea에 넣기
-        const form = document.getElementById("postForm");
-        form.addEventListener("submit", function () {
-          const html = editor.getData();
+		async function insertStyledQuestion(editor) {
+			const response = await fetch("/questions.json");
+			const questions = await response.json();
+			const random = questions[Math.floor(Math.random() * questions.length)];
+			const rawQuestion = `#${random}`;
+			const styledHTML = `<p><span style="color:gray; font-style:italic;">${rawQuestion}</span></p><p><br></p>`;
+			editor.setData(styledHTML);
+		}
 
-          // HTML 제거: span, p, br 등
-          const tempEl = document.createElement("div");
-          tempEl.innerHTML = html;
-          const plainText = tempEl.innerText;
+		ClassicEditor.create(document.querySelector("#editor")).then((editor) => {
+			editorInstance = editor;
+			insertStyledQuestion(editor);
 
-          // textarea에 plainText 넣기
-          document.getElementById("editor").value = plainText;
-        });
-      });
-    </script>
-  </body>
+			// 폼 제출 전에 editor 내용 순수 텍스트로 바꿔서 textarea에 넣기
+			const form = document.getElementById("postForm");
+			form.addEventListener("submit", function () {
+				const html = editor.getData();
+
+				// HTML 제거: span, p, br 등
+				const tempEl = document.createElement("div");
+				tempEl.innerHTML = html;
+				const plainText = tempEl.innerText;
+
+				// textarea에 plainText 넣기
+				document.getElementById("editor").value = plainText;
+			});
+		});
+	</script>
+</body>
+
 </html>

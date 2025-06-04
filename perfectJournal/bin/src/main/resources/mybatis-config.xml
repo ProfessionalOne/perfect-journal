@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration 
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+	<typeAliases>
+		<typeAlias type="com.pj.journal.model.board.BoardVo"
+			alias="boardBean" />
+		<typeAlias type="com.pj.journal.model.comment.CommentVo"
+			alias="commentBean" />
+		<typeAlias type="com.pj.journal.model.member.MemberVo"
+			alias="memberBean" />
+	</typeAliases>
+
+	<mappers>
+		<mapper resource="mappers/board-mapper.xml" />
+		<mapper resource="mappers/comment-mapper.xml" />
+		<mapper resource="mappers/member-mapper.xml" />
+	</mappers>
+</configuration>
