@@ -29,20 +29,21 @@ public class UserService {
 		return null;
 	}
 
-	public String findUserId(UserVo bean, String answer) {
+	public String findUserId(String email, String answer, int question) {
 
-		UserVo vo = userDao.findUserIdEncrypted(bean);
+		UserVo vo = userDao.findUserIdEncrypted(email, question);
 		if (vo != null && BCrypt.checkpw(answer, vo.getAnswer())) {
-			System.out.println(BCrypt.checkpw(answer, vo.getAnswer()));
+			
 	        return vo.getUser(); // 찾은 id 반환 (UserVo에 getUser()가 아이디 반환)
 	    } else {
 	        return "notFound";
 	    }
 	}
-	
-	
-	public String findUserPw(UserVo bean, String answer) {
-		UserVo vo = userDao.findUserPwEncrypted(bean);
+
+	public String findUserPw(String user, String email, String answer, int question) {
+		
+		UserVo vo = userDao.findUserPwEncrypted(user, email, question);
+
 		if (vo != null && BCrypt.checkpw(answer, vo.getAnswer())) {
 			return "findPw"; 
 	    } else {
