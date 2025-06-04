@@ -35,17 +35,21 @@
       <div class="post-container">
         <div id="postDisplay">
           <div class="post-header">
-			<div class="d-flex align-items-center gap-2">
-			 
-			  <span th:if="${bean.isLocked != null and bean.isLocked == 1}">
-			   <i class="bi bi-lock-fill" style="font-size: 1em; color: #888;"></i>
-			  </span>
-			  <h1 class="post-title" id="postTitle" th:text="${bean.title}">오늘의 감사한 순간</h1>
-			    <span class="text-secondary fs-6">
-			      <i class="bi bi-eye"></i>
-				  <span th:text="${bean.views}">0</span>
-			    </span>
-			</div>
+            <div class="d-flex align-items-center gap-2">
+              <span th:if="${bean.isLocked != null and bean.isLocked == 1}">
+                <i
+                  class="bi bi-lock-fill"
+                  style="font-size: 1em; color: #888"
+                ></i>
+              </span>
+              <h1 class="post-title" id="postTitle" th:text="${bean.title}">
+                오늘의 감사한 순간
+              </h1>
+              <span class="text-secondary fs-6">
+                <i class="bi bi-eye"></i>
+                <span th:text="${bean.views}">0</span>
+              </span>
+            </div>
             <div class="post-meta">
               <span
                 class="post-author"
@@ -61,7 +65,7 @@
               >
             </div>
           </div>
-          <div class="d-flex justify-content-center">
+          <div th:if="${bean.image}" class="d-flex justify-content-center">
             <img
               th:src="${bean.image}"
               alt="${bean.title}"
@@ -75,14 +79,16 @@
             </div>
           </div>
           <div class="d-flex justify-content-between" th:if="${isOwner}">
-            <form
-              th:action="@{'/posts/' + ${bean.postId}}"
-              method="post"
-              onsubmit="return confirm('정말로 이 게시글을 삭제하시겠습니까?');"
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteConfirmModal"
+              th:data-post-id="${bean.postId}"
+              th:data-post-title="${bean.title}"
             >
-              <input type="hidden" name="_method" value="delete" />
-              <button type="submit" class="btn btn-danger">삭제하기</button>
-            </form>
+              삭제하기
+            </button>
             <button
               class="btn btn-primary"
               id="editPostButton"
@@ -136,21 +142,17 @@
                   class="comment-buttons-group"
                   th:if="${!comment.isDeleted}"
                 >
-                  <form
-                    th:action="@{'/posts/' + ${bean.postId} + '/comments/' + ${comment.commentId}}"
-                    method="post"
-                    style="display: inline-block"
-                    onsubmit="return confirm('정말로 이 댓글을 삭제하시겠습니까?');"
+                  <button
+                    type="button"
+                    class="btn btn-danger btn-sm delete-comment-button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteCommentConfirmModal"
+                    th:data-post-id="${bean.postId}"
+                    th:data-comment-id="${comment.commentId}"
                     th:if="${session.loginUser != null and comment.nickname == session.loginUser.nickname}"
                   >
-                    <input type="hidden" name="_method" value="delete" />
-                    <button
-                      type="submit"
-                      class="btn btn-danger btn-sm delete-comment-button"
-                    >
-                      삭제
-                    </button>
-                  </form>
+                    삭제
+                  </button>
                   <button
                     class="btn btn-primary btn-sm edit-comment-button"
                     th:data-comment-id="${comment.commentId}"
@@ -252,17 +254,98 @@
       </div>
     </div>
 
-    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
-    <script>
-      let myEditor;
-      ClassicEditor.create(document.querySelector("#eidtor")).then((editor) => {
-        myEditor = editor;
-      });
+    <!-- Post Delete Modal -->
+    <div
+      class="modal fade"
+      id="deleteConfirmModal"
+      tabindex="-1"
+      aria-labelledby="deleteConfirmModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteConfirmModalLabel">
+              게시글 삭제 확인
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              <strong id="modalPostTitle"></strong> 게시글을 정말로
+              삭제하시겠습니까?
+            </p>
+            <p class="text-danger">삭제된 게시글은 복구할 수 없습니다.</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              취소
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              id="confirmDeleteButton"
+            >
+              삭제
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      document.querySelector("form").addEventListener("submit", function () {
-        document.querySelector("#editor").value = myEditor.getData();
-      });
-    </script>
+    <!-- Comment Delete Modal -->
+    <div
+      class="modal fade"
+      id="deleteCommentConfirmModal"
+      tabindex="-1"
+      aria-labelledby="deleteCommentConfirmModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteCommentConfirmModalLabel">
+              댓글 삭제 확인
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>이 댓글을 정말로 삭제하시겠습니까?</p>
+            <p class="text-danger">삭제된 댓글은 복구할 수 없습니다.</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              취소
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              id="confirmCommentDeleteButton"
+            >
+              삭제
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -350,6 +433,71 @@
           commentButtonsGroup.style.display = "block";
         });
       });
+
+      const deleteConfirmModal = document.getElementById("deleteConfirmModal");
+      if (deleteConfirmModal) {
+        deleteConfirmModal.addEventListener("show.bs.modal", function (event) {
+          const button = event.relatedTarget;
+
+          const postId = button.getAttribute("data-post-id");
+          const postTitle = button.getAttribute("data-post-title");
+
+          const modalPostTitle =
+            deleteConfirmModal.querySelector("#modalPostTitle");
+          modalPostTitle.textContent = `'${postTitle}'`;
+
+          const confirmDeleteButton = deleteConfirmModal.querySelector(
+            "#confirmDeleteButton"
+          );
+          confirmDeleteButton.onclick = function () {
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = `/posts/${postId}`;
+
+            const hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "_method";
+            hiddenInput.value = "delete";
+            form.appendChild(hiddenInput);
+
+            document.body.appendChild(form);
+            form.submit();
+          };
+        });
+      }
+
+      const deleteCommentConfirmModal = document.getElementById(
+        "deleteCommentConfirmModal"
+      );
+      if (deleteCommentConfirmModal) {
+        deleteCommentConfirmModal.addEventListener(
+          "show.bs.modal",
+          function (event) {
+            const button = event.relatedTarget;
+            const postId = button.getAttribute("data-post-id");
+            const commentId = button.getAttribute("data-comment-id");
+
+            const confirmCommentDeleteButton =
+              deleteCommentConfirmModal.querySelector(
+                "#confirmCommentDeleteButton"
+              );
+            confirmCommentDeleteButton.onclick = function () {
+              const form = document.createElement("form");
+              form.method = "POST";
+              form.action = `/posts/${postId}/comments/${commentId}`;
+
+              const hiddenInput = document.createElement("input");
+              hiddenInput.type = "hidden";
+              hiddenInput.name = "_method";
+              hiddenInput.value = "delete";
+              form.appendChild(hiddenInput);
+
+              document.body.appendChild(form);
+              form.submit();
+            };
+          }
+        );
+      }
     </script>
   </body>
 </html>

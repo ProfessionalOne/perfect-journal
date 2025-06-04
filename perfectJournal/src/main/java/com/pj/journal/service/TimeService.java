@@ -17,7 +17,7 @@ public class TimeService {
 	@Autowired
 	SqlSessionFactory sqlSessionFactory;
 	
-	public void getBoardList(int userId, Model model, int page, String sort, String field, String keyword, boolean onlyMine) {
+	public void getBoardList(int userId, Model model, int page, String sort, String field, String keyword, Boolean onlyMine) {
 		int pageSize = 10;
 		int offset = (page - 1) * pageSize;
 

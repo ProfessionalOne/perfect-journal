@@ -29,6 +29,17 @@
       th:href="@{/css/home.css}"
       href="../static/css/home.css"
     />
+    <style>
+      .feed {
+        color: lightgray;
+        border-bottom: none;
+      }
+
+      .time {
+        color: black;
+        border-bottom: 3px solid black;
+      }
+    </style>
   </head>
   <body>
     <nav th:replace="~{layout/header :: headerFrag}">네비게이션</nav>
@@ -36,37 +47,22 @@
     <div class="container">
       <div class="board-header">
         <div class="board-controls-left">
-          <div class="dropdown dropdown-sort">
-            <button
-              class="btn btn-light dropdown-toggle"
-              type="button"
-              id="sortDropdown"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
+          <div class="index">
+            <a th:href="@{/posts}" class="feed"
+              ><i class="bi bi-clipboard2-data"></i>피드</a
             >
-              <i class="bi bi-sort-down me-1"></i> 정렬
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-              <li>
-                <a
-                  class="dropdown-item"
-                  th:href="@{/time(page=${currentPage}, sort='latest', searchField=${searchField}, keyword=${keyword})}"
-                  >최신순</a
-                >
-              </li>
-              <li>
-                <a
-                  class="dropdown-item"
-                  th:href="@{/time(page=${currentPage}, sort='oldest', searchField=${searchField}, keyword=${keyword})}"
-                  >오래된순</a
-                >
-              </li>
-            </ul>
+            <a th:href="@{/time}" class="time"
+              ><i class="bi bi-hourglass-split"></i>타입캡슐</a
+            >
           </div>
+        </div>
+
+        <div class="board-controls-center">
+          <!-- 검색 창 -->
           <form
             class="search-form d-flex ms-2"
             method="get"
-            th:action="@{/time}"
+            th:action="@{/posts}"
           >
             <div class="input-group me-2" style="max-width: 450px">
               <select
@@ -101,63 +97,99 @@
 
             <button type="submit" style="display: none">검색</button>
           </form>
+          <!-- 페이지네이션 -->
+          <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+              <li class="page-item" th:hidden="${beginPage == 1}">
+                <a
+                  class="page-link bi bi-chevron-double-left"
+                  th:href="@{/posts(page=${beginPage - 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
+                ></a>
+              </li>
+              <li th:if="${totalPages == 0}">
+                <p>데이터 없음</p>
+              </li>
+              <li
+                class="page-item"
+                th:if="${totalPages != 0}"
+                th:each="i : ${#numbers.sequence(beginPage, endPage)}"
+                th:classappend="${i == currentPage} ? 'active'"
+              >
+                <a
+                  class="page-link"
+                  th:href="@{/posts(page=${i}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
+                  th:text="${i}"
+                  >1</a
+                >
+              </li>
+              <li class="page-item" th:hidden="${endPage == totalPages}">
+                <a
+                  class="page-link bi bi-chevron-double-right"
+                  th:href="@{/posts(page=${endPage + 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
+                ></a>
+              </li>
+            </ul>
+          </nav>
+
+          <a
+            class="page-arrow prev"
+            id="prevPage"
+            th:hidden="${currentPage == 1}"
+            th:href="@{/posts(page=${currentPage - 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
+          >
+            <span class="bi bi-chevron-left"></span>
+          </a>
         </div>
 
         <div class="board-controls-right">
-          <button
-            class="btn btn-new-post"
-            th:onclick="${session.loginUser != null} ? 'location.href=\'/posts/create\'' : 'location.href=\'/users/login\''"
-          >
-            <i class="bi bi-pencil-fill me-1"></i> 새 글 작성
-          </button>
+          <div class="board-controls-right-wrapper">
+            <div class="dropdown dropdown-sort">
+              <button
+                class="btn btn-light dropdown-toggle"
+                type="button"
+                id="sortDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-sort-down me-1"></i> 정렬
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                <li>
+                  <a
+                    class="dropdown-item"
+                    th:href="@{/posts(page=${currentPage}, sort='latest', searchField=${searchField}, keyword=${keyword})}"
+                    >최신순</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    th:href="@{/posts(page=${currentPage}, sort='oldest', searchField=${searchField}, keyword=${keyword})}"
+                    >오래된순</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    th:href="@{/posts(page=${currentPage}, sort='views', searchField=${searchField}, keyword=${keyword})}"
+                  >
+                    인기순
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <button
+              class="btn btn-new-post"
+              th:onclick="${session.loginUser != null} ? 'location.href=\'/posts/create\'' : 'location.href=\'/users/login\''"
+            >
+              <i class="bi bi-pencil-fill me-1"></i> 새 글 작성
+            </button>
+          </div>
         </div>
       </div>
 
       <!-- 게시판  -->
       <div class="board-container">
-        <!-- 페이지네이션 -->
-        <nav aria-label="Page navigation" class="mt-4">
-          <ul class="pagination justify-content-center">
-            <li class="page-item" th:hidden="${beginPage == 1}">
-              <a
-                class="page-link bi bi-chevron-double-left"
-                th:href="@{/time(page=${beginPage - 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
-              ></a>
-            </li>
-            <li th:if="${totalPages == 0}">
-              <p>데이터 없음</p>
-            </li>
-            <li
-              class="page-item"
-              th:if="${totalPages != 0}"
-              th:each="i : ${#numbers.sequence(beginPage, endPage)}"
-              th:classappend="${i == currentPage} ? 'active'"
-            >
-              <a
-                class="page-link"
-                th:href="@{/time(page=${i}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
-                th:text="${i}"
-                >1</a
-              >
-            </li>
-            <li class="page-item" th:hidden="${endPage == totalPages}">
-              <a
-                class="page-link bi bi-chevron-double-right"
-                th:href="@{/time(page=${endPage + 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
-              ></a>
-            </li>
-          </ul>
-        </nav>
-
-        <a
-          class="page-arrow prev"
-          id="prevPage"
-          th:hidden="${currentPage == 1}"
-          th:href="@{/time(page=${currentPage - 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
-        >
-          <span class="bi bi-chevron-left"></span>
-        </a>
-
         <!-- 카드 -->
         <div class="row row-cols-lg-5 g-4">
           <div class="col" th:each="bean : ${boardList}">
