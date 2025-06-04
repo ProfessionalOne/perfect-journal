@@ -2,7 +2,6 @@ package com.pj.journal.controller;
 
 import java.util.Map;
 
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.pj.journal.model.user.UserVo;
 import com.pj.journal.service.UserService;
@@ -57,59 +57,65 @@ public class UserController {
 	@PostMapping("/users/find/id")
 	public ResponseEntity<?> findUserId(@RequestBody Map<String, Object> param) {
 		String email = (String) param.get("email");
-	    String answer = (String) param.get("answer");
-	    int question;
-	    // question 값이 문자열로 올 수도 있으니 예외처리(권장)
-	    try {
-	        question = Integer.parseInt(param.get("question").toString());
-	    } catch(Exception e) {
-	        question = 0; // 혹은 기본값, 예외처리 등
-	    }
+		String answer = (String) param.get("answer");
+		int question;
+		// question 값이 문자열로 올 수도 있으니 예외처리(권장)
+		try {
+			question = Integer.parseInt(param.get("question").toString());
+		} catch (Exception e) {
+			question = 0; // 혹은 기본값, 예외처리 등
+		}
 		String userId = userService.findUserId(email, answer, question);
-		
+
 		if ("notFound".equals(userId)) {
-			
+
 			return (ResponseEntity<?>) ResponseEntity.noContent();
 		}
-		
+
 		return ResponseEntity.ok(userId);
 	}
-	
-	@GetMapping("/users/find/pw")
-	public String findUserPw() {
-		return "user/changePw";
-	}
-
 
 	@PostMapping("/users/find/pw")
-	public ResponseEntity<?> findUserPw(@RequestBody Map<String, Object> param) {
+	public String findUserPw(@RequestBody Map<String, Object> param, HttpSession session,
+			RedirectAttributes redirectAttributes) {
 		String user = (String) param.get("user");
 		String email = (String) param.get("email");
-	    String answer = (String) param.get("answer");
-	    int question;
-	    // question 값이 문자열로 올 수도 있으니 예외처리(권장)
-	    try {
-	        question = Integer.parseInt(param.get("question").toString());
-	    } catch(Exception e) {
-	        question = 0; // 혹은 기본값, 예외처리 등
-	    }
-	    
-	    int result=userService.findUserPw(user, email, answer, question);
-		if (-1 == result) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("notFound");
+		String answer = (String) param.get("answer");
+
+		int question;
+		try {
+			question = Integer.parseInt(param.get("question").toString());
+		} catch (Exception e) {
+			question = 0;
 		}
 
-		return ResponseEntity.ok(result);
+		int foundUser = userService.findUserPw(user, email, answer, question);
+
+		if (foundUser == -1) {
+			return "redirect:/users/find";
+		}
+
+		session.setAttribute("user", user);
+		return "redirect:/users/changePw";
 	}
 
 	@GetMapping("/users/changePw")
-	public String changePwForm() {
+	public String changePwForm(HttpSession session, Model model) {
+		String user = (String) session.getAttribute("user");
+
+		if (user != null && !user.isEmpty()) {
+			model.addAttribute("user", user);
+		} else {
+			model.addAttribute("error", "비밀번호를 재설정할 사용자 정보가 확인되지 않습니다. 아이디 찾기/비밀번호 찾기 기능을 이용해주세요.");
+			return "user/find";
+		}
+
 		return "user/changePw";
 	}
 
 	@PostMapping("/users/changePw")
 	public ResponseEntity<String> changePassword(@RequestParam("user") String user, @RequestParam("password") String password,
-			Model model) {
+			HttpSession session, Model model) {
 		if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{8,}$")) {
 	        return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST).build();
@@ -117,6 +123,7 @@ public class UserController {
 		int result = userService.changeUserPw(user, password);
 
 		if (result > 0) {
+			session.removeAttribute("user");
 			return ResponseEntity.ok().build();
 		} else {
 			return ResponseEntity
@@ -136,29 +143,29 @@ public class UserController {
 			model.addAttribute("user", bean);
 			return "user/register";
 		}
-		
+
 		if (!bean.getUser().matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,15}$")) {
-		    model.addAttribute("signupError", "아이디는 영문자와 숫자를 모두 포함해야 하며, 8~15자여야 합니다. 특수문자는 사용할 수 없습니다.");
-		    model.addAttribute("user", bean);
-		    return "user/register";
-		}
-		
-		if (!bean.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{8,}$")) {
-		    model.addAttribute("signupError", "비밀번호는 8자 이상이며, 대문자, 소문자, 숫자, 특수문자를 모두 포함해야 합니다.");
-		    return "user/register";
+			model.addAttribute("signupError", "아이디는 영문자와 숫자를 모두 포함해야 하며, 8~15자여야 합니다. 특수문자는 사용할 수 없습니다.");
+			model.addAttribute("user", bean);
+			return "user/register";
 		}
 
+		if (!bean.getPassword()
+				.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{8,}$")) {
+			model.addAttribute("signupError", "비밀번호는 8자 이상이며, 대문자, 소문자, 숫자, 특수문자를 모두 포함해야 합니다.");
+			return "user/register";
+		}
 
 		if (userService.isEmailAlreadyExists(bean.getEmail()) > 0) {
 			model.addAttribute("signupError", "이미 사용중인 이메일입니다.");
 			model.addAttribute("user", bean);
 			return "user/register";
 		}
-		
+
 		if (!bean.getEmail().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
-		    model.addAttribute("signupError", "이메일 형식이 올바르지 않습니다.");
-		    model.addAttribute("user", bean);
-		    return "user/register";
+			model.addAttribute("signupError", "이메일 형식이 올바르지 않습니다.");
+			model.addAttribute("user", bean);
+			return "user/register";
 		}
 
 		if (userService.isNickNameAlreadyExists(bean.getNickname()) > 0) {
@@ -166,19 +173,18 @@ public class UserController {
 			model.addAttribute("user", bean);
 			return "user/register";
 		}
-		
+
 		if (!bean.getNickname().matches("^[가-힣a-zA-Z0-9]{2,12}$")) {
-		    model.addAttribute("signupError", "닉네임은 한글, 영문, 숫자만 사용 가능하며 2~12자 사이여야 합니다.");
-		    model.addAttribute("user", bean);
-		    return "user/register";
-		}
-		
-		if (!bean.getAnswer().matches("^[가-힣a-zA-Z0-9]{1,10}$")) {
-		    model.addAttribute("signupError", "답변은 1~10자 이내의 한글, 영문, 숫자만 입력 가능합니다.");
-		    model.addAttribute("user", bean);
-		    return "user/register";
+			model.addAttribute("signupError", "닉네임은 한글, 영문, 숫자만 사용 가능하며 2~12자 사이여야 합니다.");
+			model.addAttribute("user", bean);
+			return "user/register";
 		}
 
+		if (!bean.getAnswer().matches("^[가-힣a-zA-Z0-9]{1,10}$")) {
+			model.addAttribute("signupError", "답변은 1~10자 이내의 한글, 영문, 숫자만 입력 가능합니다.");
+			model.addAttribute("user", bean);
+			return "user/register";
+		}
 
 		userService.insertOneUser(bean);
 		model.addAttribute("signupSuccess", "회원가입 성공! 로그인 해주세요.");
