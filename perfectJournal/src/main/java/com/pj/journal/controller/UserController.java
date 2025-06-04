@@ -50,10 +50,10 @@ public class UserController {
 	}
 
 	@PostMapping("/users/find/id")
-	public ResponseEntity<?> findUserId(@RequestBody UserVo bean) {
-		String userId = userService.findUserId(bean);
+	public ResponseEntity<?> findUserId(@RequestBody UserVo bean, @RequestParam("answer") String answer) {
+		String userId = userService.findUserId(bean, answer);
 
-		if (userId == null) {
+		if ("notFound".equals(userId)) {
 			return (ResponseEntity<?>) ResponseEntity.noContent();
 		}
 
@@ -65,15 +65,16 @@ public class UserController {
 		return "user/changePw";
 	}
 
-	@PostMapping("/users/find/pw")
-	public ResponseEntity<?> findUserPw(@RequestBody UserVo bean) {
-		String userNum = userService.findUserPw(bean);
 
-		if (userNum == null) {
+	@PostMapping("/users/find/pw")
+	public ResponseEntity<?> findUserPw(@RequestBody UserVo bean, @RequestParam("answer") String answer) {
+		String result = userService.findUserPw(bean, answer);
+
+		if ("notFound".equals(result)) {
 			return (ResponseEntity<?>) ResponseEntity.noContent();
 		}
 
-		return ResponseEntity.ok(userNum);
+		return ResponseEntity.ok(result);
 	}
 
 	@GetMapping("/users/changePw")

@@ -5,8 +5,8 @@
 
 	<!-- 게시글 등록 -->
 	<insert id="insertOneBoard" parameterType="boardBean">
-		INSERT INTO posts (user_id, title, image, content, created_at, release_date, is_time_capsule)
-		VALUES (#{userId}, #{title}, #{image}, #{content}, #{createdAt}, #{releaseDate}, #{isTimeCapsule})
+		INSERT INTO posts (user_id, title, image, content, created_at, release_date, is_time_capsule, is_locked)
+		VALUES (#{userId}, #{title}, #{image}, #{content}, #{createdAt}, #{releaseDate}, #{isTimeCapsule}, #{isLocked})
 	</insert>
 
 	<!-- 게시글 상세 조회 -->
@@ -35,10 +35,10 @@
 
 
 	<!-- 게시글 수정 -->
-	<update id="updatetOneBoard" parameterType="boardBean">
+<update id="updatetOneBoard" parameterType="boardBean">
 		UPDATE posts
 		SET title = #{title}, image = #{image}, content = #{content}, updated_at
-		= NOW()
+		= NOW(), is_locked = #{isLocked}
 		WHERE post_id = #{postId}
 	</update>
 
@@ -48,27 +48,48 @@
 		WHERE post_id = #{postId}
 	</delete>
 
-	<!-- ✅ 페이징된 게시글 조회 -->
+	<!-- ✅ 페이징된 게시글 조회(타임캡슐 제외) -->
 	<select id="selectBySearch" resultType="boardBean">
 		SELECT p.post_id AS postId, u.user_id AS userId, p.views, p.title,
 		p.content,
 		p.image, p.created_at AS createdAt, p.updated_at AS
 		updatedAt,
-		p.is_locked AS isLocked, u.nickname
+		p.is_locked AS isLocked,
+		p.release_date AS releaseDate,
+		p.is_time_capsule AS timeCapsule,
+		u.nickname
 		FROM posts p
 		JOIN users u
 		ON p.user_id = u.user_id
-		<where>
-			p.is_time_capsule = 0
-			<if test="searchField == 'titleContent' and keyword != null">
-				(p.title LIKE CONCAT('%', #{keyword}, '%')
-				OR p.content
-				LIKE CONCAT('%', #{keyword}, '%'))
-			</if>
-			<if test="searchField == 'writer' and keyword != null">
-				u.nickname LIKE CONCAT('%', #{keyword}, '%')
-			</if>
-		</where>
+	<where>
+    <!-- 무조건 타임캡슐 제외 -->
+    p.is_time_capsule = 0
+
+    <!-- 1. 내 글만 보기 -->
+    <if test="onlyMine != null and onlyMine">
+        AND p.user_id = #{userId}
+    </if>
+
+    <!-- 2. 전체 보기 -->
+    <if test="onlyMine == null or !onlyMine">
+        <choose>
+            <when test="userId != null">
+                AND (p.is_locked = 0 OR (p.is_locked = 1 AND p.user_id = #{userId}))
+            </when>
+            <otherwise>
+                AND p.is_locked = 0
+            </otherwise>
+        </choose>
+    </if>
+
+    <!-- 3. 검색 조건 추가 -->
+    <if test="searchField == 'titleContent' and keyword != null">
+        AND (p.title LIKE CONCAT('%', #{keyword}, '%') OR p.content LIKE CONCAT('%', #{keyword}, '%'))
+    </if>
+    <if test="searchField == 'writer' and keyword != null">
+        AND u.nickname LIKE CONCAT('%', #{keyword}, '%')
+    </if>
+</where>
 		<choose>
   			<when test="sort == 'oldest'">
     			ORDER BY p.created_at ASC
@@ -86,21 +107,35 @@
 
 
 	<!-- ✅ 전체 게시글 수 조회 -->
-	<select id="getTotalCount" resultType="int">
-		SELECT COUNT(*) FROM posts p JOIN users u ON p.user_id = u.user_id
-		<where>
-			<if test="isTimeCapsule !=null">
-				p.is_time_capsule=#{isTimeCapsule}
-			</if>
-			<if test="searchField == 'titleContent' and keyword !=null">
-				(p.title LIKE CONCAT('%', #{keyword}, '%')
-				OR p.content LIKE CONCAT('%', #{keyword}, '%'))
-			</if>
-			<if test="searchField == 'writer' and keyword != null">
-				u.nickname LIKE CONCAT('%', #{keyword}, '%')
-			</if>
-		</where>
-	</select>
+<select id="getTotalCount" resultType="int">
+	SELECT COUNT(*) FROM posts p JOIN users u ON p.user_id = u.user_id
+	<where>
+		<if test="isTimeCapsule != null">
+		p.is_time_capsule = #{isTimeCapsule}
+		</if>
+		<if test="onlyMine != null and onlyMine">
+			AND p.user_id = #{userId}
+		</if>
+		<if test="onlyMine == null or !onlyMine">
+			<choose>
+				<when test="userId != null">
+					AND (p.is_locked = 0 OR (p.is_locked = 1 AND p.user_id = #{userId}))
+				</when>
+				<otherwise>
+					AND p.is_locked = 0
+				</otherwise>
+			</choose>
+		</if>
+		<if test="searchField == 'titleContent' and keyword !=null">
+			AND (p.title LIKE CONCAT('%', #{keyword}, '%')
+			OR p.content LIKE CONCAT('%', #{keyword}, '%'))
+		</if>
+		<if test="searchField == 'writer' and keyword != null">
+			AND u.nickname LIKE CONCAT('%', #{keyword}, '%')
+		</if>
+	</where>
+</select>
+
 
 	<select id="selectByTime" resultType="boardBean">
 		SELECT p.post_id AS postId, u.user_id AS userId, p.views, p.title,
