@@ -1,5 +1,8 @@
 package com.pj.journal.controller;
 
+import java.util.Map;
+
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -50,13 +53,23 @@ public class UserController {
 	}
 
 	@PostMapping("/users/find/id")
-	public ResponseEntity<?> findUserId(@RequestBody UserVo bean, @RequestParam("answer") String answer) {
-		String userId = userService.findUserId(bean, answer);
-
+	public ResponseEntity<?> findUserId(@RequestBody Map<String, Object> param) {
+		String email = (String) param.get("email");
+	    String answer = (String) param.get("answer");
+	    int question;
+	    // question 값이 문자열로 올 수도 있으니 예외처리(권장)
+	    try {
+	        question = Integer.parseInt(param.get("question").toString());
+	    } catch(Exception e) {
+	        question = 0; // 혹은 기본값, 예외처리 등
+	    }
+		String userId = userService.findUserId(email, answer, question);
+		
 		if ("notFound".equals(userId)) {
+			
 			return (ResponseEntity<?>) ResponseEntity.noContent();
 		}
-
+		
 		return ResponseEntity.ok(userId);
 	}
 	
@@ -67,14 +80,24 @@ public class UserController {
 
 
 	@PostMapping("/users/find/pw")
-	public ResponseEntity<?> findUserPw(@RequestBody UserVo bean, @RequestParam("answer") String answer) {
-		String result = userService.findUserPw(bean, answer);
-
+	public ResponseEntity<?> findUserPw(@RequestBody Map<String, Object> param) {
+		String user = (String) param.get("user");
+		String email = (String) param.get("email");
+	    String answer = (String) param.get("answer");
+	    int question;
+	    // question 값이 문자열로 올 수도 있으니 예외처리(권장)
+	    try {
+	        question = Integer.parseInt(param.get("question").toString());
+	    } catch(Exception e) {
+	        question = 0; // 혹은 기본값, 예외처리 등
+	    }
+	    
+	    String result=userService.findUserPw(user, email, answer, question);
 		if ("notFound".equals(result)) {
-			return (ResponseEntity<?>) ResponseEntity.noContent();
+			return (ResponseEntity<?>) ResponseEntity.noContent().build();
 		}
 
-		return ResponseEntity.ok(result);
+		return ResponseEntity.ok().build();
 	}
 
 	@GetMapping("/users/changePw")

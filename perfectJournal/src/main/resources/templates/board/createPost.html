@@ -167,24 +167,30 @@
 
       // 제목 글자 수 확인
       const titleCountEl = document.getElementById("titleCount");
-      document
-        .getElementById("postTitle")
-        .addEventListener("keyup", function (e) {
-          if (e.target.value.length > 30) {
-            e.target.value = event.target.value.slice(0, 30);
-          }
+	  document.addEventListener("DOMContentLoaded", function () {
+	    const titleInput = document.getElementById("postTitle");
+	    const titleCountEl = document.getElementById("titleCount");
+	    const titleCountDiv = document.getElementById("titleCountDiv");
 
-          if (e.target.value.length == 30) {
-            document
-              .getElementById("titleCountDiv")
-              .setAttribute("style", "color: red;");
-          } else {
-            document
-              .getElementById("titleCountDiv")
-              .removeAttribute("color: red;");
-          }
-          return false;
-        });
+	    titleInput.addEventListener("input", function (e) {
+	      if (e.target.value.length > 30) {
+	        e.target.value = e.target.value.slice(0, 30);
+	      }
+	      titleCountEl.innerText = e.target.value.length;
+
+	      if (e.target.value.length === 30) {
+	        titleCountDiv.style.color = "red";
+	        titleCountDiv.classList.add("animated");
+	        // 일정시간 뒤 애니메이션 class 제거(다시 효과 적용 가능)
+	        setTimeout(() => {
+	          titleCountDiv.classList.remove("animated");
+	        }, 350);
+	      } else {
+	        titleCountDiv.style.color = "";
+	        titleCountDiv.classList.remove("animated");
+	      }
+	    });
+	  });
 
       function checkFileSize(file) {
         if (file.size > 5242880) {
