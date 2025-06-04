@@ -23,6 +23,7 @@
       href="../static/css/createPost.css"
     />
   </head>
+
   <body>
     <nav th:replace="~{layout/header :: headerFrag}">네비게이션</nav>
 
@@ -40,6 +41,15 @@
           th:action="@{/posts/create}"
           enctype="multipart/form-data"
         >
+          <div class="mb-4">
+            <label for="duration" class="form-label">타임캡슐</label>
+            <select name="duration">
+              <option value="">선택 안 함</option>
+              <option value="7">일주일</option>
+              <option value="30">한 달</option>
+              <option value="365">일 년</option>
+            </select>
+          </div>
           <div class="mb-4">
             <label for="postTitle" class="form-label">제목</label>
             <input
@@ -82,7 +92,6 @@
             </div>
             <div class="form-text">권장 크기: 1200 x 800px, 최대 5MB</div>
           </div>
-
           <div class="mb-4">
             <label for="postContent" class="form-label">내용</label>
             <textarea
@@ -93,7 +102,6 @@
               placeholder="오늘 감사했던 일을 작성해주세요..."
             ></textarea>
           </div>
-
           <div class="form-buttons">
             <button type="button" class="btn btn-cancel" id="cancelButton">
               취소하기
@@ -148,31 +156,6 @@
           }
         });
 
-      // 목록으로 돌아가기 버튼 이벤트
-      document
-        .getElementById("backToList")
-        .addEventListener("click", function (e) {
-          e.preventDefault();
-
-          if (
-            document.getElementById("postTitle").value.trim() ||
-            document.getElementById("postContent").value.trim() ||
-            document.getElementById("thumbnailInput").files.length > 0
-          ) {
-            if (
-              confirm(
-                "작성 중인 내용이 저장되지 않습니다. 정말 목록으로 돌아가시겠습니까?"
-              )
-            ) {
-              // 목록 페이지로 이동
-              // window.location.href = 'index.html';
-              alert("목록 페이지로 이동합니다.");
-            }
-          } else {
-            window.location.href = "/posts";
-          }
-        });
-
       // 제목 글자 수 확인
       const titleCountEl = document.getElementById("titleCount");
       document
@@ -191,28 +174,8 @@
               .getElementById("titleCountDiv")
               .removeAttribute("color: red;");
           }
-
-          titleCountEl.innerText = e.target.value.length;
+          return false;
         });
-
-      function checkFileSize(file) {
-        if (file.size > 5242880) {
-          return true;
-        }
-
-        return false;
-      }
-
-      let editorInstance;
-
-      async function insertStyledQuestion(editor) {
-        const response = await fetch("/questions.json");
-        const questions = await response.json();
-        const random = questions[Math.floor(Math.random() * questions.length)];
-        const rawQuestion = `#${random}`;
-        const styledHTML = `<p><span style="color:gray; font-style:italic;">${rawQuestion}</span></p><p><br></p>`;
-        editor.setData(styledHTML);
-      }
 
       ClassicEditor.create(document.querySelector("#editor"), {
         simpleUpload: {
@@ -220,7 +183,7 @@
         },
       })
         .then((editor) => {
-          editorInstance = editor;
+          let editorInstance = editor;
           insertStyledQuestion(editor);
 
           const form = document.getElementById("postForm");
