@@ -99,34 +99,8 @@
       </div>
     </div>
 
-    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
-    <script>
-      ClassicEditor.create(document.querySelector("#editor"), {
-        toolbar: {
-          items: [
-            "undo",
-            "redo",
-            "|",
-            "heading",
-            "|",
-            "bold",
-            "italic",
-            "|",
-            "link",
-            "blockQuote",
-            "|",
-            "bulletedList",
-            "numberedList",
-            "outdent",
-            "indent",
-          ],
-          shouldNotGroupWhenFull: false,
-        },
-      }).catch((error) => {
-        console.error(error);
-      });
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/ckeditor.js}"></script>
     <script>
       // 썸네일 이미지 미리보기
       const thumbnailImage = document.getElementById("thumbnailPreview");
@@ -187,6 +161,24 @@
             alert("상세 페이지로 이동합니다.");
             window.location.href = '/posts/' + [[${bean.postId}]];
           }
+        });
+
+        ClassicEditor.create(document.querySelector("#editor"), {
+        simpleUpload: {
+          uploadUrl: "/uploads",
+        },
+      })
+        .then((editor) => {
+          editorInstance = editor;
+          insertStyledQuestion(editor);
+
+          const form = document.getElementById("postForm");
+          form.addEventListener("submit", function () {
+            const editorData = editor.getData();
+          });
+        })
+        .catch((error) => {
+          console.error(error);
         });
     </script>
   </body>

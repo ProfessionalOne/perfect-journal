@@ -65,57 +65,25 @@ public class BoardController {
 	}
 
 	@GetMapping("/posts")
-  public String boardList(@RequestParam(defaultValue = "1") int page,
-                        @RequestParam(defaultValue = "latest") String sort,
-                        @RequestParam(required = false) String searchField,
-                        @RequestParam(required = false) String keyword,
-                        Model model,
-                        jakarta.servlet.http.HttpServletResponse response) {
+	public String boardList(@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "latest") String sort, @RequestParam(required = false) String searchField,
+			@RequestParam(required = false) String keyword, Model model,
+			jakarta.servlet.http.HttpServletResponse response) {
 
-    
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    response.setHeader("Pragma", "no-cache");
-    response.setDateHeader("Expires", 0);
+		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+		response.setHeader("Pragma", "no-cache");
+		response.setDateHeader("Expires", 0);
 
-    boardService.getBoardList(model, page, sort, searchField, keyword);
-    return "board/home";
-}
-
-	@GetMapping("/uploads/{filename:.+}")
-	@ResponseBody
-	public ResponseEntity<byte[]> serveImage(@PathVariable String filename) {
-		try {
-			JSch jsch = new JSch();
-			Session session = jsch.getSession(SFTP_USER, SFTP_HOST, SFTP_PORT);
-			session.setPassword(SFTP_PASS);
-
-			Properties config = new Properties();
-			config.put("StrictHostKeyChecking", "no");
-			session.setConfig(config);
-			session.connect();
-
-			ChannelSftp channel = (ChannelSftp) session.openChannel("sftp");
-			channel.connect();
-			channel.cd("/uploads");
-
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			channel.get(filename, baos);
-
-			channel.disconnect();
-			session.disconnect();
-
-			return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg").body(baos.toByteArray());
-		} catch (Exception e) {
-			return ResponseEntity.notFound().build();
-		}
+		boardService.getBoardList(model, page, sort, searchField, keyword);
+		return "board/home";
 	}
-	
+
 	@GetMapping("/posts/{postId}")
 	@Transactional
 	public String detail(@PathVariable int postId, HttpSession session, Model model) {
-		
+
 		boardService.increaseViews(postId);
-		
+
 		BoardVo post = boardService.getBoardList(postId);
 		model.addAttribute("bean", post);
 
@@ -124,7 +92,7 @@ public class BoardController {
 
 		UserVo loginUser = (UserVo) session.getAttribute("loginUser");
 		boolean isOwner = false;
-		if(loginUser != null && post.getNickname().equals(loginUser.getNickname())) {
+		if (loginUser != null && post.getNickname().equals(loginUser.getNickname())) {
 			isOwner = true;
 		}
 		model.addAttribute("isOwner", isOwner);
@@ -137,6 +105,7 @@ public class BoardController {
 	}
 
 	@PostMapping("/posts/create")
+
 	public String addBoardList(@RequestParam("file") MultipartFile file,
 			@RequestParam(value = "duration", required = false) String duration, HttpSession session,
 			@ModelAttribute BoardVo bean) {
@@ -189,6 +158,7 @@ public class BoardController {
 	}
 
 	@PutMapping("/posts/{postId}/edit")
+
 	public String editPost(@PathVariable int postId, @RequestParam("file") MultipartFile file, HttpSession session,
 			@ModelAttribute BoardVo bean) {
 		if (!file.isEmpty()) {

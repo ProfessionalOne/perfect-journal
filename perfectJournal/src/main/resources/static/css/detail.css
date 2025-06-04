@@ -229,3 +229,64 @@ pre.comment-text {
     font-size: 1.3rem;
   }
 }
+
+.question-blockquote {
+  background-color: #f8f8f8;
+  border-left: 5px solid #ccc;
+  padding: 10px 15px;
+  margin: 15px 0;
+  font-style: italic;
+  color: #555;
+}
+
+.question-blockquote p {
+  margin-bottom: 0;
+}
+
+/* CDEditor5 Image Alignment */
+.post-content .image {
+  margin: 1em 0;
+}
+
+.post-content .image img {
+  display: block;
+  width: 100%; /* 부모 기준으로 꽉 차게 */
+  height: auto;
+  max-width: 100%;
+}
+
+.post-content .image-style-align-left {
+  float: left;
+  margin-right: 1em;
+  width: auto;
+  max-width: 50%;
+}
+
+.post-content .image-style-align-right {
+  float: right;
+  margin-left: 1em;
+  width: auto;
+  max-width: 50%;
+}
+
+.post-content .image-style-align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  float: none !important;
+  text-align: center;
+  width: fit-content;
+}
+
+.post-content .image-style-align-center img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.post-content::after,
+.post-content .content::after {
+  content: "";
+  display: table;
+  clear: both;
+}
