@@ -149,12 +149,8 @@
             >
               닫기
             </button>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              id="confirmCancelBtn"
-            >
-              확인
+            <button type="button" class="btn btn-danger" id="confirmCancelBtn">
+              취소
             </button>
           </div>
         </div>
@@ -163,11 +159,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script th:src="@{/js/ckeditor.js}"></script>
-	<script th:inline="javascript">
-	    /*<![CDATA[*/
-	    var postId = [[${bean.postId} == null ? 0 : ${bean.postId}]];
-	    /*]]>*/
-	</script>
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      var postId = [[${bean.postId} == null ? 0 : ${bean.postId}]];
+      /*]]>*/
+    </script>
 
     <script>
       // 썸네일 이미지 미리보기
@@ -252,32 +248,31 @@
         .catch((error) => {
           console.error(error);
         });
-		const titleCountEl = document.getElementById("titleCount");
-		document.addEventListener("DOMContentLoaded", function () {
-		  const titleInput = document.getElementById("postTitle");
-		  const titleCountEl = document.getElementById("titleCount");
-		  const titleCountDiv = document.getElementById("titleCountDiv");
+      const titleCountEl = document.getElementById("titleCount");
+      document.addEventListener("DOMContentLoaded", function () {
+        const titleInput = document.getElementById("postTitle");
+        const titleCountEl = document.getElementById("titleCount");
+        const titleCountDiv = document.getElementById("titleCountDiv");
 
-		  titleInput.addEventListener("input", function (e) {
-		    if (e.target.value.length > 30) {
-		      e.target.value = e.target.value.slice(0, 30);
-		    }
-		    titleCountEl.innerText = e.target.value.length;
+        titleInput.addEventListener("input", function (e) {
+          if (e.target.value.length > 30) {
+            e.target.value = e.target.value.slice(0, 30);
+          }
+          titleCountEl.innerText = e.target.value.length;
 
-		    if (e.target.value.length === 30) {
-		      titleCountDiv.style.color = "red";
-		      titleCountDiv.classList.add("animated");
-		      // 일정시간 뒤 애니메이션 class 제거(다시 효과 적용 가능)
-		      setTimeout(() => {
-		        titleCountDiv.classList.remove("animated");
-		      }, 350);
-		    } else {
-		      titleCountDiv.style.color = "";
-		      titleCountDiv.classList.remove("animated");
-		    }
-		  });
-		});
-
+          if (e.target.value.length === 30) {
+            titleCountDiv.style.color = "red";
+            titleCountDiv.classList.add("animated");
+            // 일정시간 뒤 애니메이션 class 제거(다시 효과 적용 가능)
+            setTimeout(() => {
+              titleCountDiv.classList.remove("animated");
+            }, 350);
+          } else {
+            titleCountDiv.style.color = "";
+            titleCountDiv.classList.remove("animated");
+          }
+        });
+      });
     </script>
   </body>
 </html>

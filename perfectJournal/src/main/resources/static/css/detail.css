@@ -368,3 +368,19 @@ pre.comment-text {
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.modal-footer .btn-danger {
+  background-color: #e72910;
+  border-color: #e72910;
+  color: #fff;
+  border-radius: 0.75rem;
+  padding: 0.7rem 2rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.modal-footer .btn-danger:hover {
+  background-color: #bb0000;
+  border-color: #bb0000;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

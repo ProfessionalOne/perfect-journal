@@ -4,6 +4,8 @@ import java.util.Map;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -92,12 +94,12 @@ public class UserController {
 	        question = 0; // 혹은 기본값, 예외처리 등
 	    }
 	    
-	    String result=userService.findUserPw(user, email, answer, question);
-		if ("notFound".equals(result)) {
-			return (ResponseEntity<?>) ResponseEntity.noContent().build();
+	    int result=userService.findUserPw(user, email, answer, question);
+		if (-1 == result) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("notFound");
 		}
 
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(result);
 	}
 
 	@GetMapping("/users/changePw")
@@ -106,14 +108,19 @@ public class UserController {
 	}
 
 	@PostMapping("/users/changePw")
-	public String changePassword(@RequestParam("user") String user, @RequestParam("password") String password,
+	public ResponseEntity<String> changePassword(@RequestParam("user") String user, @RequestParam("password") String password,
 			Model model) {
+		if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{8,}$")) {
+	        return ResponseEntity
+	            .status(HttpStatus.BAD_REQUEST).build();
+	    }
 		int result = userService.changeUserPw(user, password);
 
 		if (result > 0) {
-			return "redirect:/users/login";
+			return ResponseEntity.ok().build();
 		} else {
-			return "user/changePw";
+			return ResponseEntity
+		            .status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 

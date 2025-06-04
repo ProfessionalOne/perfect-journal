@@ -40,14 +40,14 @@ public class UserService {
 	    }
 	}
 
-	public String findUserPw(String user, String email, String answer, int question) {
+	public int findUserPw(String user, String email, String answer, int question) {
 		
-		UserVo vo = userDao.findUserPwEncrypted(user, email, question);
+		UserVo vo = userDao.findUserPwEncrypted(email, user, question);
 
 		if (vo != null && BCrypt.checkpw(answer, vo.getAnswer())) {
-			return "findPw"; 
+			return vo.getUserId(); 
 	    } else {
-	        return "notFound";
+	        return -1;
 	    }
 	}
 

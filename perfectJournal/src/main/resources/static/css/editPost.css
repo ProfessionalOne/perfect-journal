@@ -26,11 +26,21 @@
 }
 
 @keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-3px); }
-  50% { transform: translateX(3px); }
-  75% { transform: translateX(-2px); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-3px);
+  }
+  50% {
+    transform: translateX(3px);
+  }
+  75% {
+    transform: translateX(-2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 .form-label {
   font-weight: 600;
@@ -256,6 +266,21 @@
 .modal-footer .btn-secondary:hover {
   background-color: #5a6268;
   border-color: #545b62;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.modal-footer .btn-danger {
+  background-color: #e72910;
+  border-color: #e72910;
+  color: #fff;
+  border-radius: 0.75rem;
+  padding: 0.7rem 2rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.modal-footer .btn-danger:hover {
+  background-color: #bb0000;
+  border-color: #bb0000;
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
