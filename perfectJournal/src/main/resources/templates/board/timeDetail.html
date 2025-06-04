@@ -146,10 +146,9 @@
       aria-labelledby="deleteConfirmModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <i class="bi bi-exclamation-circle me-2 text-danger"></i>
             <h5 class="modal-title" id="deleteConfirmModalLabel">
               게시글 삭제
             </h5>
@@ -160,24 +159,17 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body">
-            정말로 이 게시글을 <br />
-            삭제하시겠습니까?
-          </div>
+          <div class="modal-body">정말로 이 게시글을 삭제하시겠습니까?</div>
           <div class="modal-footer">
             <button
               type="button"
               class="btn btn-secondary"
               data-bs-dismiss="modal"
             >
-              닫기
+              취소
             </button>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              id="confirmDeleteBtn"
-            >
-              확인
+            <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+              삭제
             </button>
           </div>
         </div>

@@ -27,7 +27,7 @@ public class TimeController {
 			@RequestParam(required = false) String keyword,
 			HttpSession session, Model model, @RequestParam(required = false) Boolean onlyMine) {
 		UserVo loginUser = (UserVo) session.getAttribute("loginUser");
-		if(Boolean.TRUE.equals(onlyMine) && loginUser == null) {
+		if(loginUser == null) {
 			return "redirect:/users/login";
 		}
 		int userId = loginUser.getUserId();
