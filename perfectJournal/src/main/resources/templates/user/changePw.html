@@ -289,18 +289,7 @@
         </div>
 
         <form id="passwordChangeForm">
-          <div class="mb-3">
-            <label for="userid" class="form-label"
-              >아이디 <span class="text-danger">*</span></label
-            >
-            <input
-              type="text"
-              class="form-control"
-              id="userid"
-              placeholder="아이디를 입력하세요"
-              required
-            />
-          </div>
+          <input type="hidden" id="userid" name="user" th:value="${user}" />
 
           <div class="mb-3">
             <label for="new-password" class="form-label"

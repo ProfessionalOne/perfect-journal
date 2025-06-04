@@ -96,7 +96,9 @@
                 placeholder="검색"
                 aria-label="Search"
               />
-
+              <button type="submit" class="input-group-text">
+                <i class="bi bi-search"></i>
+              </button>
               <button type="submit" style="display: none">검색</button>
             </div>
           </form>
@@ -223,12 +225,19 @@
               class="card h-100"
               th:onclick="'location.href=\'/posts/'+${bean.postId}+'\''"
             >
-              <img
+              <div
                 th:if="${bean.image}"
-                th:src="@{${bean.image}}"
-                class="card-img-top"
-                th:alt="${bean.title}"
-              />
+                style="height: 180px; overflow: hidden"
+              >
+                <img
+                  th:src="@{${bean.image}}"
+                  class="w-100"
+                  th:alt="${bean.title}"
+                  style="height: 100%; object-fit: cover"
+                />
+              </div>
+              <div th:if="${bean.image == null}" style="height: 0"></div>
+
               <div class="card-body">
                 <h5 class="card-title d-flex align-items-center gap-1">
                   <span th:if="${bean.isLocked != null and bean.isLocked == 1}">
@@ -239,10 +248,24 @@
                   </span>
                   <span th:text="${bean.title}"></span>
                 </h5>
-                <p
-                  class="card-text"
-                  th:utext="${#strings.length(bean.content) > 40 ? #strings.substring(bean.content, 0, 40) + '...' : bean.content}"
-                ></p>
+                <p class="card-text">
+                  <script th:inline="javascript">
+                    function stripHtmlAndTruncate(htmlString) {
+                      let doc = new DOMParser().parseFromString(
+                        htmlString,
+                        "text/html"
+                      );
+                      let text = doc.body.textContent || "";
+                      if (text.length > 40) {
+                        return text.substring(0, 40) + "...";
+                      }
+                      return text;
+                    }
+                    document.write(
+                      stripHtmlAndTruncate(/*[[${bean.content}]]*/ "")
+                    );
+                  </script>
+                </p>
               </div>
               <div
                 class="card-footer d-flex justify-content-between align-items-center"
