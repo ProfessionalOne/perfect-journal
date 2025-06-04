@@ -40,14 +40,25 @@
           th:action="@{'/posts/' + ${bean.postId}+'/edit'}"
           enctype="multipart/form-data"
         >
-		<div class="d-flex justify-content-between align-items-center mb-4" style="border-bottom:1px solid #eee; padding-bottom: 0.7rem;">
-					        <div></div> <!-- 왼쪽 공간(비움) -->
-					        <div class="form-check" style="margin-left:auto;">
-					          <input class="form-check-input" type="checkbox" value="1" id="isLocked" name="isLocked" th:checked="${bean.isLocked == 1}">
-					          <label class="form-check-label" for="isLocked">비밀글 설정</label>
-					        </div>
-					      </div>
-						  
+          <div
+            class="d-flex justify-content-between align-items-center mb-4"
+            style="border-bottom: 1px solid #eee; padding-bottom: 0.7rem"
+          >
+            <div></div>
+            <!-- 왼쪽 공간(비움) -->
+            <div class="form-check" style="margin-left: auto">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value="1"
+                id="isLocked"
+                name="isLocked"
+                th:checked="${bean.isLocked == 1}"
+              />
+              <label class="form-check-label" for="isLocked">비밀글 설정</label>
+            </div>
+          </div>
+
           <input type="hidden" name="_method" value="put" />
           <div class="mb-4">
             <label for="postTitle" class="form-label">제목</label>
@@ -104,6 +115,49 @@
             <button type="submit" class="btn btn-submit">수정하기</button>
           </div>
         </form>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="cancelConfirmModal"
+      tabindex="-1"
+      aria-labelledby="cancelConfirmModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <i class="ri-information-line"></i>
+            <h5 class="modal-title" id="cancelConfirmModalLabel">작성 취소</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            작성 중인 내용이 저장되지 않습니다. <br />
+            정말 취소하시겠습니까?
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              닫기
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="confirmCancelBtn"
+            >
+              확인
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -164,21 +218,24 @@
       }
 
       // 취소 버튼 이벤트
-      document
-        .getElementById("cancelButton")
-        .addEventListener("click", function () {
-          if (
-            confirm(
-              "작성 중인 내용이 저장되지 않습니다. 정말 취소하시겠습니까?"
-            )
-          ) {
-            alert("상세 페이지로 이동합니다.");
-			
-            window.location.href = '/posts/' + postId;
-          }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const cancelButton = document.getElementById("cancelButton");
+        const confirmCancelBtn = document.getElementById("confirmCancelBtn");
+        const cancelModal = new bootstrap.Modal(
+          document.getElementById("cancelConfirmModal")
+        );
+
+        cancelButton.addEventListener("click", function () {
+          cancelModal.show(); // 모달 창 열기
         });
 
-        ClassicEditor.create(document.querySelector("#editor"), {
+        confirmCancelBtn.addEventListener("click", function () {
+          window.location.href = "/posts"; // 확인 누르면 이동
+        });
+      });
+
+      ClassicEditor.create(document.querySelector("#editor"), {
         simpleUpload: {
           uploadUrl: "/uploads",
         },

@@ -17,14 +17,14 @@ public class TimeService {
 	@Autowired
 	SqlSessionFactory sqlSessionFactory;
 	
-	public void getBoardList(int userId, Model model, int page, String sort, String field, String keyword, boolean onlyMine) {
+	public void getBoardList(int userId, Model model, int page, String sort, String field, String keyword, Boolean onlyMine) {
 		int pageSize = 10;
 		int offset = (page - 1) * pageSize;
 
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			BoardDao boardDao = session.getMapper(BoardDao.class);
  
-			List<BoardVo> boardList = boardDao.selectByTime(userId, offset, pageSize, sort, field, keyword);
+			List<BoardVo> boardList = boardDao.selectByTime(userId, offset, pageSize, sort, field, keyword, onlyMine);
 
 			int totalCount = boardDao.getTotalCount(offset, pageSize, sort, field, keyword, userId, onlyMine, 1);
 			int totalPages = (int) Math.ceil((double) totalCount / pageSize);

@@ -28,7 +28,8 @@ public interface BoardDao {
 
 	List<BoardVo> selectByTime(@Param("userId") int userId, @Param("offset") int offset,
 			@Param("pageSize") int pageSize, @Param("sort") String sort, @Param("searchField") String field,
-			@Param("keyword") String keyword);
+			@Param("keyword") String keyword, @Param("onlyMine") Boolean onlyMine);
+
 
 	void increaseViews(int postId);
 }

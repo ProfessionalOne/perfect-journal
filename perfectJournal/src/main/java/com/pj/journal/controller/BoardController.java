@@ -126,7 +126,6 @@ public class BoardController {
 	}
 
 	@PostMapping("/posts/create")
-
 	public String addBoardList(@RequestParam("file") MultipartFile file,
 			@RequestParam(value = "duration", required = false) String duration, HttpSession session,
 			@ModelAttribute BoardVo bean) {
