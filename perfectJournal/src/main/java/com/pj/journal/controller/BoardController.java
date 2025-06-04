@@ -3,6 +3,7 @@ package com.pj.journal.controller;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
@@ -95,6 +96,7 @@ public class BoardController {
 	public String detail(@PathVariable int postId, HttpSession session, Model model) {
 		BoardVo post = boardService.getBoardList(postId);
 		UserVo loginUser = (UserVo) session.getAttribute("loginUser");
+		
 		boardService.increaseViews(postId);
 		// 이쪽 문제생기는지 안생기는지 보기
 		if (post.getIsLocked() == 1) {
@@ -124,7 +126,6 @@ public class BoardController {
 	}
 
 	@PostMapping("/posts/create")
-
 	public String addBoardList(@RequestParam("file") MultipartFile file,
 			@RequestParam(value = "duration", required = false) String duration, HttpSession session,
 			@ModelAttribute BoardVo bean) {
@@ -205,6 +206,7 @@ public class BoardController {
 		}
 
 		bean.setPostId(postId);
+		bean.setUpdatedAt(LocalDateTime.now());
 		boardService.updateBoardList(bean);
 		return "redirect:/posts/" + postId;
 	}

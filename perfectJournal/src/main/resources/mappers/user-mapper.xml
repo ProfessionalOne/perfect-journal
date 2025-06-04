@@ -14,9 +14,9 @@
 		#{answer} AND question = #{question}
 	</select>
 	
-	<select id="findUserIdCrypted" parameterType="userBean"
+	<select id="findUserIdEncrypted" parameterType="Map"
 		resultType="userBean">
-		SELECT user, answer FROM users
+		SELECT user,answer FROM users
 		WHERE email = #{email} AND question = #{question}
 	</select>
 
@@ -30,7 +30,7 @@
 		AND question = #{question}
 	</select>
 	
-	<select id="findUserPwCrypted" parameterType="userBean"
+	<select id="findUserPwEncrypted" parameterType="Map"
 		resultType="userBean">
 		SELECT user_id, answer FROM users
 		WHERE email = #{email}

@@ -24,7 +24,7 @@ public class TimeService {
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			BoardDao boardDao = session.getMapper(BoardDao.class);
  
-			List<BoardVo> boardList = boardDao.selectByTime(userId, offset, pageSize, sort, field, keyword);
+			List<BoardVo> boardList = boardDao.selectByTime(userId, offset, pageSize, sort, field, keyword, onlyMine);
 
 			int totalCount = boardDao.getTotalCount(offset, pageSize, sort, field, keyword, userId, onlyMine, 1);
 			int totalPages = (int) Math.ceil((double) totalCount / pageSize);

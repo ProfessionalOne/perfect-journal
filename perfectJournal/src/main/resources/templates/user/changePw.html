@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>감사일기 - 비밀번호 변경</title>
+    <title>journie moment - 비밀번호 변경</title>
     <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
@@ -33,7 +33,7 @@
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.18);
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        box-shadow: 0 8px 32px 0 rgba(90, 80, 70, 0.15);
         border-radius: 24px;
         padding: 2rem;
         width: 100%;
@@ -51,12 +51,12 @@
         opacity: 0.4;
         background-image: radial-gradient(
             circle at 25% 25%,
-            rgba(0, 113, 227, 0.2) 0%,
+            rgba(166, 123, 91, 0.25) 0%,
             transparent 50%
           ),
           radial-gradient(
             circle at 75% 75%,
-            rgba(255, 149, 0, 0.2) 0%,
+            rgba(247, 232, 212, 0.7) 0%,
             transparent 50%
           );
       }
@@ -103,14 +103,14 @@
         padding: 0.75rem 1rem;
         border-radius: 12px;
         font-weight: 500;
-        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+        box-shadow: 0 4px 12px rgba(60, 90, 70, 0.3);
         transition: all 0.3s ease;
       }
 
       .btn-primary:hover {
-        background-color: #0b5ed7;
+        background-color: #456b55;
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(13, 110, 253, 0.4);
+        box-shadow: 0 4px 12px rgba(60, 90, 70, 0.3);
       }
 
       .form-text {
@@ -192,6 +192,81 @@
 
       .logo {
         width: 200px;
+      }
+      .modal-content {
+        border-radius: 1rem;
+        box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.1);
+        background-color: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        border: none;
+      }
+
+      .modal-header {
+        border-bottom: none;
+        padding: 1.5rem 2rem 0.5rem 2rem;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .modal-header .modal-title {
+        color: #1d1d1f;
+        font-weight: 600;
+        font-size: 1.35rem;
+        margin-top: 0.5rem;
+      }
+
+      .modal-header .modal-title i {
+        font-size: 2.5rem;
+        color: #0d6efd;
+        margin-bottom: 0.5rem;
+      }
+
+      .modal-header .btn-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%236c757d'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e");
+        opacity: 0.7;
+        padding: 0.5rem;
+        transition: opacity 0.2s ease;
+      }
+      .modal-header .btn-close:hover {
+        opacity: 1;
+      }
+
+      .modal-body {
+        padding: 1rem 1rem 2rem 2rem;
+        text-align: center;
+        color: #4a4a4a;
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+
+      .modal-footer {
+        border-top: none;
+        padding: 0 2rem 2rem 2rem;
+        display: flex;
+        justify-content: center;
+      }
+
+      .modal-footer .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: #fff;
+        border-radius: 0.75rem;
+        padding: 0.7rem 2rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+      .modal-footer .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       }
     </style>
   </head>
@@ -276,7 +351,7 @@
           </div>
 
           <div class="text-center">
-            <a href="#" class="text-decoration-none" th:href="@{/users/login}"
+            <a class="text-decoration-none" th:href="@{/users/login}"
               >로그인 페이지로 돌아가기</a
             >
           </div>
@@ -318,10 +393,54 @@
 
     <div class="footer">© 2023 감사일기. All rights reserved.</div>
 
+    <div
+      class="modal fade"
+      id="alertModal"
+      tabindex="-1"
+      aria-labelledby="alertModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="alertModalLabel">안내</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="alertModalMessage">
+            <!-- 동적으로 메시지 삽입 -->
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+      // 커스텀 alert 모달 함수
+      function showAlertModal(message) {
+        const messageEl = document.getElementById("alertModalMessage");
+        messageEl.textContent = message;
+
+        const modal = new bootstrap.Modal(
+          document.getElementById("alertModal")
+        );
+        modal.show();
+      }
       // 비밀번호 강도 표시 기능
       const passwordInput = document.getElementById("new-password");
       const passwordStrength = document.getElementById("password-strength");
@@ -393,12 +512,12 @@
             document.getElementById("confirm-password").value;
 
           if (!userid || !newPassword || !confirmPassword) {
-            alert("모든 필드를 입력해주세요.");
+            showAlertModal("모든 필드를 입력해주세요.");
             return;
           }
 
           if (newPassword !== confirmPassword) {
-            alert("비밀번호가 일치하지 않습니다.");
+            showAlertModal("비밀번호가 일치하지 않습니다.");
             return;
           }
 
@@ -422,12 +541,12 @@
                   "none";
                 document.getElementById("result-box").classList.add("show");
               } else {
-                alert("비밀번호 변경에 실패했습니다.");
+                showAlertModal("비밀번호 변경에 실패했습니다.");
               }
             })
             .catch((error) => {
               console.error("에러 발생:", error);
-              alert("서버 요청 중 오류가 발생했습니다.");
+              showAlertModal("서버 요청 중 오류가 발생했습니다.");
             });
         });
     </script>

@@ -34,12 +34,15 @@
 		user_id,
 		post_id,
 		content,
+		created_at,
+		updated_at,
 		group_id,
 		level
 		) VALUES (
 		#{userId},
 		#{postId},
 		#{content},
+		#{createdAt},#{updatedAt},
 		#{groupId}, #{level}
 		)
 	</insert>
@@ -52,7 +55,7 @@
 	
 	<update id="updateComment" parameterType="commentBean">
 		UPDATE comments
-		SET content = #{content}, updated_at = now()
+		SET content = #{content}, updated_at = #{updatedAt}
 		WHERE
 		comment_id = #{commentId}
 	</update>

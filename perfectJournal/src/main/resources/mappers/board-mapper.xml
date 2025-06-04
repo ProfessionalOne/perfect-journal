@@ -42,10 +42,8 @@
 	<!-- 게시글 수정 -->
 	<update id="updatetOneBoard" parameterType="boardBean">
 		UPDATE posts
-		SET title
-		= #{title}, image = #{image}, content = #{content}, updated_at
-		= NOW(),
-		is_locked = #{isLocked}
+		SET title = #{title}, image = #{image}, content = #{content}, updated_at
+		= #{updatedAt}, is_locked = #{isLocked}
 		WHERE post_id = #{postId}
 	</update>
 
@@ -110,9 +108,7 @@
 				ORDER BY p.created_at DESC
 			</otherwise>
 		</choose>
-
-		LIMIT #{pageSize} OFFSET #{offset}
-	</select>
+		LIMIT #{pageSize} OFFSET #{offset} </select>
 
 
 	<!-- ✅ 전체 게시글 수 조회 -->
@@ -146,7 +142,7 @@
 	</select>
 
 
-	<select id="selectByTime" resultType="boardBean">
+		<select id="selectByTime" resultType="boardBean">
 		SELECT p.post_id AS postId, u.user_id AS userId, p.views, p.title,
 		p.content,
 		p.image, p.created_at AS createdAt, p.updated_at AS
@@ -157,23 +153,20 @@
 		u.nickname
 		FROM posts p
 		JOIN users u
-		ON
-		p.user_id = u.user_id
-		<where>
-			<!-- 무조건 타임캡슐 제외 -->
-			p.is_time_capsule = 1
-			AND p.user_id = #{userId}
+		ON p.user_id = u.user_id
+	<where>
+    <!-- 무조건 타임캡슐 제외 -->
+    p.is_time_capsule = 1
+        AND p.user_id = #{userId}
 
-
-			<!-- 검색 조건 추가 -->
-			<if test="searchField == 'titleContent' and keyword != null">
-				AND (p.title LIKE CONCAT('%', #{keyword}, '%') OR p.content LIKE
-				CONCAT('%', #{keyword}, '%'))
-			</if>
-			<if test="searchField == 'writer' and keyword != null">
-				AND u.nickname LIKE CONCAT('%', #{keyword}, '%')
-			</if>
-		</where>
+    <!-- 검색 조건 추가 -->
+    <if test="searchField == 'titleContent' and keyword != null">
+        AND (p.title LIKE CONCAT('%', #{keyword}, '%') OR p.content LIKE CONCAT('%', #{keyword}, '%'))
+    </if>
+    <if test="searchField == 'writer' and keyword != null">
+        AND u.nickname LIKE CONCAT('%', #{keyword}, '%')
+    </if>
+</where>
 		<choose>
 			<when test="sort == 'oldest'">
 				ORDER BY p.created_at ASC
@@ -185,6 +178,6 @@
 				ORDER BY p.created_at DESC
 			</otherwise>
 		</choose>
-		LIMIT #{pageSize} OFFSET #{offset}
-	</select>
+		LIMIT #{pageSize} OFFSET #{offset} </select>
+
 </mapper>

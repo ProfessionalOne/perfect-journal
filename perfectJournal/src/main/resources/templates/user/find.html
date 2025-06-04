@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>감사일기 - 아이디/비밀번호 찾기</title>
+    <title>journie moment - 아이디/비밀번호 찾기</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -109,6 +109,7 @@
                   type="text"
                   class="form-control"
                   id="id-security-answer"
+				  name="answer"
                   placeholder="가입 시 등록한 답변을 입력하세요"
                   required
                 />
@@ -121,7 +122,7 @@
               </div>
             </form>
 
-            <div id="result-id" class="result-box">
+            <div id="result-id" class="result-box" style="display: none">
               <div class="result-icon">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -214,6 +215,7 @@
                   type="text"
                   class="form-control"
                   id="pw-security-answer"
+				  name="answer"
                   placeholder="가입 시 등록한 답변을 입력하세요"
                   required
                 />
@@ -226,7 +228,7 @@
               </div>
             </form>
 
-            <div id="result-pw" class="result-box">
+            <div id="result-pw" class="result-box" style="display: none">
               <div class="result-icon">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -265,15 +267,6 @@
                   이메일 재발송
                 </button>
               </div>
-              <div class="d-grid">
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  onclick="window.location.href='/users/login'"
-                >
-                  로그인 페이지로 이동
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -289,9 +282,53 @@
       </div>
     </div>
 
+    <div
+      class="modal fade"
+      id="alertModal"
+      tabindex="-1"
+      aria-labelledby="alertModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="alertModalLabel">안내</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="alertModalMessage">
+            <!-- 동적으로 메시지 삽입 -->
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+      // 커스텀 alert 모달 함수
+      function showAlertModal(message) {
+        const messageEl = document.getElementById("alertModalMessage");
+        messageEl.textContent = message;
+
+        const modal = new bootstrap.Modal(
+          document.getElementById("alertModal")
+        );
+        modal.show();
+      }
       // 아이디 찾기 버튼 클릭 이벤트
       document
         .getElementById("btn-find-id")
@@ -304,14 +341,14 @@
 
           // 입력값 검증
           if (!email || !question || !answer) {
-            alert("모든 필드를 입력해주세요.");
+            showAlertModal("모든 필드를 입력해주세요.");
             return;
           }
 
           // 이메일 형식 검증
           const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           if (!emailRegex.test(email)) {
-            alert("유효한 이메일 주소를 입력해주세요.");
+            showAlertModal("유효한 이메일 주소를 입력해주세요.");
             return;
           }
 
@@ -331,7 +368,7 @@
             });
 
             if (!response.ok) {
-              alert("입력하신 정보가 틀립니다. 다시 입력해주세요.");
+              showAlertModal("입력하신 정보가 틀립니다. 다시 입력해주세요.");
 
               document.getElementById("id-email").value = "";
               document.getElementById("id-security-question").value = "";
@@ -349,7 +386,9 @@
             document.getElementById("form-find-id").style.display = "none";
           } catch (error) {
             console.error("아이디 찾기 오류:", error);
-            alert("아이디 찾기 중 오류가 발생했습니다: " + error.message);
+            showAlertModal(
+              "아이디 찾기 중 오류가 발생했습니다: " + error.message
+            );
           }
         });
 
@@ -366,14 +405,14 @@
 
           // 입력값 검증
           if (!user || !email || !question || !answer) {
-            alert("모든 필드를 입력해주세요.");
+            showAlertModal("모든 필드를 입력해주세요.");
             return;
           }
 
           // 이메일 형식 검증
           const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           if (!emailRegex.test(email)) {
-            alert("유효한 이메일 주소를 입력해주세요.");
+            showAlertModal("유효한 이메일 주소를 입력해주세요.");
             return;
           }
 
@@ -401,7 +440,7 @@
             });
 
             if (!response.ok) {
-              alert("입력하신 정보가 틀립니다. 다시 입력해주세요.");
+              showAlertModal("입력하신 정보가 틀립니다. 다시 입력해주세요.");
 
               document.getElementById("pw-userid").value = "";
               document.getElementById("pw-email").value = "";
@@ -416,7 +455,9 @@
             window.location.href = "/users/changePw";
           } catch (error) {
             console.error("비밀번호 찾기 오류:", error);
-            alert("비밀번호 찾기 중 오류가 발생했습니다: " + error.message);
+            showAlertModal(
+              "비밀번호 찾기 중 오류가 발생했습니다: " + error.message
+            );
           }
         });
 
