@@ -37,6 +37,14 @@
 		ON p.user_id = u.user_id
 		WHERE p.post_id = #{val}
 	</select>
+	
+	<!-- 게시글 조회수 1 증가 -->
+	<update id="increaseViews" parameterType="int">
+    	UPDATE posts
+    	SET views = views + 1
+    	WHERE post_id = #{postId}
+	</update>
+
 
 	<!-- 게시글 수정 -->
 	<update id="updatetOneBoard" parameterType="boardBean">
@@ -72,11 +80,18 @@
 				u.nickname LIKE CONCAT('%', #{keyword}, '%')
 			</if>
 		</where>
-		ORDER BY p.created_at
 		<choose>
-			<when test="sort == 'oldest'">ASC</when>
-			<otherwise>DESC</otherwise>
+  			<when test="sort == 'oldest'">
+    			ORDER BY p.created_at ASC
+  			</when>
+  			<when test="sort == 'views'">
+    			ORDER BY p.views DESC
+  			</when>
+  			<otherwise>
+    			ORDER BY p.created_at DESC
+  			</otherwise>
 		</choose>
+
 		LIMIT #{pageSize} OFFSET #{offset}
 	</select>
 
