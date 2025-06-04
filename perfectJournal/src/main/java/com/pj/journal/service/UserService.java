@@ -43,6 +43,7 @@ public class UserService {
 	public String findUserPw(String user, String email, String answer, int question) {
 		
 		UserVo vo = userDao.findUserPwEncrypted(user, email, question);
+
 		if (vo != null && BCrypt.checkpw(answer, vo.getAnswer())) {
 			return "findPw"; 
 	    } else {
@@ -85,5 +86,6 @@ public class UserService {
 			session.commit();
 		}
 	}
+
 
 }
