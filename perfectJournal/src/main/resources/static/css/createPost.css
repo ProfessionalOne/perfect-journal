@@ -17,7 +17,21 @@
   margin-bottom: 1.5rem;
   color: var(--apple-dark);
 }
+#titleCountDiv {
+  transition: color 0.3s;
+}
 
+#titleCountDiv.animated {
+  animation: shake 0.3s;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  50% { transform: translateX(3px); }
+  75% { transform: translateX(-2px); }
+  100% { transform: translateX(0); }
+}
 .form-label {
   font-weight: 600;
   margin-bottom: 0.5rem;

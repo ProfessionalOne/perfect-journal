@@ -167,7 +167,7 @@
                   </button>
                   <span
                     class="comment-date"
-                    th:text="${#dates.format(comment.updatedAt, 'yyyy/MM/dd HH:mm')}"
+                    th:text="${T(java.time.format.DateTimeFormatter).ofPattern('yyyy/MM/dd HH:mm').format(comment.updatedAt)}"
                     >2023-11-01 14:23</span
                   >
                 </div>
@@ -247,6 +247,7 @@
                   class="btn btn-comment btn-sm btn-submit-reply"
                   th:data-parent-id="${comment.commentId}"
                   type="submit"
+                  th:attr="onclick=${loginUser != null} ? 'location.href=\'/posts/create\'' : 'location.href=\'/users/login\''"
                 >
                   답글 작성
                 </button>

@@ -1,19 +1,20 @@
 package com.pj.journal.model.comment;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
 public class CommentVo {
 	private int commentId, postId, userId, groupId, level;
 	private String nickname, content;
-	private Date createdAt, updatedAt;
+	private LocalDateTime createdAt, updatedAt;
 	private boolean isDeleted;
 
 	public CommentVo() {
 	}
 
 	public CommentVo(int commentId, int postId, int userId, int groupId, int level, String nickname, String content,
-			Date createdAt, Date updatedAt, boolean isDeleted) {
+			LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted) {
 		super();
 		this.commentId = commentId;
 		this.postId = postId;
@@ -83,19 +84,19 @@ public class CommentVo {
 		this.content = content;
 	}
 
-	public Date getCreatedAt() {
+	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Date createdAt) {
+	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public Date getUpdatedAt() {
+	public LocalDateTime getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Date updatedAt) {
+	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 

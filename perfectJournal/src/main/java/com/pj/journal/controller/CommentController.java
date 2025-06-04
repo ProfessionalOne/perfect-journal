@@ -1,5 +1,7 @@
 package com.pj.journal.controller;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,7 +26,11 @@ public class CommentController {
 			, @ModelAttribute CommentVo bean
 			, HttpSession session) {
 		UserVo loginUser = (UserVo) session.getAttribute("loginUser");
-		bean.setUserId(loginUser.getUserId());
+		if (loginUser == null) {
+		    return "redirect:/users/login";
+		}bean.setUserId(loginUser.getUserId());
+		bean.setCreatedAt(LocalDateTime.now());
+		bean.setUpdatedAt(LocalDateTime.now());
 		commentService.addComment(bean, bean.getGroupId());
 
 		return "redirect:/posts/" + postId;
@@ -33,6 +39,7 @@ public class CommentController {
 	@PutMapping("/posts/{postId}/comments/{commentId}")
 	public String editComment(@PathVariable int postId, @PathVariable int commentId, @ModelAttribute CommentVo bean) {
 		commentService.updateComment(bean);
+		bean.setUpdatedAt(LocalDateTime.now());
 		
 		return "redirect:/posts/" + postId;
 	}

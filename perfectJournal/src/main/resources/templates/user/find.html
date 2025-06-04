@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>감사일기 - 아이디/비밀번호 찾기</title>
+    <title>journie moment - 아이디/비밀번호 찾기</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -109,6 +109,7 @@
                   type="text"
                   class="form-control"
                   id="id-security-answer"
+				  name="answer"
                   placeholder="가입 시 등록한 답변을 입력하세요"
                   required
                 />
@@ -121,7 +122,7 @@
               </div>
             </form>
 
-            <div id="result-id" class="result-box">
+            <div id="result-id" class="result-box" style="display: none">
               <div class="result-icon">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -214,6 +215,7 @@
                   type="text"
                   class="form-control"
                   id="pw-security-answer"
+				  name="answer"
                   placeholder="가입 시 등록한 답변을 입력하세요"
                   required
                 />
@@ -226,7 +228,7 @@
               </div>
             </form>
 
-            <div id="result-pw" class="result-box">
+            <div id="result-pw" class="result-box" style="display: none">
               <div class="result-icon">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -263,15 +265,6 @@
                   class="btn btn-link p-0 text-decoration-none"
                 >
                   이메일 재발송
-                </button>
-              </div>
-              <div class="d-grid">
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  onclick="window.location.href='/users/login'"
-                >
-                  로그인 페이지로 이동
                 </button>
               </div>
             </div>
