@@ -17,7 +17,7 @@ public class TimeService {
 	@Autowired
 	SqlSessionFactory sqlSessionFactory;
 	
-	public void getBoardList(int userId, Model model, int page, String sort, String field, String keyword) {
+	public void getBoardList(int userId, Model model, int page, String sort, String field, String keyword, boolean onlyMine) {
 		int pageSize = 10;
 		int offset = (page - 1) * pageSize;
 
@@ -26,7 +26,7 @@ public class TimeService {
  
 			List<BoardVo> boardList = boardDao.selectByTime(userId, offset, pageSize, sort, field, keyword);
 
-			int totalCount = boardDao.getTotalCount(field, keyword);
+			int totalCount = boardDao.getTotalCount(offset, pageSize, sort, field, keyword, userId, onlyMine, 1);
 			int totalPages = (int) Math.ceil((double) totalCount / pageSize);
 			int beginPage = pageSize * ((page - 1) / pageSize) + 1;
 			int endPage = beginPage + (pageSize - 1);

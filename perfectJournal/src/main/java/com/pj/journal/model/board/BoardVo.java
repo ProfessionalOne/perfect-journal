@@ -10,8 +10,9 @@ public class BoardVo {
 	private String nickname, title, content, image;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
-	private boolean isLocked, isTimeCapsule;
+	private boolean isTimeCapsule;
 	private Integer duration;
+	private Integer isLocked=0;
 	private LocalDate releaseDate;
 
 	public BoardVo() {
@@ -89,11 +90,11 @@ public class BoardVo {
 		this.updatedAt = updatedAt;
 	}
 
-	public boolean isLocked() {
+	public Integer getIsLocked() {
 		return isLocked;
 	}
 
-	public void setLocked(boolean isLocked) {
+	public void setIsLocked(Integer isLocked) {
 		this.isLocked = isLocked;
 	}
 
@@ -122,7 +123,7 @@ public class BoardVo {
 	}
 
 	public BoardVo(int postId, int userId, int views, String nickname, String title, String content, String image,
-			LocalDateTime createdAt, LocalDateTime updatedAt, boolean isLocked, boolean isTimeCapsule, Integer duration,
+			LocalDateTime createdAt, LocalDateTime updatedAt, Integer isLocked, boolean isTimeCapsule, Integer duration,
 			LocalDate releaseDate) {
 		super();
 		this.postId = postId;
