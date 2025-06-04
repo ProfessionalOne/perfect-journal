@@ -33,7 +33,7 @@ public class CommentService {
 				comment.setGroupId(comment.getCommentId()); // 생성된 commentId를 groupId로 설정
 				session.getMapper(CommentDao.class).updateGroupId(comment.getCommentId(), comment.getGroupId());
 			} else {
-				comment.setGroupId(targetGroupId);
+				comment. setGroupId(targetGroupId);
 				session.getMapper(CommentDao.class).insertComment(comment);
 			}
 

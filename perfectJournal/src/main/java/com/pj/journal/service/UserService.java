@@ -39,7 +39,8 @@ public class UserService {
 	        return "notFound";
 	    }
 	}
-
+	
+	
 	public String findUserPw(UserVo bean, String answer) {
 		UserVo vo = userDao.findUserPwEncrypted(bean);
 		if (vo != null && BCrypt.checkpw(answer, vo.getAnswer())) {
@@ -77,12 +78,13 @@ public class UserService {
 	public void insertOneUser(UserVo bean) {
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			String hashedPassword = BCrypt.hashpw(bean.getPassword(), BCrypt.gensalt());
-
 			bean.setPassword(hashedPassword);
-
+			String hashedAnswer = BCrypt.hashpw(bean.getAnswer(),BCrypt.gensalt());
+			bean.setAnswer(hashedAnswer);
 			session.getMapper(UserDao.class).insertOneUser(bean);
 			session.commit();
 		}
 	}
+
 
 }

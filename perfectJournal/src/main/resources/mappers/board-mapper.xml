@@ -38,7 +38,7 @@
 <update id="updatetOneBoard" parameterType="boardBean">
 		UPDATE posts
 		SET title = #{title}, image = #{image}, content = #{content}, updated_at
-		= NOW(), is_locked = #{isLocked}
+		= #{updatedAt}, is_locked = #{isLocked}
 		WHERE post_id = #{postId}
 	</update>
 
