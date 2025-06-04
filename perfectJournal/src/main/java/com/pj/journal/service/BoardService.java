@@ -26,7 +26,7 @@ public class BoardService {
 			BoardDao boardDao = session.getMapper(BoardDao.class);
 
 			List<BoardVo> boardList = boardDao.selectBySearch(offset, pageSize, sort, field, keyword);
-			int totalCount = boardDao.getTotalCount(field, keyword);
+			int totalCount = boardDao.getTotalCount(field, keyword,0);
 			int totalPages = (int) Math.ceil((double) totalCount / pageSize);
 			int beginPage = pageSize * ((page - 1) / pageSize) + 1;
 			int endPage = beginPage + (pageSize - 1);
@@ -53,11 +53,7 @@ public class BoardService {
 
 	public void addBoardList(BoardVo bean) {
 		try (SqlSession session = sqlSessionFactory.openSession();) {
-			LocalDate now = LocalDate.now();
-			LocalDate releaseDate = now.plusDays(bean.getDuration());
 			bean.setCreatedAt(LocalDateTime.now());
-			bean.setReleaseDate(releaseDate);
-			bean.setTimeCapsule(true);
 			session.getMapper(BoardDao.class).insertOneBoard(bean);
 		}
 	}

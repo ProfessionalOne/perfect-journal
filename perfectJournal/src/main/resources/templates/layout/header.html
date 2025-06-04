@@ -4,8 +4,9 @@
 >
   <div class="container-fluid">
     <a class="navbar-brand d-flex align-items-center" th:href="@{/}" href="#">
-      감사일기
+      <img src="/images/logo.png" alt="journie moment" style="height: 40px" />
     </a>
+
     <span th:if="${session.loginUser != null}">
       환영합니다, <span th:text="${session.loginUser.nickname}">닉네임</span>님!
       <a class="btn btn-login ms-auto" th:href="@{/users/logout}" role="button"

@@ -39,21 +39,23 @@ body {
   opacity: 0.4;
   background-image: radial-gradient(
       circle at 25% 25%,
-      rgba(0, 113, 227, 0.2) 0%,
-      transparent 50%
+      rgba(166, 123, 91, 0.25) 0%,
+      /* 따뜻한 브라운/카키 계열 */ transparent 50%
     ),
     radial-gradient(
       circle at 75% 75%,
-      rgba(255, 149, 0, 0.2) 0%,
-      transparent 50%
+      rgba(247, 232, 212, 0.7) 0%,
+      /* 피치톤이 감도는 따뜻한 미색 */ transparent 50%
     );
 }
 
 .logo-icon {
   filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.1));
-  width: 64px;
-  height: 64px;
+  width: 55px;
   margin-bottom: 1rem;
+}
+.logo {
+  width: 200px;
 }
 
 @keyframes float {
@@ -80,7 +82,7 @@ body {
 }
 
 .nav-tabs .nav-link.active {
-  color: #0d6efd;
+  color: #3a5745;
   font-weight: 500;
   background-color: transparent;
   border: none;
@@ -93,7 +95,7 @@ body {
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: #0d6efd;
+  background-color: #3a5745;
 }
 
 .form-control {
@@ -106,7 +108,7 @@ body {
 
 .form-control:focus {
   background-color: rgba(255, 255, 255, 0.9);
-  border-color: #0d6efd;
+  border-color: #3a5745;
   box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.2);
 }
 
@@ -120,24 +122,24 @@ body {
 
 .form-select:focus {
   background-color: rgba(255, 255, 255, 0.9);
-  border-color: #0d6efd;
+  border-color: #3a5745;
   box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.2);
 }
 
 .btn-primary {
-  background-color: #0d6efd;
+  background-color: #456b55;
   border: none;
   padding: 0.75rem 1rem;
   border-radius: 12px;
   font-weight: 500;
-  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+  box-shadow: 0 4px 12px rgba(60, 90, 70, 0.3);
   transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-  background-color: #0b5ed7;
+  background-color: #3a5745;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(13, 110, 253, 0.4);
+  box-shadow: 0 4px 12px rgba(60, 90, 70, 0.3);
 }
 
 .result-box {
@@ -168,5 +170,5 @@ body {
 .result-icon svg {
   width: 32px;
   height: 32px;
-  color: #0d6efd;
+  color: var(--apple-blue);
 }

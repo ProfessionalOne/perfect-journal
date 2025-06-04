@@ -89,6 +89,9 @@
 	<select id="getTotalCount" resultType="int">
 		SELECT COUNT(*) FROM posts p JOIN users u ON p.user_id = u.user_id
 		<where>
+			<if test="isTimeCapsule !=null">
+				p.is_time_capsule=#{isTimeCapsule}
+			</if>
 			<if test="searchField == 'titleContent' and keyword !=null">
 				(p.title LIKE CONCAT('%', #{keyword}, '%')
 				OR p.content LIKE CONCAT('%', #{keyword}, '%'))

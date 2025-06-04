@@ -59,6 +59,11 @@ public class UserController {
 
 		return ResponseEntity.ok(userId);
 	}
+	
+	@GetMapping("/users/find/pw")
+	public String findUserPw() {
+		return "user/changePw";
+	}
 
 	@PostMapping("/users/find/pw")
 	public ResponseEntity<?> findUserPw(@RequestBody UserVo bean) {

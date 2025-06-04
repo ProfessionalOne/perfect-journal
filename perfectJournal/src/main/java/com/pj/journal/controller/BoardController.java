@@ -129,16 +129,19 @@ public class BoardController {
 		UserVo loginUser = (UserVo) session.getAttribute("loginUser");
 		bean.setUserId(loginUser.getUserId());
 
-		if (duration != null && !duration.isEmpty()) {
+		if (duration != null && !duration.trim().isEmpty()) {
 			try {
 				int days = Integer.parseInt(duration);
 				bean.setDuration(days);
 				bean.setTimeCapsule(true);
+				bean.setReleaseDate(LocalDate.now().plusDays(days));
 			} catch (NumberFormatException e) {
 				bean.setTimeCapsule(false);
+				bean.setReleaseDate(null);
 			}
 		} else {
 			bean.setTimeCapsule(false);
+			bean.setReleaseDate(null);
 		}
 
 		boardService.addBoardList(bean);

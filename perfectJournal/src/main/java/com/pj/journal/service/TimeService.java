@@ -26,7 +26,7 @@ public class TimeService {
  
 			List<BoardVo> boardList = boardDao.selectByTime(userId, offset, pageSize, sort, field, keyword);
 
-			int totalCount = boardDao.getTotalCount(field, keyword);
+			int totalCount = boardDao.getTotalCount(field, keyword,1);
 			int totalPages = (int) Math.ceil((double) totalCount / pageSize);
 			int beginPage = pageSize * ((page - 1) / pageSize) + 1;
 			int endPage = beginPage + (pageSize - 1);
