@@ -203,14 +203,34 @@
         return false;
       }
 
+      let editorInstance;
+
+      async function insertStyledQuestion(editor) {
+        const response = await fetch("/questions.json");
+        const questions = await response.json();
+        const random = questions[Math.floor(Math.random() * questions.length)];
+        const rawQuestion = `#${random}`;
+        const styledHTML = `<p><span style="color:gray; font-style:italic;">${rawQuestion}</span></p><p><br></p>`;
+        editor.setData(styledHTML);
+      }
+
       ClassicEditor.create(document.querySelector("#editor"), {
         simpleUpload: {
-          // The URL that the images are uploaded to.
-          uploadUrl: "/uploads", // 예시: 실제 서버 업로드 URL로 변경
+          uploadUrl: "/uploads",
         },
-      }).catch((error) => {
-        console.error(error);
-      });
+      })
+        .then((editor) => {
+          editorInstance = editor;
+          insertStyledQuestion(editor);
+
+          const form = document.getElementById("postForm");
+          form.addEventListener("submit", function () {
+            const editorData = editor.getData();
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     </script>
   </body>
 </html>

@@ -66,6 +66,23 @@ public class SftpUploader {
 				session.disconnect();
 		}
 	}
+	
+	public void upload(InputStream inputStream, String remoteFilename) throws Exception {
+        Session session = null;
+        ChannelSftp channelSftp = null;
+
+        try {
+            session = getSftpSession();
+            channelSftp = getSftpChannel(session);
+            channelSftp.cd(REMOTE_DIR);
+
+            channelSftp.put(inputStream, remoteFilename);
+
+        } finally {
+            if (channelSftp != null) channelSftp.disconnect();
+            if (session != null) session.disconnect();
+        }
+    }
 
 	// ★★★ 파일 읽기 메서드 추가 ★★★
 	public byte[] download(String remoteFilename) throws Exception {

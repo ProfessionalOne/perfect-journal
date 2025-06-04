@@ -1,9 +1,12 @@
 package com.pj.journal.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -11,13 +14,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.pj.journal.service.SftpUploader; // SftpUploader 서비스 임포트
+
+import net.coobird.thumbnailator.Thumbnails;
 
 @RestController
 public class ImageUploadController {
@@ -49,7 +53,24 @@ public class ImageUploadController {
 			}
 			String savedFilename = UUID.randomUUID().toString() + fileExtension;
 
-			sftpUploader.upload(file, savedFilename);
+			InputStream inputStream = file.getInputStream();
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+			try {
+				// 이미지 너비 제한 (최대 1920px) 및 리사이징
+				Thumbnails.of(inputStream).width(700).keepAspectRatio(true).toOutputStream(outputStream);
+			} catch (Exception e) {
+				// 리사이징 실패 시, 원본 이미지 그대로 사용
+				System.err.println("이미지 리사이징 실패: " + e.getMessage());
+				outputStream = new ByteArrayOutputStream();
+				try (InputStream originalInputStream = file.getInputStream()) {
+					originalInputStream.transferTo(outputStream);
+				}
+			}
+
+			// ★★★ 수정: 리사이징된 InputStream을 SftpUploader.upload()에 전달 ★★★
+			InputStream resizedInputStream = new ByteArrayInputStream(outputStream.toByteArray());
+			sftpUploader.upload(resizedInputStream, savedFilename);
 
 			response.put("uploaded", true);
 			response.put("url", imageBaseUrl + savedFilename);
@@ -60,6 +81,7 @@ public class ImageUploadController {
 			response.put("error", Map.of("message", "SFTP 파일 업로드 중 오류가 발생했습니다: " + e.getMessage()));
 			return ResponseEntity.status(500).body(response);
 		}
+
 	}
 
 	@GetMapping("/uploads/{filename:.+}") // CKEditor가 이미지를 가져올 URL
