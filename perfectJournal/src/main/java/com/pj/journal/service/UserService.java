@@ -29,23 +29,26 @@ public class UserService {
 		return null;
 	}
 
-	public String findUserId(UserVo bean) {
+	public String findUserId(UserVo bean, String answer) {
 
-		try (SqlSession session = sqlSessionFactory.openSession()) {
-			String findId = session.getMapper(UserDao.class).findUserId(bean);
-
-			return findId;
-		}
+		UserVo vo = userDao.findUserIdEncrypted(bean);
+		if (vo != null && BCrypt.checkpw(answer, vo.getAnswer())) {
+			System.out.println(BCrypt.checkpw(answer, vo.getAnswer()));
+	        return vo.getUser(); // 찾은 id 반환 (UserVo에 getUser()가 아이디 반환)
+	    } else {
+	        return "notFound";
+	    }
 	}
 
-	public String findUserPw(UserVo bean) {
-
-		try (SqlSession session = sqlSessionFactory.openSession()) {
-			String findPw = session.getMapper(UserDao.class).findUserPw(bean);
-
-			return findPw;
-		}
+	public String findUserPw(UserVo bean, String answer) {
+		UserVo vo = userDao.findUserPwEncrypted(bean);
+		if (vo != null && BCrypt.checkpw(answer, vo.getAnswer())) {
+			return "findPw"; 
+	    } else {
+	        return "notFound";
+	    }
 	}
+
 
 	public int changeUserPw(String user, String password) {
 		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());

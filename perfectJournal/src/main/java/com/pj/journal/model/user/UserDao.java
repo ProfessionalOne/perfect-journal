@@ -12,6 +12,11 @@ public interface UserDao {
 	String findUserId(UserVo bean);
 
 	String findUserPw(UserVo bean);
+	
+	//'답변'에도 암호화 적용
+	UserVo findUserIdEncrypted(UserVo bean);
+
+	UserVo findUserPwEncrypted(UserVo bean);
 
 	int changeUserPw(String user, String password);
 

@@ -12,21 +12,24 @@ import org.springframework.ui.Model;
 
 import com.pj.journal.model.board.BoardDao;
 import com.pj.journal.model.board.BoardVo;
+import com.pj.journal.model.user.UserVo;
 
 @Service
 public class BoardService {
 	@Autowired
 	SqlSessionFactory sqlSessionFactory;
 
-	public void getBoardList(Model model, int page, String sort, String field, String keyword) {
+	public void getBoardList(Model model, int page, String sort, String field, String keyword, UserVo loginUser,
+			Boolean onlyMine) {
 		int pageSize = 10;
 		int offset = (page - 1) * pageSize;
+		Integer userId = (loginUser != null) ? loginUser.getUserId() : null;
 
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			BoardDao boardDao = session.getMapper(BoardDao.class);
 
-			List<BoardVo> boardList = boardDao.selectBySearch(offset, pageSize, sort, field, keyword);
-			int totalCount = boardDao.getTotalCount(field, keyword);
+			List<BoardVo> boardList = boardDao.selectBySearch(offset, pageSize, sort, field, keyword, userId, onlyMine);
+			int totalCount = boardDao.getTotalCount(offset, pageSize, sort, field, keyword, userId, onlyMine, 0);
 			int totalPages = (int) Math.ceil((double) totalCount / pageSize);
 			int beginPage = pageSize * ((page - 1) / pageSize) + 1;
 			int endPage = beginPage + (pageSize - 1);
@@ -73,11 +76,11 @@ public class BoardService {
 			session.getMapper(BoardDao.class).deleteOneBoard(postId);
 		}
 	}
-	
+
 	public void increaseViews(int postId) {
-	    try (SqlSession session = sqlSessionFactory.openSession()) {
-	        session.getMapper(BoardDao.class).increaseViews(postId);
-	    }
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			session.getMapper(BoardDao.class).increaseViews(postId);
+		}
 	}
 
 }

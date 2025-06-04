@@ -25,13 +25,13 @@ public class TimeController {
 	public String timeList(@RequestParam(defaultValue = "1") int page,
 			@RequestParam(defaultValue = "latest") String sort, @RequestParam(required = false) String searchField,
 			@RequestParam(required = false) String keyword,
-			HttpSession session, Model model) {
+			HttpSession session, Model model, @RequestParam(required = false) Boolean onlyMine) {
 		UserVo loginUser = (UserVo) session.getAttribute("loginUser");
 		if(loginUser == null) {
 			return "redirect:/users/login";
 		}
 		int userId = loginUser.getUserId();
-		timeService.getBoardList(userId, model, page, sort, searchField, keyword);
+		timeService.getBoardList(userId, model, page, sort, searchField, keyword, onlyMine);
 		return "board/timeCapsule";
 	}
 	

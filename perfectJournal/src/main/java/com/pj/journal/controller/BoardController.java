@@ -68,29 +68,48 @@ public class BoardController {
 	public String boardList(@RequestParam(defaultValue = "1") int page,
 			@RequestParam(defaultValue = "latest") String sort, @RequestParam(required = false) String searchField,
 			@RequestParam(required = false) String keyword, Model model,
-			jakarta.servlet.http.HttpServletResponse response) {
+			jakarta.servlet.http.HttpServletResponse response,
+			HttpSession session, @RequestParam(required = false) Boolean onlyMine) {
+		
+		UserVo loginUser = (UserVo) session.getAttribute("loginUser");
 
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 		response.setHeader("Pragma", "no-cache");
 		response.setDateHeader("Expires", 0);
+		
+		//로그인 되지 않은 상태에서 '내 글만 보기' 옵션을 사용했을 경우
+				//이 부분 지우시면 로그인 안 한 상태에서 누를 때 그냥 빈 리스트만 출력하게 됩니다
+			    if (Boolean.TRUE.equals(onlyMine) && loginUser == null) {
+			    	model.addAttribute("msg", "로그인 후 내 글만 보기 옵션을 사용할 수 있습니다.");
+			        return "redirect:/users/login";
+			
+			    }
 
-		boardService.getBoardList(model, page, sort, searchField, keyword);
+		boardService.getBoardList(model, page, sort, searchField, keyword, loginUser, onlyMine);
 		return "board/home";
 	}
 
 	@GetMapping("/posts/{postId}")
 	@Transactional
 	public String detail(@PathVariable int postId, HttpSession session, Model model) {
-
-		boardService.increaseViews(postId);
-
 		BoardVo post = boardService.getBoardList(postId);
+		UserVo loginUser = (UserVo) session.getAttribute("loginUser");
+		boardService.increaseViews(postId);
+		//이쪽 문제생기는지 안생기는지 보기
+		if (post.getIsLocked()==1) {
+	        if (loginUser == null || !(post.getUserId()==(loginUser.getUserId()))) {
+	            // 권한 없으면 안내
+	            model.addAttribute("errorMsg", "비밀글입니다. 본인만 볼 수 있습니다.");
+	            return "board/home"; 
+	        }
+	    }
+
 		model.addAttribute("bean", post);
 
 		List<CommentVo> comments = commentService.getCommentList(postId);
 		model.addAttribute("commentsList", comments);
 
-		UserVo loginUser = (UserVo) session.getAttribute("loginUser");
+
 		boolean isOwner = false;
 		if (loginUser != null && post.getNickname().equals(loginUser.getNickname())) {
 			isOwner = true;
