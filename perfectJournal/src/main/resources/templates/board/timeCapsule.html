@@ -170,7 +170,7 @@
               <!-- 공개 전: 대체 이미지 -->
               <img
                 th:if="${bean.releaseDate != null and bean.releaseDate > today}"
-                th:src="@{/images/Journie_Moment_logo.png}"
+                th:src="@{/images/timeCapsule.png}"
                 class="card-img-top"
                 th:alt="'타임캡슐 잠김 - ' + ${bean.title}"
               />
@@ -210,7 +210,16 @@
                 ></p>
               </div>
               <div class="card-footer">
-                <span class="card-author" th:text="${bean.nickname}"></span>
+                <span
+                  class="card-author"
+                  th:if="${bean.releaseDate != null and bean.releaseDate > today}"
+                  th:text="${#temporals.format(bean.releaseDate, 'yyyy/MM/dd')}"
+                ></span>
+                <span
+                  class="card-author"
+                  th:unless="${bean.releaseDate != null and bean.releaseDate > today}"
+                  th:text="${bean.nickname}"
+                ></span>
                 <span
                   class="card-date"
                   th:text="${#temporals.format(bean.createdAt, 'yyyy/MM/dd')}"
