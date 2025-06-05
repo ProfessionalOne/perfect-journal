@@ -65,21 +65,33 @@
             th:action="@{/time}"
           >
             <div class="input-group me-2" style="max-width: 450px">
-              <select
-                class="form-select me-1"
-                name="searchField"
-                style="width: auto"
-              >
-                <option
-                  value="titleContent"
-                  th:selected="${searchField} == 'titleContent'"
+              <div class="dropdown me-2">
+                <button
+                  class="btn btn-light dropdown-toggle"
+                  type="button"
+                  id="searchFieldDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
                 >
                   제목+내용
-                </option>
-                <option value="writer" th:selected="${searchField} == 'writer'">
-                  글쓴이
-                </option>
-              </select>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="searchFieldDropdown">
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="#"
+                      onclick="setSearchField('titleContent')"
+                      >제목+내용</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <input
+                type="hidden"
+                name="searchField"
+                id="searchField"
+                value="titleContent"
+              />
               <input
                 class="form-control"
                 style="width: 200px"
@@ -219,7 +231,7 @@
                   class="card-title"
                   th:if="${bean.releaseDate != null and bean.releaseDate > today}"
                 >
-                 타임캡슐
+                  타임캡슐
                 </h5>
                 <h5
                   class="card-title"

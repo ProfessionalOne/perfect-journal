@@ -14,7 +14,6 @@
       href="../static/css/find.css"
     />
   </head>
-
   <body>
     <div class="bg-pattern"></div>
     <div class="container">
@@ -144,15 +143,6 @@
               </p>
               <div class="bg-primary bg-opacity-10 rounded p-3 mb-4">
                 <p id="found-id" class="text-primary fw-medium">gra***user</p>
-              </div>
-              <div class="d-grid">
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  onclick="window.location.href='/users/login'"
-                >
-                  로그인 하기
-                </button>
               </div>
             </div>
           </div>
@@ -349,6 +339,7 @@
           const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           if (!emailRegex.test(email)) {
             showAlertModal("유효한 이메일 주소를 입력해주세요.");
+            document.getElementById("id-email").value = "";
             return;
           }
 
@@ -382,7 +373,7 @@
               foundUserId.substring(0, foundUserId.length - 4) + "****";
 
             document.getElementById("found-id").textContent = displayUserId;
-            document.getElementById("result-id").classList.add("show");
+            document.getElementById("result-id").style.display = "block";
             document.getElementById("form-find-id").style.display = "none";
           } catch (error) {
             console.error("아이디 찾기 오류:", error);
@@ -392,7 +383,7 @@
           }
         });
 
-      // 비밀번호 찾기 버튼 클릭 이벤트 (UNCHANGED logic for now)
+      // 비밀번호 찾기 버튼 클릭 이벤트
       document
         .getElementById("btn-find-pw")
         .addEventListener("click", async function () {

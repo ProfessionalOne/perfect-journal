@@ -68,7 +68,6 @@ public class UserController {
 		String userId = userService.findUserId(email, answer, question);
 
 		if ("notFound".equals(userId)) {
-
 			return (ResponseEntity<?>) ResponseEntity.noContent();
 		}
 
@@ -76,8 +75,7 @@ public class UserController {
 	}
 
 	@PostMapping("/users/find/pw")
-	public String findUserPw(@RequestBody Map<String, Object> param, HttpSession session,
-			RedirectAttributes redirectAttributes) {
+	public ResponseEntity<?> findUserPw(@RequestBody Map<String, Object> param, HttpSession session) {
 		String user = (String) param.get("user");
 		String email = (String) param.get("email");
 		String answer = (String) param.get("answer");
@@ -92,11 +90,11 @@ public class UserController {
 		int foundUser = userService.findUserPw(user, email, answer, question);
 
 		if (foundUser == -1) {
-			return "redirect:/users/find";
+			return ResponseEntity.notFound().build();
 		}
 
 		session.setAttribute("user", user);
-		return "redirect:/users/changePw";
+		return ResponseEntity.ok().build();
 	}
 
 	@GetMapping("/users/changePw")
@@ -114,20 +112,19 @@ public class UserController {
 	}
 
 	@PostMapping("/users/changePw")
-	public ResponseEntity<String> changePassword(@RequestParam("user") String user, @RequestParam("password") String password,
-			HttpSession session, Model model) {
-		if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{8,}$")) {
-	        return ResponseEntity
-	            .status(HttpStatus.BAD_REQUEST).build();
-	    }
+	public ResponseEntity<String> changePassword(@RequestParam("user") String user,
+			@RequestParam("password") String password, HttpSession session, Model model) {
+		if (!password
+				.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{8,}$")) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
 		int result = userService.changeUserPw(user, password);
 
 		if (result > 0) {
 			session.removeAttribute("user");
 			return ResponseEntity.ok().build();
 		} else {
-			return ResponseEntity
-		            .status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 
