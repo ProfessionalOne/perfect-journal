@@ -38,8 +38,8 @@ public class CommentController {
 	
 	@PutMapping("/posts/{postId}/comments/{commentId}")
 	public String editComment(@PathVariable int postId, @PathVariable int commentId, @ModelAttribute CommentVo bean) {
-		commentService.updateComment(bean);
 		bean.setUpdatedAt(LocalDateTime.now());
+		commentService.updateComment(bean);
 		
 		return "redirect:/posts/" + postId;
 	}
