@@ -108,7 +108,7 @@
               <li class="page-item" th:hidden="${beginPage == 1}">
                 <a
                   class="page-link bi bi-chevron-double-left"
-                  th:href="@{/posts(page=${beginPage - 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
+                  th:href="@{/posts(page=${beginPage - 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword}, onlyMine=${onlyMine})}"
                 ></a>
               </li>
               <li th:if="${totalPages == 0}">
@@ -122,7 +122,7 @@
               >
                 <a
                   class="page-link"
-                  th:href="@{/posts(page=${i}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
+                  th:href="@{/posts(page=${i}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword}, onlyMine=${onlyMine})}"
                   th:text="${i}"
                   >1</a
                 >
@@ -130,7 +130,7 @@
               <li class="page-item" th:hidden="${endPage == totalPages}">
                 <a
                   class="page-link bi bi-chevron-double-right"
-                  th:href="@{/posts(page=${endPage + 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
+                  th:href="@{/posts(page=${endPage + 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword}, onlyMine=${onlyMine})}"
                 ></a>
               </li>
             </ul>
@@ -213,7 +213,7 @@
           class="page-arrow prev"
           id="prevPage"
           th:hidden="${currentPage == 1}"
-          th:href="@{/posts(page=${currentPage - 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
+          th:href="@{/posts(page=${currentPage - 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword}, onlyMine=${onlyMine})}"
         >
           <span class="bi bi-chevron-left"></span>
         </a>
@@ -291,7 +291,7 @@
             class="page-arrow next"
             id="nextPage"
             th:hidden="${currentPage == totalPages}"
-            th:href="@{/posts(page=${currentPage + 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
+            th:href="@{/posts(page=${currentPage + 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword}, onlyMine=${onlyMine})}"
           >
             <span class="bi bi-chevron-right"></span>
           </a>
