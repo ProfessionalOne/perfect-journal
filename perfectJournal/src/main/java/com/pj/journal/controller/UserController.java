@@ -136,12 +136,16 @@ public class UserController {
 	@PostMapping("/users/signup")
 	public String register(@ModelAttribute UserVo bean, Model model) {
 		if (userService.isIdAlreadyExists(bean.getUser()) > 0) {
+			bean.setUser(null);
+			bean.setPassword(null);
 			model.addAttribute("signupError", "이미 사용중인 아이디입니다.");
 			model.addAttribute("user", bean);
 			return "user/register";
 		}
 
 		if (!bean.getUser().matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,15}$")) {
+			bean.setUser(null);
+			bean.setPassword(null);
 			model.addAttribute("signupError", "아이디는 영문자와 숫자를 모두 포함해야 하며, 8~15자여야 합니다. 특수문자는 사용할 수 없습니다.");
 			model.addAttribute("user", bean);
 			return "user/register";
