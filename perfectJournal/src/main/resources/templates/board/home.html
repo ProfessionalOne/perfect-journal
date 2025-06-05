@@ -140,7 +140,12 @@
         <div class="board-controls-right">
           <div class="board-controls-right-wrapper">
             <form method="get" th:action="@{/posts}">
-              <input type="hidden" name="page" th:value="${currentPage}" />
+              <input
+                type="hidden"
+                name="page"
+                th:value="${currentPage}"
+                id="currentPageInput"
+              />
               <input type="hidden" name="sort" th:value="${currentSort}" />
               <input
                 type="hidden"
@@ -155,7 +160,7 @@
                   id="onlyMine"
                   name="onlyMine"
                   th:checked="${onlyMine}"
-                  onchange="this.form.submit()"
+                  onchange="handleOnlyMineChange(this);"
                 />
                 <label class="form-check-label" for="onlyMine"
                   >내 글만 보기</label
@@ -176,21 +181,21 @@
                 <li>
                   <a
                     class="dropdown-item"
-                    th:href="@{/posts(page=${currentPage}, sort='latest', searchField=${searchField}, keyword=${keyword})}"
+                    th:href="@{/posts(page=${currentPage}, sort='latest', searchField=${searchField}, keyword=${keyword}, onlyMine=${onlyMine})}"
                     >최신순</a
                   >
                 </li>
                 <li>
                   <a
                     class="dropdown-item"
-                    th:href="@{/posts(page=${currentPage}, sort='oldest', searchField=${searchField}, keyword=${keyword})}"
+                    th:href="@{/posts(page=${currentPage}, sort='oldest', searchField=${searchField}, keyword=${keyword}, onlyMine=${onlyMine})}"
                     >오래된순</a
                   >
                 </li>
                 <li>
                   <a
                     class="dropdown-item"
-                    th:href="@{/posts(page=${currentPage}, sort='views', searchField=${searchField}, keyword=${keyword})}"
+                    th:href="@{/posts(page=${currentPage}, sort='views', searchField=${searchField}, keyword=${keyword}, onlyMine=${onlyMine})}"
                   >
                     인기순
                   </a>
@@ -322,6 +327,11 @@
         document.getElementById("searchField").value = value;
         document.getElementById("searchFieldDropdown").innerText =
           fieldMap[value];
+      }
+
+      function handleOnlyMineChange(checkbox) {
+        document.getElementById("currentPageInput").value = 1;
+        checkbox.form.submit();
       }
     </script>
   </body>

@@ -257,7 +257,6 @@
           if (e.target.value.length === 30) {
             titleCountDiv.style.color = "red";
             titleCountDiv.classList.add("animated");
-            // 일정시간 뒤 애니메이션 class 제거(다시 효과 적용 가능)
             setTimeout(() => {
               titleCountDiv.classList.remove("animated");
             }, 350);

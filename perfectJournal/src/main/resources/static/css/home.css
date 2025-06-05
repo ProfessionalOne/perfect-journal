@@ -301,4 +301,13 @@
   .board-controls-left * {
     font-size: 1rem !important;
   }
+
+  .board-controls-right-wrapper > *:not(.btn-new-post) {
+    display: none;
+  }
+
+  .btn-new-post {
+    padding: 0.4rem 1rem;
+    font-size: 0.95rem;
+  }
 }

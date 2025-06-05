@@ -115,7 +115,7 @@
               <li class="page-item" th:hidden="${beginPage == 1}">
                 <a
                   class="page-link bi bi-chevron-double-left"
-                  th:href="@{/posts(page=${beginPage - 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
+                  th:href="@{/time(page=${beginPage - 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
                 ></a>
               </li>
               <li th:if="${totalPages == 0}">
@@ -129,7 +129,7 @@
               >
                 <a
                   class="page-link"
-                  th:href="@{/posts(page=${i}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
+                  th:href="@{/time(page=${i}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
                   th:text="${i}"
                   >1</a
                 >
@@ -137,7 +137,7 @@
               <li class="page-item" th:hidden="${endPage == totalPages}">
                 <a
                   class="page-link bi bi-chevron-double-right"
-                  th:href="@{/posts(page=${endPage + 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
+                  th:href="@{/time(page=${endPage + 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
                 ></a>
               </li>
             </ul>
@@ -147,7 +147,7 @@
             class="page-arrow prev"
             id="prevPage"
             th:hidden="${currentPage == 1}"
-            th:href="@{/posts(page=${currentPage - 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
+            th:href="@{/time(page=${currentPage - 1}, sort=${currentSort}, searchField=${searchField}, keyword=${keyword})}"
           >
             <span class="bi bi-chevron-left"></span>
           </a>
@@ -169,21 +169,21 @@
                 <li>
                   <a
                     class="dropdown-item"
-                    th:href="@{/posts(page=${currentPage}, sort='latest', searchField=${searchField}, keyword=${keyword})}"
+                    th:href="@{/time(page=${currentPage}, sort='latest', searchField=${searchField}, keyword=${keyword})}"
                     >최신순</a
                   >
                 </li>
                 <li>
                   <a
                     class="dropdown-item"
-                    th:href="@{/posts(page=${currentPage}, sort='oldest', searchField=${searchField}, keyword=${keyword})}"
+                    th:href="@{/time(page=${currentPage}, sort='oldest', searchField=${searchField}, keyword=${keyword})}"
                     >오래된순</a
                   >
                 </li>
                 <li>
                   <a
                     class="dropdown-item"
-                    th:href="@{/posts(page=${currentPage}, sort='views', searchField=${searchField}, keyword=${keyword})}"
+                    th:href="@{/time(page=${currentPage}, sort='views', searchField=${searchField}, keyword=${keyword})}"
                   >
                     인기순
                   </a>
