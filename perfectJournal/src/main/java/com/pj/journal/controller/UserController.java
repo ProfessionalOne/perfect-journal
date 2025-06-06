@@ -4,7 +4,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.pj.journal.model.user.UserVo;
 import com.pj.journal.service.UserService;
@@ -22,6 +20,7 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UserController {
+
 	@Autowired
 	UserService userService;
 
@@ -59,7 +58,7 @@ public class UserController {
 		String email = (String) param.get("email");
 		String answer = (String) param.get("answer");
 		int question;
-		// question 값이 문자열로 올 수도 있으니 예외처리(권장)
+		// question 값이 문자열로 올 수도 있으니 예외처리
 		try {
 			question = Integer.parseInt(param.get("question").toString());
 		} catch (Exception e) {

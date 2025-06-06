@@ -50,37 +50,25 @@
 	<update id="updateGroupId">
 		UPDATE comments
 		SET group_id = #{groupId}
-		WHERE comment_id = #{commentId} AND level = 0
+		WHERE
+		comment_id = #{commentId} AND level = 0
 	</update>
-	
+
 	<update id="updateComment" parameterType="commentBean">
 		UPDATE comments
-		SET content = #{content}, updated_at = #{updatedAt}
+		SET
+		content = #{content}, updated_at = #{updatedAt}
 		WHERE
-		comment_id = #{commentId}
+		comment_id =
+		#{commentId}
 	</update>
-	
+
 	<update id="updateCommentIsDeleted" parameterType="int">
-		UPDATE comments
+		UPDATE
+		comments
 		SET is_deleted = TRUE
 		WHERE
 		comment_id = #{commentId}
 	</update>
 
-
-<!-- 	<update id="updateOneCommentnReply" parameterType="commentBean"> UPDATE
-		Comments SET (content=#{content}, updatedAt=now())
-		WHERE
-		post_id=#{post_id} AND comment_id=#{comment_id} AND ord=#{ord} AND
-		level=#{level} AND user_id=#{userId})
-	</update>
-
-	<update id="deleteOneCommentnReply" parameterType="commentBean"> UPDATE
-		Comments SET is_deleted='true' WHERE
-		post_id=#{post_id} AND
-		comment_id=#{comment_id} AND ord=#{ord} AND level=#{level}
-		AND
-		user_id=#{userId})
-	</update>
- -->
 </mapper>

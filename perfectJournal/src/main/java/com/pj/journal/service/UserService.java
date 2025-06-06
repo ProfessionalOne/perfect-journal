@@ -19,13 +19,13 @@ public class UserService {
 	UserDao userDao;
 
 	public UserVo selectByUser(String user, String password) {
-		
+
 		UserVo bean = userDao.selectByUser(user);
-		
+
 		if (bean != null && BCrypt.checkpw(password, bean.getPassword())) {
 			return bean;
 		}
-		
+
 		return null;
 	}
 
@@ -33,24 +33,23 @@ public class UserService {
 
 		UserVo vo = userDao.findUserIdEncrypted(email, question);
 		if (vo != null && BCrypt.checkpw(answer, vo.getAnswer())) {
-			
-	        return vo.getUser(); // 찾은 id 반환 (UserVo에 getUser()가 아이디 반환)
-	    } else {
-	        return "notFound";
-	    }
+
+			return vo.getUser(); // 찾은 id 반환 (UserVo에 getUser()가 아이디 반환)
+		} else {
+			return "notFound";
+		}
 	}
 
 	public int findUserPw(String user, String email, String answer, int question) {
-		
+
 		UserVo vo = userDao.findUserPwEncrypted(email, user, question);
 
 		if (vo != null && BCrypt.checkpw(answer, vo.getAnswer())) {
-			return vo.getUserId(); 
-	    } else {
-	        return -1;
-	    }
+			return vo.getUserId();
+		} else {
+			return -1;
+		}
 	}
-
 
 	public int changeUserPw(String user, String password) {
 		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
@@ -80,12 +79,11 @@ public class UserService {
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			String hashedPassword = BCrypt.hashpw(bean.getPassword(), BCrypt.gensalt());
 			bean.setPassword(hashedPassword);
-			String hashedAnswer = BCrypt.hashpw(bean.getAnswer(),BCrypt.gensalt());
+			String hashedAnswer = BCrypt.hashpw(bean.getAnswer(), BCrypt.gensalt());
 			bean.setAnswer(hashedAnswer);
 			session.getMapper(UserDao.class).insertOneUser(bean);
 			session.commit();
 		}
 	}
-
 
 }

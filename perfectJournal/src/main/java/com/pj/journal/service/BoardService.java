@@ -1,6 +1,5 @@
 package com.pj.journal.service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,6 +15,7 @@ import com.pj.journal.model.user.UserVo;
 
 @Service
 public class BoardService {
+
 	@Autowired
 	SqlSessionFactory sqlSessionFactory;
 

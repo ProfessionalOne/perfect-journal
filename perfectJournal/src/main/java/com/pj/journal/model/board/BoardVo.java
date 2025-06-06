@@ -2,17 +2,17 @@ package com.pj.journal.model.board;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Objects;
 
 public class BoardVo {
+
 	private int postId, userId, views;
 	private String nickname, title, content, image;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 	private boolean isTimeCapsule;
 	private Integer duration;
-	private Integer isLocked=0;
+	private Integer isLocked = 0;
 	private LocalDate releaseDate;
 
 	public BoardVo() {
@@ -171,5 +171,5 @@ public class BoardVo {
 				+ ", updatedAt=" + updatedAt + ", isLocked=" + isLocked + ", isTimeCapsule=" + isTimeCapsule
 				+ ", duration=" + duration + ", releaseDate=" + releaseDate + "]";
 	}
-	
+
 }

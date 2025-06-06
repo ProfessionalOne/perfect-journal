@@ -1,10 +1,10 @@
 package com.pj.journal.model.comment;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Objects;
 
 public class CommentVo {
+
 	private int commentId, postId, userId, groupId, level;
 	private String nickname, content;
 	private LocalDateTime createdAt, updatedAt;
@@ -110,14 +110,15 @@ public class CommentVo {
 
 	@Override
 	public String toString() {
-		return "CommentVo [commentId=" + commentId + ", postId=" + postId + ", userId=" + userId + ", groupId=" + groupId
-				+ ", level=" + level + ", nickname=" + nickname + ", content=" + content + ", createdAt=" + createdAt
-				+ ", updatedAt=" + updatedAt + ", isDeleted=" + isDeleted + "]";
+		return "CommentVo [commentId=" + commentId + ", postId=" + postId + ", userId=" + userId + ", groupId="
+				+ groupId + ", level=" + level + ", nickname=" + nickname + ", content=" + content + ", createdAt="
+				+ createdAt + ", updatedAt=" + updatedAt + ", isDeleted=" + isDeleted + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(commentId, content, createdAt, isDeleted, level, nickname, groupId, postId, updatedAt, userId);
+		return Objects.hash(commentId, content, createdAt, isDeleted, level, nickname, groupId, postId, updatedAt,
+				userId);
 	}
 
 	@Override

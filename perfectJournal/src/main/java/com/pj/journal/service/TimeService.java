@@ -14,16 +14,18 @@ import com.pj.journal.model.board.BoardVo;
 
 @Service
 public class TimeService {
+
 	@Autowired
 	SqlSessionFactory sqlSessionFactory;
-	
-	public void getBoardList(int userId, Model model, int page, String sort, String field, String keyword, Boolean onlyMine) {
+
+	public void getBoardList(int userId, Model model, int page, String sort, String field, String keyword,
+			Boolean onlyMine) {
 		int pageSize = 10;
 		int offset = (page - 1) * pageSize;
 
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			BoardDao boardDao = session.getMapper(BoardDao.class);
- 
+
 			List<BoardVo> boardList = boardDao.selectByTime(userId, offset, pageSize, sort, field, keyword, onlyMine);
 
 			int totalCount = boardDao.getTotalCount(offset, pageSize, sort, field, keyword, userId, onlyMine, 1);
@@ -45,26 +47,27 @@ public class TimeService {
 			model.addAttribute("today", LocalDate.now());
 		}
 	}
-	
+
 	public BoardVo getBoardList(int postId, Integer viewerUserId) {
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			BoardDao dao = session.getMapper(BoardDao.class);
-	        BoardVo post = dao.selectOneBoard(postId);
+			BoardVo post = dao.selectOneBoard(postId);
 
-	        if (post == null) return null;
+			if (post == null)
+				return null;
 
-	        boolean isTimeCapsule = post.isTimeCapsule();
-	        boolean isOwner = viewerUserId != null && post.getUserId() == viewerUserId;
-	        boolean isReleased = post.getReleaseDate() != null &&
-	                             !post.getReleaseDate().isAfter(LocalDate.now());
+			boolean isTimeCapsule = post.isTimeCapsule();
+			boolean isOwner = viewerUserId != null && post.getUserId() == viewerUserId;
+			boolean isReleased = post.getReleaseDate() != null && !post.getReleaseDate().isAfter(LocalDate.now());
 
-	        // 💡 조건: 타임캡슐이고 공개 전이고 작성자도 아닌 경우
-	        if (isTimeCapsule && !isReleased && !isOwner) {
-	            post.setContent("⏳ 공개일이 되면 확인할 수 있어요.");
-	            post.setImage("/images/Journie_Moment_logo.png");
-	        }
+			// 타임캡슐이고 공개 전이고 작성자도 아닌 경우
+			if (isTimeCapsule && !isReleased && !isOwner) {
+				post.setContent("⏳ 공개일이 되면 확인할 수 있어요.");
+				post.setImage("/images/Journie_Moment_logo.png");
+			}
 
-	        return post;
+			return post;
 		}
 	}
+
 }
