@@ -18,24 +18,26 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class TimeController {
+
 	@Autowired
 	TimeService timeService;
-	
+
 	@GetMapping("/time")
 	public String timeList(@RequestParam(defaultValue = "1") int page,
 			@RequestParam(defaultValue = "latest") String sort, @RequestParam(required = false) String searchField,
-			@RequestParam(required = false) String keyword,
-			HttpSession session, Model model, @RequestParam(required = false) Boolean onlyMine) {
+			@RequestParam(required = false) String keyword, HttpSession session, Model model,
+			@RequestParam(required = false) Boolean onlyMine) {
 		UserVo loginUser = (UserVo) session.getAttribute("loginUser");
 
-		if(loginUser == null) {
+		if (loginUser == null) {
 			return "redirect:/users/login";
 		}
+
 		int userId = loginUser.getUserId();
 		timeService.getBoardList(userId, model, page, sort, searchField, keyword, onlyMine);
 		return "board/timeCapsule";
 	}
-	
+
 	@GetMapping("/time/{postId}")
 	@Transactional
 	public String detail(@PathVariable int postId, HttpSession session, Model model) {
@@ -44,14 +46,15 @@ public class TimeController {
 
 		BoardVo post = timeService.getBoardList(postId, loginUserId);
 		model.addAttribute("bean", post);
-		
+
 		boolean isOwner = false;
-		
-		if(loginUser != null && post.getNickname().equals(loginUser.getNickname())) {
+
+		if (loginUser != null && post.getNickname().equals(loginUser.getNickname())) {
 			isOwner = true;
 		}
 		model.addAttribute("isOwner", isOwner);
 		model.addAttribute("today", LocalDate.now());
 		return "board/timeDetail";
 	}
+
 }

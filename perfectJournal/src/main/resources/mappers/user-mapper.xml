@@ -4,7 +4,8 @@
 
 	<select id="selectByUser" resultType="userBean">
 		SELECT * FROM users
-		WHERE user = #{user}
+		WHERE
+		user = #{user}
 	</select>
 
 	<select id="findUserId" parameterType="userBean"
@@ -13,11 +14,12 @@
 		WHERE email = #{email} AND answer =
 		#{answer} AND question = #{question}
 	</select>
-	
+
 	<select id="findUserIdEncrypted" parameterType="Map"
 		resultType="userBean">
 		SELECT user,answer FROM users
-		WHERE email = #{email} AND question = #{question}
+		WHERE email = #{email} AND
+		question = #{question}
 	</select>
 
 	<select id="findUserPw" parameterType="userBean"
@@ -29,12 +31,13 @@
 		AND user = #{user}
 		AND question = #{question}
 	</select>
-	
+
 	<select id="findUserPwEncrypted" parameterType="Map"
 		resultType="userBean">
 		SELECT user_id, answer FROM users
 		WHERE email = #{email}
-		AND user = #{user}
+		AND
+		user = #{user}
 		AND question = #{question}
 	</select>
 

@@ -18,36 +18,36 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class CommentController {
+
 	@Autowired
 	CommentService commentService;
 
 	@PostMapping("/posts/{postId}/comments")
-	public String addComment(@PathVariable int postId
-			, @ModelAttribute CommentVo bean
-			, HttpSession session) {
+	public String addComment(@PathVariable int postId, @ModelAttribute CommentVo bean, HttpSession session) {
 		UserVo loginUser = (UserVo) session.getAttribute("loginUser");
 		if (loginUser == null) {
-		    return "redirect:/users/login";
-		}bean.setUserId(loginUser.getUserId());
+			return "redirect:/users/login";
+		}
+		bean.setUserId(loginUser.getUserId());
 		bean.setCreatedAt(LocalDateTime.now());
 		bean.setUpdatedAt(LocalDateTime.now());
 		commentService.addComment(bean, bean.getGroupId());
 
 		return "redirect:/posts/" + postId;
 	}
-	
+
 	@PutMapping("/posts/{postId}/comments/{commentId}")
 	public String editComment(@PathVariable int postId, @PathVariable int commentId, @ModelAttribute CommentVo bean) {
 		bean.setUpdatedAt(LocalDateTime.now());
 		commentService.updateComment(bean);
-		
+
 		return "redirect:/posts/" + postId;
 	}
-	
+
 	@DeleteMapping("/posts/{postId}/comments/{commentId}")
 	public String updateIsDeleted(@PathVariable int postId, @PathVariable int commentId) {
 		commentService.updateCommentIsDeleted(commentId);
-		
+
 		return "redirect:/posts/" + postId;
 	}
 

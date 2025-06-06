@@ -1,6 +1,5 @@
 package com.pj.journal.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;

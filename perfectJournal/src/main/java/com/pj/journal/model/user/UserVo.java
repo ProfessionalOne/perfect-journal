@@ -1,18 +1,19 @@
 package com.pj.journal.model.user;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class UserVo {
+
 	private int userId, question;
 	private String email, user, password, nickname, answer;
-	private Date createdAt;
+	private LocalDateTime createdAt;
 
 	public UserVo() {
 	}
 
 	public UserVo(int userId, int question, String email, String user, String password, String nickname, String answer,
-			Date createdAt) {
+			LocalDateTime createdAt) {
 		super();
 		this.userId = userId;
 		this.question = question;
@@ -107,11 +108,11 @@ public class UserVo {
 		this.answer = answer;
 	}
 
-	public Date getCreatedAt() {
+	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Date createdAt) {
+	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
 

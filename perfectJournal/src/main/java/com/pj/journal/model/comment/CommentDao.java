@@ -9,10 +9,10 @@ import org.apache.ibatis.annotations.Param;
 public interface CommentDao {
 
 	List<CommentVo> selectAllComments(int postId);
-	
-    void insertComment(CommentVo comment);
 
-    void updateGroupId(@Param("commentId") int commentId, @Param("groupId") int groupId);
+	void insertComment(CommentVo comment);
+
+	void updateGroupId(@Param("commentId") int commentId, @Param("groupId") int groupId);
 
 	void updateComment(CommentVo bean);
 

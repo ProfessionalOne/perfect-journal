@@ -1,17 +1,13 @@
 package com.pj.journal.controller;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Properties;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -22,12 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.jcraft.jsch.ChannelSftp;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.Session;
 import com.pj.journal.model.board.BoardVo;
 import com.pj.journal.model.comment.CommentVo;
 import com.pj.journal.model.user.UserVo;
@@ -39,6 +31,7 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class BoardController {
+
 	@Autowired
 	BoardService boardService;
 
@@ -85,7 +78,7 @@ public class BoardController {
 			return "redirect:/users/login";
 
 		}
-		
+
 		model.addAttribute("onlyMine", onlyMine);
 		boardService.getBoardList(model, page, sort, searchField, keyword, loginUser, onlyMine);
 		return "board/home";
@@ -96,12 +89,11 @@ public class BoardController {
 	public String detail(@PathVariable int postId, HttpSession session, Model model) {
 		BoardVo post = boardService.getBoardList(postId);
 		UserVo loginUser = (UserVo) session.getAttribute("loginUser");
-		
+
 		boardService.increaseViews(postId);
-		// 이쪽 문제생기는지 안생기는지 보기
+
 		if (post.getIsLocked() == 1) {
 			if (loginUser == null || !(post.getUserId() == (loginUser.getUserId()))) {
-				// 권한 없으면 안내
 				model.addAttribute("errorMsg", "비밀글입니다. 본인만 볼 수 있습니다.");
 				return "board/home";
 			}

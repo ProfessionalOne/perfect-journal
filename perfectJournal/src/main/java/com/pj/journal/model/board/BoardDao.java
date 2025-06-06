@@ -22,14 +22,14 @@ public interface BoardDao {
 			@Param("sort") String sort, @Param("searchField") String field, @Param("keyword") String keyword,
 			@Param("userId") Integer userId, @Param("onlyMine") Boolean onlyMine);
 
-	int getTotalCount(@Param("offset") int offset, @Param("pageSize") int pageSize,
-			@Param("sort") String sort, @Param("searchField") String field, @Param("keyword") String keyword,
-			@Param("userId") Integer userId, @Param("onlyMine") Boolean onlyMine, @Param("isTimeCapsule") Integer isTimeCapsule);
+	int getTotalCount(@Param("offset") int offset, @Param("pageSize") int pageSize, @Param("sort") String sort,
+			@Param("searchField") String field, @Param("keyword") String keyword, @Param("userId") Integer userId,
+			@Param("onlyMine") Boolean onlyMine, @Param("isTimeCapsule") Integer isTimeCapsule);
 
 	List<BoardVo> selectByTime(@Param("userId") int userId, @Param("offset") int offset,
 			@Param("pageSize") int pageSize, @Param("sort") String sort, @Param("searchField") String field,
 			@Param("keyword") String keyword, @Param("onlyMine") Boolean onlyMine);
 
-
 	void increaseViews(int postId);
+
 }
